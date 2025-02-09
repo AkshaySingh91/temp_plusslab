@@ -1,21 +1,13 @@
-import { useEffect, useState } from "react";
-import API from "./api";
+import react from "react";
+import Navbar from "./components/Navbar";
+import Landing from "./components/Landing";
 
 function App() {
-    const [message, setMessage] = useState("");
-
-    useEffect(() => {
-        API.get("/")
-            .then((response) => setMessage(response.data.message))
-            .catch((error) => console.log("Error:", error));
-    }, []);
-
-    return (
-        <div>
-            <h1>Frontend Connected to Backend</h1>
-            <p>{message}</p>
-        </div>
-    );
+  return (
+    <>
+      <Landing />
+    </>
+  );
 }
 
 export default App;
