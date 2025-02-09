@@ -13,15 +13,7 @@ const patientSchema = new mongoose.Schema(
       {
         testId: { type: mongoose.Schema.Types.ObjectId, ref: "Test" }, // Links to Test model
         testDate: { type: Date, required: true },
-        result: { type: String }, // Summary of test result
         reportImages: [{ type: String }] // URLs of report images
-      }
-    ],
-
-    consultancies: [
-      {
-        date: { type: Date, required: true },
-        doctorNotes: { type: String }, // Admin can add notes here
       }
     ],
   },
