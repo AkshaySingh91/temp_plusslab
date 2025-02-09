@@ -25,7 +25,7 @@ const images = [
 ];
 const Landing = () => {
   return (
-    <div className="h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-1 p-4 md:p-6 lg:p-8">
         <div className="flex flex-col lg:flex-row gap-4 md:gap-6 max-w-[1440px] mx-auto">
