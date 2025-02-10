@@ -1,5 +1,4 @@
 import react from "react";
-import Navbar from "./components/Navbar";
 import Landing from "./components/Landing";
 import FeaturedHealthCheckup from "./components/FeaturedHealthCheckup";
 import WhyChooseUs from "./components/WhyChooseUs";
@@ -10,13 +9,14 @@ import FunctionSection from "./components/FunctionSection";
 function App() {
   return (
     <>
+
+      
       <Landing />
       <FunctionSection />
       <FeaturedHealthCheckup />
       <ConcernHealthCheckups />
       <WhyChooseUs />
       <Footer />
-
     </>
   );
 }
