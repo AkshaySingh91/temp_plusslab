@@ -34,7 +34,7 @@ const healthPackages = [
     price: "₹2000",
     icon: "https://cdn-icons-png.flaticon.com/512/2463/2463980.png",
     discount: "",
-    color:"bg-blue-300",
+    color:"bg-blue-400",
     category: "WOMEN HEALTH",
   },
 ];
@@ -91,8 +91,8 @@ const FeaturedHealthCheckup = () => {
        
          {/* Bottom Section */}
          <div className="flex justify-between items-center">
-           <div className="text-md lg:text-xl  font-semibold">{pkg.price}</div>
-           <button className="bg-black bebas-neue-regular text-white px-4 py-2 rounded-2xl text-sm md:text-base lg:text-2xl">
+           <div className="text-lg lg:text-xl  font-semibold">{pkg.price}</div>
+           <button className="bg-black text-white px-4 py-2 rounded-2xl text-sm md:text-base lg:text-2xl">
              BOOK
            </button>
          </div>
