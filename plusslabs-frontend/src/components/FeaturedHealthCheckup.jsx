@@ -6,6 +6,7 @@ const healthPackages = [
     tests: "Includes 10 Tests",
     price: "₹2000",
     discount: "",
+    color:"bg-green-300",
     icon: "https://cdn-icons-png.flaticon.com/512/6124/6124131.png",
     category: "FULL BODY CHECKUP",
   },
@@ -14,6 +15,7 @@ const healthPackages = [
     tests: "Includes 22 Tests",
     price: "₹2000",
     discount: "",
+    color:"bg-yellow-300",
     icon: "https://cdn-icons-png.freepik.com/256/3209/3209082.png?semt=ais_hybrid",
     category: "DIABETES",
   },
@@ -23,6 +25,7 @@ const healthPackages = [
     price: "₹2000",
     icon: "https://cdn-icons-png.flaticon.com/512/4464/4464982.png",
     discount: "",
+    color:"bg-pink-300",
     category: "FULL BODY CHECKUP",
   },
   {
@@ -31,6 +34,7 @@ const healthPackages = [
     price: "₹2000",
     icon: "https://cdn-icons-png.flaticon.com/512/2463/2463980.png",
     discount: "",
+    color:"bg-blue-300",
     category: "WOMEN HEALTH",
   },
 ];
@@ -57,7 +61,7 @@ const FeaturedHealthCheckup = () => {
 
   return (
     <section className="w-full py-12 px-6">
-      <h2 className="md:text-6xl bebas-neue-regular font-bold text-black text-center mb-6">
+      <h2 className="text-3xl md:text-6xl bebas-neue-regular font-bold text-black text-center mb-6">
         FEATURED HEALTH CHECK-UP PACKAGES
       </h2>
       <div className="flex flex-wrap justify-center gap-2 md:gap-6 mb-6">
@@ -75,7 +79,7 @@ const FeaturedHealthCheckup = () => {
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 max-w-7xl mx-auto">
         {filteredPackages.map((pkg, index) => (
-         <div className="bg-gray-300 rounded-lg h-80 md:h-80 lg:h-[20rem] p-4 md:p-6  flex flex-col gap-3 justify-between">
+         <div className={`bg-gray-300 rounded-2xl h-60 md:h-80 lg:h-[20rem] p-4 md:p-6  flex flex-col gap-3 ${pkg.color} justify-between`}>
          {/* Top Section */}
          <div>
            <div className="px-4 py-2">
@@ -88,7 +92,7 @@ const FeaturedHealthCheckup = () => {
          {/* Bottom Section */}
          <div className="flex justify-between items-center">
            <div className="text-md lg:text-xl  font-semibold">{pkg.price}</div>
-           <button className="bg-black text-white px-4 py-2 rounded-2xl text-sm md:text-base lg:text-lg">
+           <button className="bg-black bebas-neue-regular text-white px-4 py-2 rounded-2xl text-sm md:text-base lg:text-2xl">
              BOOK
            </button>
          </div>
