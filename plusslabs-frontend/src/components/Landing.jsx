@@ -54,13 +54,14 @@ const Landing = () => {
             <div className="bg-[#260b2e] rounded-3xl p-6 md:p-8 flex flex-col gap-5 md:flex-row items-center justify-between text-[#f8be88]  ">
               <div className="">
                 <h2 className="text-2xl md:text-4xl font-bold mb-3 bebas-neue-regular">
+                <i class="fa-solid fa-headset mr-3"></i> 
                  CALL FOR FREE 
                 </h2>
                 <p className="text-center text-sm md:text-base opacity-90">
                   Need help with booking your tests?
                 </p>
               </div>
-              <div className="flex md:flex-col gap-2">
+              <div className="flex gap-4 text-lg md:text-xl ">
               <div className=" rounded-2xl p-2 font-semibold bg-[#f8be88] text-black "><i class="fa-solid fa-phone-volume"></i> 8237006990</div>
               <div className=" rounded-2xl p-2 font-semibold bg-[#f8be88] text-black "><i class="fa-solid fa-phone-volume"></i> 8237006990</div>
               </div>

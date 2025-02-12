@@ -43,7 +43,7 @@ const WhyChooseUs = () => {
 
             {/* Home Pickup Card */}
             <div className="group hover:translate-y-[-8px] transition-all duration-300">
-              <div className="bg-[#fcd5ef] p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 h-full  ">
+              <div className="bg-[#fec091] p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 h-full  ">
                 <div className="mb-6 flex justify-center">
                   <div className="w-16 h-16 bg-pink-100 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                     <MoveLeftIcon className="w-8 h-8 text-pink-600" />
