@@ -1,4 +1,4 @@
-import react from "react";
+import React from "react";
 import Landing from "./components/Landing";
 import FeaturedHealthCheckup from "./components/FeaturedHealthCheckup";
 import WhyChooseUs from "./components/WhyChooseUs";
@@ -13,14 +13,18 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route path="/function" element={<FunctionSection />} />
-        <Route path="/featured" element={<FeaturedHealthCheckup />} />
-        <Route path="/concern" element={<ConcernHealthCheckups />} />
-        <Route path="/whychooseus" element={<WhyChooseUs />} />
+        <Route path="/" element={
+          <>
+            <Landing />
+            <FunctionSection />
+            <FeaturedHealthCheckup />
+            <ConcernHealthCheckups />
+            <WhyChooseUs />
+            <Footer />
+          </>
+        } />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/footer" element={<Footer />} />
       </Routes>
     </BrowserRouter>
   );

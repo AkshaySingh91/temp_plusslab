@@ -131,7 +131,7 @@ const healthPackages = [
     tests: "Includes 10 Tests",
     price: "₹2000",
     discount: "",
-    color: "bg-red-300",
+    color: "bg-green-300",
     icon: "https://cdn-icons-png.flaticon.com/512/6124/6124131.png",
     category: "FULL BODY CHECKUP",
   },
