@@ -5,8 +5,8 @@ const ConcernHealthCheckups = () => {
 
   // Dummy image for now, replace with your own
   const imageMap = {
-    "/assets/elder.png": "/assets/gym.png",
-    "/assets/gym.png": "/assets/elder.png",
+    "https://img.freepik.com/free-vector/illustrated-seniors-focusing-health_53876-37198.jpg": "/assets/gym.png",
+    "https://img.freepik.com/free-vector/male-friends-exercising-gym-together_74855-7600.jpg?semt=ais_hybrid": "/assets/elder.png",
     "https://proactiveforher.com/_next/image/?url=https%3A%2F%2Fpfh-images-production.s3.ap-south-1.amazonaws.com%2FHero_Image_1_e54d12f321.png&w=3840&q=75":
       "/assets/gym.png",
   };
@@ -30,11 +30,11 @@ const ConcernHealthCheckups = () => {
           <h1 className="text-[12px] mt-5">Starts at</h1>
           <h1 className="text-2xl font-bold bebas-neue-regular">Rs.999/- Only</h1>
           <img
-            src="/assets/elder.png"
+            src="https://img.freepik.com/free-vector/illustrated-seniors-focusing-health_53876-37198.jpg"
             alt=""
-            height={300}
-            width={300}
-            className="absolute top-12 md:top-4 left-28"
+            height={250}
+            width={250}
+            className="absolute top-12 md:top-8 left-40 mix-blend-multiply"
           />
         </div>
 
@@ -51,11 +51,11 @@ const ConcernHealthCheckups = () => {
           <h1 className="text-[12px] mt-2">Starts at</h1>
           <h1 className="text-2xl font-bold bebas-neue-regular">Rs.299/- Only</h1>
           <img
-            src="/assets/gym.png"
+            src="https://img.freepik.com/free-vector/male-friends-exercising-gym-together_74855-7600.jpg?semt=ais_hybrid"
             alt=""
             height={50}
             width={50}
-            className="absolute h-60 w-64 top-0 left-24 md:left-28"
+            className="absolute h-60 w-64 top-0 left-24 md:left-32 mix-blend-multiply"
           />
         </div>
 
@@ -78,11 +78,11 @@ const ConcernHealthCheckups = () => {
           <h1 className="text-[12px] mt-5">FLAT</h1>
           <h1 className="text-2xl font-bold bebas-neue-regular">10% Discount</h1>
           <img
-            src="https://proactiveforher.com/_next/image/?url=https%3A%2F%2Fpfh-images-production.s3.ap-south-1.amazonaws.com%2FHero_Image_1_e54d12f321.png&w=3840&q=75"
+            src="https://cdn-icons-png.flaticon.com/512/6401/6401473.png"
             alt=""
-            height={300}
-            width={300}
-            className="absolute bottom-0 left-32"
+            height={200}
+            width={200}
+            className="absolute bottom-0 left-36 mix-blend-multiply"
           />
         </div>
       </div>
