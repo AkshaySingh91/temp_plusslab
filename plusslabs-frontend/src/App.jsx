@@ -8,6 +8,8 @@ import FunctionSection from "./components/FunctionSection";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import AllTests from "./components/AllTests";
+import PastConsultancies from "./components/PastConsultancies";
 
 function App() {
   return (
@@ -25,6 +27,8 @@ function App() {
         } />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/all-tests" element={<AllTests />} />
+        <Route path="/past-consultancies" element={<PastConsultancies />} />
       </Routes>
     </BrowserRouter>
   );

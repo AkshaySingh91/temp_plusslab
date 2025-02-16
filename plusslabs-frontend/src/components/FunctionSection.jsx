@@ -1,12 +1,56 @@
-import React from 'react'
+import React from "react";
+import { Router, useNavigate } from "react-router-dom";
+
+const services = [
+  {
+    title: "View Lab Tests",
+    imageUrl:
+      "https://media.istockphoto.com/id/1420900785/vector/simple-and-clean-chemical-test-tube-vector-icon-illustration.jpg?s=612x612&w=0&k=20&c=LoxXUY39CSc0u2JpUFub-6LLHo4Tu3rZQiR_oat5cUg=",
+    bgColor: "bg-green-300",
+    path:'all-tests'
+  },
+  {
+    title: "Visit Past Consultancies",
+    imageUrl:
+      "https://media.istockphoto.com/id/1065743020/vector/stethoscope-icon.jpg?s=612x612&w=0&k=20&c=k0BDgRcsFea0D_zpbjOn9xgKRarrvo4ZsNjhdHdlajg=",
+    bgColor: "bg-orange-200",
+    path: 'past-consultancies',
+  },
+];
 
 const FunctionSection = () => {
+  const navigate = useNavigate();
   return (
-    <div className='flex gap-10 justify-center items-center'>
-        <div className='h-40 w-52 border-2 border-black'>Book tests</div>
-        <div className='h-40 w-52 border-2 border-black'>View Past Consultancies</div>
+    <div className="flex flex-col justify-center items-center gap-5 md:gap-10 p-4">
+      <div>
+        <h1 className="text-5xl text-left font-bold bebas-neue-regular">
+          OUR SERVICES
+        </h1>
+      </div>
+      <div className="flex gap-5 flex-wrap justify-center items-center">
+      {services.map((service, index) => (
+        <div
+          key={index}
+          className={`w-60 p-3 rounded-lg shadow-md flex flex-row items-center cursor-pointer ${service.bgColor}`}
+          onClick={()=> navigate(service.path)}
+        >
+          <img
+            src={service.imageUrl}
+            alt={service.title}
+            className="w-20 h-20 object-contain mix-blend-multiply"
+          />
+          <div className="flex gap-2 items-center mt-2">
+            <h3 className="text-lg font-semibold text-gray-800">
+              {service.title}
+            </h3>
+            <i class="fa-solid fa-arrow-right-to-bracket"></i>
+          </div>
+        </div>
+      ))}
+      </div>
+     
     </div>
-  )
-}
+  );
+};
 
-export default FunctionSection
+export default FunctionSection;

@@ -79,7 +79,7 @@ const FeaturedHealthCheckup = () => {
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 max-w-7xl mx-auto">
         {filteredPackages.map((pkg, index) => (
-         <div className={`bg-gray-300 rounded-2xl h-60 md:h-80 lg:h-[20rem] p-4 md:p-6  flex flex-col gap-3 ${pkg.color} justify-between`}>
+         <div key={index} className={`bg-gray-300 rounded-2xl h-60 md:h-80 lg:h-[20rem] p-4 md:p-6  flex flex-col gap-3 ${pkg.color} justify-between`}>
          {/* Top Section */}
          <div>
            <div className="px-4 py-2">
