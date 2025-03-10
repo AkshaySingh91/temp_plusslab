@@ -77,29 +77,32 @@ const FeaturedHealthCheckup = () => {
           </button>
         ))}
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 max-w-7xl mx-auto">
-        {filteredPackages.map((pkg, index) => (
-         <div key={index} className={`bg-gray-300 rounded-2xl h-60 md:h-80 lg:h-[20rem] p-4 md:p-6  flex flex-col gap-3 ${pkg.color} justify-between`}>
-         {/* Top Section */}
-         <div>
-           <div className="px-4 py-2">
-             <img src={pkg.icon} alt="test" className="h-12 w-12 md:h-16 md:w-16 lg:h-20 lg:w-20" />
-           </div>
-           <div className="font-semibold mt-4 text-[18px]">{pkg.title}</div>
-           <p className="text-gray-700 text-xs md:text-sm lg:text-base">{pkg.tests}</p>
-         </div>
-       
-         {/* Bottom Section */}
-         <div className="flex justify-between items-center">
-           <div className="text-lg lg:text-xl  font-semibold">{pkg.price}</div>
-           <button className="bg-black text-white px-4 py-2 rounded-2xl text-sm md:text-base lg:text-2xl">
-             BOOK
-           </button>
-         </div>
-       </div>
-       
-        ))}
+      <div className="flex overflow-x-auto snap-x snap-mandatory space-x-6 p-4 max-w-7xl mx-auto scrollbar-hide">
+  {filteredPackages.map((pkg, index) => (
+    <div 
+      key={index} 
+      className={`snap-start bg-gray-300 rounded-2xl h-60 md:h-80 lg:h-[20rem] min-w-[250px] sm:min-w-[300px] md:min-w-[350px] p-4 md:p-6 flex flex-col gap-3 ${pkg.color} justify-between`}
+    >
+      {/* Top Section */}
+      <div>
+        <div className="px-4 py-2">
+          <img src={pkg.icon} alt="test" className="h-12 w-12 md:h-16 md:w-16 lg:h-20 lg:w-20" />
+        </div>
+        <div className="font-semibold mt-4 text-[18px]">{pkg.title}</div>
+        <p className="text-gray-700 text-xs md:text-sm lg:text-base">{pkg.tests}</p>
       </div>
+
+      {/* Bottom Section */}
+      <div className="flex justify-between items-center">
+        <div className="text-lg lg:text-xl font-semibold">{pkg.price}</div>
+        <button className="bg-black text-white px-4 py-2 rounded-2xl text-sm md:text-base lg:text-2xl">
+          BOOK
+        </button>
+      </div>
+    </div>
+  ))}
+</div>
+
     </section>
   );
 };

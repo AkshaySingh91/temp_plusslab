@@ -7,7 +7,7 @@ const testSchema = new mongoose.Schema(
     price: { type: Number, required: true },
     discount: { type: Number, default: 0 }, // Discount for non-Gold users
     category: { type: String, required: true },
-    goldPrice: { type: Number, required: true },
+    goldPrice: { type: Number, required: false },
   },
   { timestamps: true }
 );

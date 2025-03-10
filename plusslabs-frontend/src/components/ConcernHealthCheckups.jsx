@@ -30,11 +30,11 @@ const ConcernHealthCheckups = () => {
           <h1 className="text-[12px] mt-5">Starts at</h1>
           <h1 className="text-2xl font-bold bebas-neue-regular">Rs.999/- Only</h1>
           <img
-            src="https://img.freepik.com/free-vector/illustrated-seniors-focusing-health_53876-37198.jpg"
+            src="/assets/snior-gym.png"
             alt=""
             height={250}
             width={250}
-            className="absolute top-12 md:top-8 left-40 mix-blend-multiply"
+            className="absolute top-12 md:top-8 left-40"
           />
         </div>
 
@@ -42,7 +42,7 @@ const ConcernHealthCheckups = () => {
           className="h-60 w-80 bg-[#a0e2e1] rounded-2xl p-5 relative overflow-hidden cursor-pointer"
           onClick={() => setSelectedImage(imageMap["/assets/gym.png"])}
         >
-          <h1 className="text-lg text-gray-800 font-semibold w-[70%]">
+          <h1 className="text-lg text-gray-800 font-semibold w-[50%] z-10">
             Gym Package for always staying healthy Checkup
           </h1>
           <h2 className="text-[13px] w-1/2 mt-2 text-gray-600">
@@ -51,11 +51,11 @@ const ConcernHealthCheckups = () => {
           <h1 className="text-[12px] mt-2">Starts at</h1>
           <h1 className="text-2xl font-bold bebas-neue-regular">Rs.299/- Only</h1>
           <img
-            src="https://img.freepik.com/free-vector/male-friends-exercising-gym-together_74855-7600.jpg?semt=ais_hybrid"
+            src="/assets/male-gym.png"
             alt=""
             height={50}
             width={50}
-            className="absolute h-60 w-64 top-0 left-24 md:left-32 mix-blend-multiply"
+            className="absolute h-60 w-64 top-0 left-24 md:left-32 -z-9"
           />
         </div>
 
@@ -82,7 +82,7 @@ const ConcernHealthCheckups = () => {
             alt=""
             height={200}
             width={200}
-            className="absolute bottom-0 left-36 mix-blend-multiply"
+            className="absolute bottom-0 left-36 "
           />
         </div>
       </div>
