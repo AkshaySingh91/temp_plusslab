@@ -10,6 +10,10 @@ import Login from "./pages/Login";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AllTests from "./components/AllTests";
 import PastConsultancies from "./components/PastConsultancies";
+import AllPatients from "./components/AllPatients";
+import DashboardContent from "./components/dashboard/DashboardContent";
+import ViewPatients from "./components/ViewPatients";
+import ViewTests from "./components/ViewTests";
 
 function App() {
   return (
@@ -27,7 +31,14 @@ function App() {
         } />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/all-tests" element={<AllTests />} />
+        <Route path="/dashboard/all-tests" element={<AllTests />} />
+        <Route path="/dashboard/all-patients" element={<AllPatients />} />
+        <Route path="/dashboard/view-patients" element={<ViewPatients />} />
+        <Route path="/dashboard/view-tests" element={<ViewTests />} />
+
+
+        <Route path="/dashboard" element={<DashboardContent />} />
+
         <Route path="/past-consultancies" element={<PastConsultancies />} />
       </Routes>
     </BrowserRouter>

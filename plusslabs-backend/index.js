@@ -5,6 +5,7 @@ import connectDB from "./db/index.js";
 import { app } from './app.js';
 import Patient from './models/patient.models.js';
 import testRoutes from "./routes/test.routes.js";
+import patientRoutes from "./routes/patient.routes.js";
 // async function addTestPatient() {
 //     console.log("ℹ️ addTestPatient function started...");
 
@@ -34,7 +35,7 @@ import testRoutes from "./routes/test.routes.js";
 // }
 
 app.use("/api/tests", testRoutes)
-
+app.use("/api/patients", patientRoutes);
 
 async function startServer() {
     try {
