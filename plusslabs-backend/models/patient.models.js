@@ -11,6 +11,7 @@ const patientSchema = new mongoose.Schema(
     pastTests: [
       {
         testId: { type: mongoose.Schema.Types.ObjectId, ref: "Test" }, // Links to Test model
+        testName: { type: String, required: true }, // Add test name
         testDate: { type: Date, required: true },
         reportImages: [{ type: String }], // URLs of report images
       }

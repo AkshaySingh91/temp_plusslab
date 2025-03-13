@@ -3,6 +3,8 @@ import axios from "axios";
 
 const ViewPatients = () => {
   const [patients, setPatients] = useState([]);
+  const [selectedPatient, setSelectedPatient] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
   // Fetch all patients
   useEffect(() => {
@@ -30,6 +32,11 @@ const ViewPatients = () => {
     }
   };
 
+  const handleViewTests = (patient) => {
+    setSelectedPatient(patient);
+    setShowModal(true);
+  };
+
   return (
     <div className="h-screen p-5">
       <h1 className="text-2xl font-bold mb-4">All Patients</h1>
@@ -55,14 +62,77 @@ const ViewPatients = () => {
                 <td className="border border-gray-300 px-4 py-2">{patient.bloodType}</td>
                 <td className="border border-gray-300 px-4 py-2">{patient.weight} kg</td>
                 <td className="border border-gray-300 px-4 py-2">{patient.medicalHistory?.join(", ") || "None"}</td>
-                <td className="border border-gray-300 px-4 py-2">
-                  <button onClick={() => handleDelete(patient.patientId)} className="px-3 py-1 bg-red-500 text-white rounded">Delete</button>
+                <td className="border border-gray-300 px-4 py-2 space-x-2">
+                  <button 
+                    onClick={() => handleViewTests(patient)} 
+                    className="px-3 py-1 bg-blue-500 text-white rounded"
+                  >
+                    View Tests
+                  </button>
+                  <button 
+                    onClick={() => handleDelete(patient.patientId)} 
+                    className="px-3 py-1 bg-red-500 text-white rounded"
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+
+      {/* Test Details Modal */}
+      {showModal && selectedPatient && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto p-6">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-bold">
+                Test History for {selectedPatient.patientId}
+              </h2>
+              <button 
+                onClick={() => setShowModal(false)}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                ✕
+              </button>
+            </div>
+            
+            <div className="space-y-6">
+              {selectedPatient.pastTests?.map((test, index) => (
+                <div key={index} className="border rounded-lg p-4">
+                  <h3 className="font-semibold mb-2">
+                    Test: {test.testName}
+                  </h3>
+                  <p className="text-gray-600 mb-2">
+                    Date: {new Date(test.testDate).toLocaleDateString()}
+                  </p>
+                  <div className="grid grid-cols-3 gap-4">
+                    {test.reportImages?.map((image, imgIndex) => (
+                      <a 
+                        key={imgIndex} 
+                        href={image} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="block"
+                      >
+                        <img 
+                          src={image} 
+                          alt={`Report ${imgIndex + 1}`} 
+                          className="w-full h-32 object-cover rounded border"
+                        />
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              ))}
+              {!selectedPatient.pastTests?.length && (
+                <p className="text-gray-500 text-center">No tests found</p>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
