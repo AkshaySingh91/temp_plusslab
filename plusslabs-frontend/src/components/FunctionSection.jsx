@@ -1,5 +1,6 @@
-import React from "react";
-import { Router, useNavigate } from "react-router-dom";
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const services = [
   {
@@ -20,6 +21,20 @@ const services = [
 
 const FunctionSection = () => {
   const navigate = useNavigate();
+
+  const handleProtectedLink = async (path) => {
+    try {
+      const res = await axios.get('http://localhost:3000/api/auth/profile', { 
+        withCredentials: true 
+      });
+      if (res.data) {
+        navigate(path);
+      }
+    } catch (error) {
+      navigate('/login');
+    }
+  };
+
   return (
     <div className="flex flex-col justify-center items-center gap-5 md:gap-10 p-4">
       <div>
@@ -32,7 +47,7 @@ const FunctionSection = () => {
         <div
           key={index}
           className={`w-60 p-3 rounded-lg shadow-md flex flex-row items-center cursor-pointer ${service.bgColor}`}
-          onClick={()=> navigate(service.path)}
+          onClick={()=> handleProtectedLink(service.path)}
         >
           <img
             src={service.imageUrl}

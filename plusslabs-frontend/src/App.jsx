@@ -14,6 +14,7 @@ import AllPatients from "./components/AllPatients";
 import DashboardContent from "./components/dashboard/DashboardContent";
 import ViewPatients from "./components/ViewPatients";
 import ViewTests from "./components/ViewTests";
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   return (
@@ -36,8 +37,23 @@ function App() {
         <Route path="/dashboard/view-patients" element={<ViewPatients />} />
         <Route path="/dashboard/view-tests" element={<ViewTests />} />
 
+        <Route path="/dashboard" element={
+          <ProtectedRoute adminOnly={true}>
+            <DashboardContent />
+          </ProtectedRoute>
+        } />
 
-        <Route path="/dashboard" element={<DashboardContent />} />
+        <Route path="/view-tests" element={
+          <ProtectedRoute>
+            <ViewTests />
+          </ProtectedRoute>
+        } />
+        
+        <Route path="/past-consultancies" element={
+          <ProtectedRoute>
+            <PastConsultancies />
+          </ProtectedRoute>
+        } />
 
         <Route path="/past-consultancies" element={<PastConsultancies />} />
       </Routes>

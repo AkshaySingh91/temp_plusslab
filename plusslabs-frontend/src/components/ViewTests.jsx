@@ -1,98 +1,46 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import Navbar from './Navbar';
 
 const ViewTests = () => {
   const [tests, setTests] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
 
-  // Fetch all tests
   useEffect(() => {
     const fetchTests = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/tests");
-        const data = await response.json();
-        setTests(data);
+        const response = await axios.get('http://localhost:3000/api/tests', {
+          withCredentials: true
+        });
+        setTests(response.data);
       } catch (error) {
-        console.error("Error fetching tests:", error);
+        console.error('Error fetching tests:', error);
       }
     };
 
     fetchTests();
   }, []);
 
-  // Delete a test
-  const handleDelete = async (testId) => {
-    try {
-      const response = await fetch(`http://localhost:3000/api/tests/${testId}`, {
-        method: "DELETE",
-      });
-
-      if (response.ok) {
-        alert("Test deleted successfully!");
-        setTests(tests.filter((test) => test._id !== testId)); // Update state
-      } else {
-        alert("Failed to delete test.");
-      }
-    } catch (error) {
-      console.error("Error deleting test:", error);
-    }
-  };
-
-  // Filtered tests based on search input
-  const filteredTests = tests.filter((test) =>
-    test.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
   return (
-    <div className="h-screen p-5">
-      <h1 className="text-2xl font-bold mb-4">View Tests</h1>
-
-      {/* Search Input */}
-      <input
-        type="text"
-        placeholder="Search test by name..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        className="w-full p-2 border rounded mb-4"
-      />
-
-      {/* Tests Table */}
-      <table className="w-full border-collapse border border-gray-300">
-        <thead>
-          <tr className="bg-gray-200">
-            <th className="border p-2">Name</th>
-            <th className="border p-2">Description</th>
-            <th className="border p-2">Price</th>
-            <th className="border p-2">Discount</th>
-            <th className="border p-2">Category</th>
-            <th className="border p-2">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredTests.length > 0 ? (
-            filteredTests.map((test) => (
-              <tr key={test._id} className="text-center">
-                <td className="border p-2">{test.name}</td>
-                <td className="border p-2">{test.description}</td>
-                <td className="border p-2">₹{test.price}</td>
-                <td className="border p-2">{test.discount}%</td>
-                <td className="border p-2">{test.category}</td>
-                <td className="border p-2">
-                  <button onClick={() => handleDelete(test._id)} className="px-3 py-1 bg-red-500 text-white rounded">
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="6" className="text-center p-4">
-                No tests found.
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
-    </div>
+    <>
+      <Navbar />
+      <div className="container mx-auto px-4 py-8">
+        <h1 className="text-2xl font-bold mb-6">Available Lab Tests</h1>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {tests.map((test) => (
+            <div key={test._id} className="bg-white p-6 rounded-lg shadow-md">
+              <h3 className="text-xl font-semibold mb-2">{test.name}</h3>
+              <p className="text-gray-600 mb-4">{test.description}</p>
+              <div className="flex justify-between items-center">
+                <span className="text-lg font-bold">₹{test.price}</span>
+                {test.discount > 0 && (
+                  <span className="text-green-600">-{test.discount}% off</span>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </>
   );
 };
 
