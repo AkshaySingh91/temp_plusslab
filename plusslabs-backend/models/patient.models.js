@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 const patientSchema = new mongoose.Schema(
   {
     patientId: { type: String, required: true, unique: true }, // Manually assigned ID
+    phoneNumber: { type: String, required: true }, // Added phone number field
     dob: { type: Date, required: true },
     gender: { type: String, enum: ["Male", "Female", "Other"], required: true },
     bloodType: { type: String, required: true },

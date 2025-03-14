@@ -5,6 +5,7 @@ const AllPatients = () => {
   const [isExistingPatient, setIsExistingPatient] = useState(false);
   const [formData, setFormData] = useState({
     patientId: "",
+    phoneNumber: "", // Added phone number to form data
     dob: "",
     gender: "",
     bloodType: "",
@@ -100,6 +101,7 @@ const AllPatients = () => {
       // Reset form
       setFormData({
         patientId: "",
+        phoneNumber: "", // Reset phone number
         dob: "",
         gender: "",
         bloodType: "",
@@ -135,6 +137,17 @@ const AllPatients = () => {
           onChange={handlePatientIdChange}
           required 
           className="block w-full p-2 border rounded mb-2" 
+        />
+        
+        <input 
+          type="tel" 
+          name="phoneNumber" 
+          placeholder="Phone Number" 
+          value={formData.phoneNumber} 
+          onChange={handleChange}
+          required 
+          disabled={isExistingPatient}
+          className={`block w-full p-2 border rounded mb-2 ${isExistingPatient ? 'bg-gray-100' : ''}`}
         />
         
         <input 

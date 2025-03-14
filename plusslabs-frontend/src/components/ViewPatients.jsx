@@ -45,6 +45,7 @@ const ViewPatients = () => {
           <thead>
             <tr className="bg-gray-200">
               <th className="border border-gray-300 px-4 py-2">ID</th>
+              <th className="border border-gray-300 px-4 py-2">Phone</th>
               <th className="border border-gray-300 px-4 py-2">DOB</th>
               <th className="border border-gray-300 px-4 py-2">Gender</th>
               <th className="border border-gray-300 px-4 py-2">Blood Type</th>
@@ -57,6 +58,7 @@ const ViewPatients = () => {
             {patients.map((patient) => (
               <tr key={patient.patientId} className="text-center">
                 <td className="border border-gray-300 px-4 py-2">{patient.patientId}</td>
+                <td className="border border-gray-300 px-4 py-2">{patient.phoneNumber}</td>
                 <td className="border border-gray-300 px-4 py-2">{new Date(patient.dob).toLocaleDateString()}</td>
                 <td className="border border-gray-300 px-4 py-2">{patient.gender}</td>
                 <td className="border border-gray-300 px-4 py-2">{patient.bloodType}</td>

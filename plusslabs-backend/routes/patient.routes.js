@@ -9,11 +9,15 @@ const upload = multer({ dest: 'uploads/' });
 // ➤ Add a new patient with images
 router.post("/add", upload.array('reportImages', 5), async (req, res) => {
   try {
-    const { patientId, dob, gender, bloodType, weight, medicalHistory, testName } = req.body;
+    const { patientId, phoneNumber, dob, gender, bloodType, weight, medicalHistory, testName } = req.body;
     
     // Ensure patientId is provided manually
     if (!patientId) {
       return res.status(400).json({ message: "Patient ID is required." });
+    }
+
+    if (!phoneNumber) {
+      return res.status(400).json({ message: "Phone number is required." });
     }
 
     // Check if patientId already exists
@@ -37,6 +41,7 @@ router.post("/add", upload.array('reportImages', 5), async (req, res) => {
     // Create new patient with images and test name
     const newPatient = new Patient({
       patientId,
+      phoneNumber,
       dob,
       gender,
       bloodType,
