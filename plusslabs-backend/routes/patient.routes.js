@@ -9,7 +9,7 @@ const upload = multer({ dest: 'uploads/' });
 // ➤ Add a new patient with images
 router.post("/add", upload.array('reportImages', 5), async (req, res) => {
   try {
-    const { patientId, phoneNumber, dob, gender, bloodType, weight, medicalHistory, testName } = req.body;
+    const { patientId, name, phoneNumber, email, dob, gender, bloodType, weight, medicalHistory, testName } = req.body;
     
     // Ensure patientId is provided manually
     if (!patientId) {
@@ -18,6 +18,10 @@ router.post("/add", upload.array('reportImages', 5), async (req, res) => {
 
     if (!phoneNumber) {
       return res.status(400).json({ message: "Phone number is required." });
+    }
+
+    if (!email) {
+      return res.status(400).json({ message: "Email is required." });
     }
 
     // Check if patientId already exists
@@ -38,10 +42,12 @@ router.post("/add", upload.array('reportImages', 5), async (req, res) => {
       uploadedImages = results.map(result => result.secure_url);
     }
 
-    // Create new patient with images and test name
+    // Create new patient with email
     const newPatient = new Patient({
       patientId,
+      name,
       phoneNumber,
+      email,     // Include email in patient creation
       dob,
       gender,
       bloodType,
@@ -84,6 +90,23 @@ router.get("/:patientId", async (req, res) => {
 
     if (!patient) {
       return res.status(404).json({ message: "Patient not found" });
+    }
+
+    res.status(200).json(patient);
+  } catch (error) {
+    console.error("Error fetching patient:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+});
+
+// Add a new route to get patient by email
+router.get("/user/:email", async (req, res) => {
+  try {
+    const { email } = req.params;
+    const patient = await Patient.findOne({ email });
+
+    if (!patient) {
+      return res.status(404).json({ message: "No records found" });
     }
 
     res.status(200).json(patient);

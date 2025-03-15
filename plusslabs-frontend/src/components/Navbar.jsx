@@ -8,6 +8,8 @@ const Navbar = () => {
   const navigate = useNavigate();
   const dropdownRef = useRef(null);
 
+  const defaultAvatar = "https://ui-avatars.com/api/?name=" + (user?.name || "User");
+
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -53,9 +55,13 @@ const Navbar = () => {
               className='flex items-center gap-2 hover:opacity-80'
             >
               <img 
-                src={user.avatar || 'https://via.placeholder.com/32'} 
-                alt="Profile" 
-                className="w-8 h-8 rounded-full"
+                src={user.avatar || defaultAvatar} 
+                alt={user.name}
+                className="w-8 h-8 rounded-full object-cover"
+                onError={(e) => {
+                  e.target.onerror = null; // Prevent infinite loop
+                  e.target.src = defaultAvatar;
+                }}
               />
               <span>{user.name}</span>
             </button>

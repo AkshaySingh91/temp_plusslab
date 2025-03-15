@@ -2,19 +2,20 @@ import mongoose from "mongoose";
 
 const patientSchema = new mongoose.Schema(
   {
-    patientId: { type: String, required: true, unique: true }, // Manually assigned ID
-    phoneNumber: { type: String, required: true }, // Added phone number field
+    patientId: { type: String, required: true, unique: true },
+    name: { type: String, required: true },
+    phoneNumber: { type: String, required: true },
+    email: { type: String, required: true },
     dob: { type: Date, required: true },
     gender: { type: String, enum: ["Male", "Female", "Other"], required: true },
     bloodType: { type: String, required: true },
-    weight: { type: Number, required: true },
-    medicalHistory: [{ type: String }], // List of past conditions
+    medicalHistory: [{ type: String }],
     pastTests: [
       {
-        testId: { type: mongoose.Schema.Types.ObjectId, ref: "Test" }, // Links to Test model
-        testName: { type: String, required: true }, // Add test name
+        testId: { type: mongoose.Schema.Types.ObjectId, ref: "Test" },
+        testName: { type: String, required: true },
         testDate: { type: Date, required: true },
-        reportImages: [{ type: String }], // URLs of report images
+        reportImages: [{ type: String }],
       }
     ],
   },

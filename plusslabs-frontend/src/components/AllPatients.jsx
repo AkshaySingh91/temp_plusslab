@@ -5,7 +5,9 @@ const AllPatients = () => {
   const [isExistingPatient, setIsExistingPatient] = useState(false);
   const [formData, setFormData] = useState({
     patientId: "",
-    phoneNumber: "", // Added phone number to form data
+    name: "",
+    phoneNumber: "",
+    email: "",
     dob: "",
     gender: "",
     bloodType: "",
@@ -30,9 +32,11 @@ const AllPatients = () => {
         const response = await axios.get(`http://localhost:3000/api/patients/${newPatientId}`);
         if (response.data) {
           setIsExistingPatient(true);
-          // Pre-fill form with existing patient data
           setFormData(prev => ({
             ...prev,
+            name: response.data.name,
+            phoneNumber: response.data.phoneNumber,
+            email: response.data.email,
             dob: new Date(response.data.dob).toISOString().split('T')[0],
             gender: response.data.gender,
             bloodType: response.data.bloodType,
@@ -42,9 +46,11 @@ const AllPatients = () => {
         }
       } catch (error) {
         setIsExistingPatient(false);
-        // Reset form if patient doesn't exist
         setFormData(prev => ({
           ...prev,
+          name: "",
+          phoneNumber: "",
+          email: "",
           dob: "",
           gender: "",
           bloodType: "",
@@ -101,7 +107,9 @@ const AllPatients = () => {
       // Reset form
       setFormData({
         patientId: "",
-        phoneNumber: "", // Reset phone number
+        name: "",
+        phoneNumber: "",
+        email: "",
         dob: "",
         gender: "",
         bloodType: "",
@@ -140,6 +148,17 @@ const AllPatients = () => {
         />
         
         <input 
+          type="text" 
+          name="name" 
+          placeholder="Patient Name" 
+          value={formData.name} 
+          onChange={handleChange}
+          required 
+          disabled={isExistingPatient}
+          className={`block w-full p-2 border rounded mb-2 ${isExistingPatient ? 'bg-gray-100' : ''}`}
+        />
+        
+        <input 
           type="tel" 
           name="phoneNumber" 
           placeholder="Phone Number" 
@@ -148,6 +167,16 @@ const AllPatients = () => {
           required 
           disabled={isExistingPatient}
           className={`block w-full p-2 border rounded mb-2 ${isExistingPatient ? 'bg-gray-100' : ''}`}
+        />
+        
+        <input 
+          type="email" 
+          name="email" 
+          placeholder="Patient Email" 
+          value={formData.email} 
+          onChange={handleChange}
+          required 
+          className="block w-full p-2 border rounded mb-2" 
         />
         
         <input 

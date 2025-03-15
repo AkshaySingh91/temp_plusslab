@@ -45,11 +45,12 @@ const ViewPatients = () => {
           <thead>
             <tr className="bg-gray-200">
               <th className="border border-gray-300 px-4 py-2">ID</th>
+              <th className="border border-gray-300 px-4 py-2">Name</th>
+              <th className="border border-gray-300 px-4 py-2">Email</th>
               <th className="border border-gray-300 px-4 py-2">Phone</th>
               <th className="border border-gray-300 px-4 py-2">DOB</th>
               <th className="border border-gray-300 px-4 py-2">Gender</th>
               <th className="border border-gray-300 px-4 py-2">Blood Type</th>
-              <th className="border border-gray-300 px-4 py-2">Weight</th>
               <th className="border border-gray-300 px-4 py-2">Medical History</th>
               <th className="border border-gray-300 px-4 py-2">Actions</th>
             </tr>
@@ -58,11 +59,12 @@ const ViewPatients = () => {
             {patients.map((patient) => (
               <tr key={patient.patientId} className="text-center">
                 <td className="border border-gray-300 px-4 py-2">{patient.patientId}</td>
+                <td className="border border-gray-300 px-4 py-2">{patient.name}</td>
+                <td className="border border-gray-300 px-4 py-2">{patient.email}</td>
                 <td className="border border-gray-300 px-4 py-2">{patient.phoneNumber}</td>
                 <td className="border border-gray-300 px-4 py-2">{new Date(patient.dob).toLocaleDateString()}</td>
                 <td className="border border-gray-300 px-4 py-2">{patient.gender}</td>
                 <td className="border border-gray-300 px-4 py-2">{patient.bloodType}</td>
-                <td className="border border-gray-300 px-4 py-2">{patient.weight} kg</td>
                 <td className="border border-gray-300 px-4 py-2">{patient.medicalHistory?.join(", ") || "None"}</td>
                 <td className="border border-gray-300 px-4 py-2 space-x-2">
                   <button 
