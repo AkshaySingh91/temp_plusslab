@@ -6,14 +6,21 @@ const router = express.Router();
 // ✅ Route to add a new test
 router.post("/add", async (req, res) => {
   try {
-    const { name, description, price, discount, category } = req.body;
+    const { testCode, name, description, price, discount, category } = req.body;
 
-    if (!name || !description || !price || !category) {
+    if (!testCode || !name || !description || !price || !category) {
       return res.status(400).json({ message: "Missing required fields." });
+    }
+
+    // Check if testCode already exists
+    const existingTest = await Test.findOne({ testCode });
+    if (existingTest) {
+      return res.status(400).json({ message: "Test code already exists." });
     }
 
     // ✅ Create and save the new test
     const newTest = new Test({
+      testCode,
       name,
       description,
       price,
@@ -40,6 +47,34 @@ router.get("/", async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 });
+
+// Add route to get test by code
+router.get("/code/:testCode", async (req, res) => {
+  try {
+    const test = await Test.findOne({ testCode: req.params.testCode });
+    if (!test) {
+      return res.status(404).json({ message: "Test not found" });
+    }
+    res.json(test);
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+});
+
+// Add route to update test
+router.put("/update/:testId", async (req, res) => {
+  try {
+    const updatedTest = await Test.findByIdAndUpdate(
+      req.params.testId,
+      req.body,
+      { new: true }
+    );
+    res.json(updatedTest);
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+});
+
 router.delete("/:testId", async (req, res) => {
   try {
     const { testId } = req.params;
@@ -55,4 +90,5 @@ router.delete("/:testId", async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 });
+
 export default router;
