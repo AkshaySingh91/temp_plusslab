@@ -17,6 +17,21 @@ const AllTests = () => {
     const code = e.target.value;
     setFormData(prev => ({ ...prev, testCode: code }));
 
+    if (!code) {
+      // Clear form when test code is removed
+      setFormData({
+        testCode: "",
+        name: "",
+        description: "",
+        price: "",
+        discount: 0,
+        category: "",
+      });
+      setIsEditing(false);
+      setTestId(null);
+      return;
+    }
+
     if (code.length >= 3) {
       try {
         const response = await axios.get(`http://localhost:3000/api/tests/code/${code}`);
