@@ -2,7 +2,7 @@ import React from 'react'
 
 const DashboardHeader = () => {
   return (
-    <div>DashboardHeader</div>
+    <div className='ml-[300px] text-black'>matrial</div>
   )
 }
 

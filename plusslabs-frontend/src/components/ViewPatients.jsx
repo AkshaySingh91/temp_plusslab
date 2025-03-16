@@ -3,8 +3,10 @@ import axios from "axios";
 
 const ViewPatients = () => {
   const [patients, setPatients] = useState([]);
+  const [filteredPatients, setFilteredPatients] = useState([]);
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   // Fetch all patients
   useEffect(() => {
@@ -12,6 +14,7 @@ const ViewPatients = () => {
       try {
         const response = await axios.get("http://localhost:3000/api/patients");
         setPatients(response.data);
+        setFilteredPatients(response.data);
       } catch (error) {
         console.error("Error fetching patients:", error);
       }
@@ -25,7 +28,9 @@ const ViewPatients = () => {
     
     try {
       await axios.delete(`http://localhost:3000/api/patients/${patientId}`);
-      setPatients(patients.filter(patient => patient.patientId !== patientId));
+      const updatedPatients = patients.filter(patient => patient.patientId !== patientId);
+      setPatients(updatedPatients);
+      setFilteredPatients(updatedPatients);
       alert("Patient deleted successfully!");
     } catch (error) {
       alert("Failed to delete patient.");
@@ -37,9 +42,36 @@ const ViewPatients = () => {
     setShowModal(true);
   };
 
+  // Handle Search (Now includes ID)
+  useEffect(() => {
+    if (searchTerm) {
+      setFilteredPatients(
+        patients.filter(
+          (patient) =>
+            patient.patientId.toString().includes(searchTerm) || // Search by ID
+            patient.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            patient.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            patient.phoneNumber.includes(searchTerm)
+        )
+      );
+    } else {
+      setFilteredPatients(patients);
+    }
+  }, [searchTerm, patients]);
+
   return (
     <div className="h-screen p-5">
       <h1 className="text-2xl font-bold mb-4">All Patients</h1>
+
+      {/* Search Bar */}
+      <input
+        type="text"
+        placeholder="Search by ID, Name, Email, or Phone..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        className="block w-full p-2 border rounded mb-4"
+      />
+
       <div className="overflow-x-auto">
         <table className="min-w-full border-collapse border border-gray-300">
           <thead>
@@ -56,7 +88,7 @@ const ViewPatients = () => {
             </tr>
           </thead>
           <tbody>
-            {patients.map((patient) => (
+            {filteredPatients.map((patient) => (
               <tr key={patient.patientId} className="text-center">
                 <td className="border border-gray-300 px-4 py-2">{patient.patientId}</td>
                 <td className="border border-gray-300 px-4 py-2">{patient.name}</td>
@@ -92,7 +124,7 @@ const ViewPatients = () => {
           <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto p-6">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-bold">
-                Test History for {selectedPatient.patientId}
+                Test History for {selectedPatient.name}
               </h2>
               <button 
                 onClick={() => setShowModal(false)}
