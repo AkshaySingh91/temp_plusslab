@@ -51,7 +51,7 @@ const Landing = () => {
           {/* Right Column */}
           <div className="w-full lg:w-1/2 flex flex-col gap-4 md:gap-6">
             {/* Top Right - Doctor Consultation */}
-            <div className="bg-[#260b2e] rounded-3xl p-6 md:p-8 flex flex-col gap-5 md:flex-row items-center justify-between text-[#f8be88]  ">
+            <div className="bg-[#260b2e] rounded-3xl p-6 md:p-8 flex flex-col gap-5 md:flex-row items-center justify-between text-[#f8be88]">
               <div className="">
                 <h2 className="text-2xl md:text-4xl font-bold mb-3 bebas-neue-regular">
                 <i class="fa-solid fa-headset mr-3"></i> 
@@ -61,9 +61,19 @@ const Landing = () => {
                   Need help with booking your tests?
                 </p>
               </div>
-              <div className="flex gap-4 text-lg md:text-xl ">
-              <div className=" rounded-2xl p-2 font-semibold bg-[#f8be88] text-black "><i class="fa-solid fa-phone-volume"></i> 8237006990</div>
-              <div className=" rounded-2xl p-2 font-semibold bg-[#f8be88] text-black "><i class="fa-solid fa-phone-volume"></i> 8237006990</div>
+              <div className="flex gap-4 text-lg md:text-xl">
+              <a 
+                href="tel:8237006990" 
+                className="rounded-2xl p-2 font-semibold bg-[#f8be88] text-black hover:bg-[#e5ac7a] transition-colors"
+              >
+                <i className="fa-solid fa-phone-volume"></i> 8237006990
+              </a>
+              <a 
+                href="tel:8237006990" 
+                className="rounded-2xl p-2 font-semibold bg-[#f8be88] text-black hover:bg-[#e5ac7a] transition-colors"
+              >
+                <i className="fa-solid fa-phone-volume"></i> 8237006990
+              </a>
               </div>
               
             </div>
