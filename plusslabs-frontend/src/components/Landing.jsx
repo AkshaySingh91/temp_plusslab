@@ -32,18 +32,18 @@ const Landing = () => {
           {/* Left Hero Section */}
           <div className="bg-[#f1da6a] rounded-3xl p-6 md:p-8 lg:p-10 flex flex-col justify-between text-black w-full lg:w-1/2 min-h-[300px] lg:min-h-[500px] hover:shadow-2xl transition-shadow duration-300">
             <div className="flex flex-col h-full justify-between text-center">
-              <h1 className="text-5xl sm:text-6xl md:text-6xl lg:text-7xl font-bold bebas-neue-regular leading-tight">
-                + PLUSSLABS 
+              <h1 className="text-5xl sm:text-6xl md:text-6xl lg:text-6xl font-bold bebas-neue-regular leading-tight">
+                 PLUSSLABS 
               </h1>
-              <h6 className="text-xl uppercase font-bold bebas-neue-regular">Bringing care to life!</h6>
+              <h6 className="text-sm md:text-xl uppercase font-bold -mt-4 md:-mt-5 mb-2">Bringing care to life!</h6>
               
               <CustomCarousel>
         {images.map((image, index) => {
           return <img key={index} src={image.imgURL} alt={image.imgAlt} />;
         })}
       </CustomCarousel>
-              <p className="text-lg md:text-xl mt-4 max-w-xl">
-                TESTS STARTING ONLY AT ₹ 50 /-
+              <p className="text-lg md:text-4xl font-semibold rounded-2xl bg-[#191c1e] text-white bebas-neue-regular p-2 md:p-4 text-center mt-4 flex items-center justify-center gap-4"><i className="fa-solid fa-vial-circle-check border-r-2 px-3"></i> 
+                TESTS STARTING ONLY AT <span className="md:text-5xl">₹ 50</span>/-
               </p>
             </div>
           </div>
@@ -61,7 +61,7 @@ const Landing = () => {
                   Need help with booking your tests?
                 </p>
               </div>
-              <div className="flex gap-4 text-lg md:text-xl">
+              <div className="flex gap-4 text-sm md:text-xl">
               <a 
                 href="tel:8237006990" 
                 className="rounded-2xl p-2 font-semibold bg-[#f8be88] text-black hover:bg-[#e5ac7a] transition-colors"
