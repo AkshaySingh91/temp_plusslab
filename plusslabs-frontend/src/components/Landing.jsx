@@ -27,12 +27,12 @@ const Landing = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <main className="flex-1 p-4 md:p-6 lg:p-8">
+      <main className="flex-1 p-4 md:p-6">
         <div className="flex flex-col lg:flex-row gap-4 md:gap-6 max-w-[1440px] mx-auto">
           {/* Left Hero Section */}
           <div className="bg-[#f1da6a] rounded-3xl p-6 md:p-8 lg:p-10 flex flex-col justify-between text-black w-full lg:w-1/2 min-h-[300px] lg:min-h-[500px] hover:shadow-2xl transition-shadow duration-300">
             <div className="flex flex-col h-full justify-between text-center">
-              <h1 className="text-5xl sm:text-6xl md:text-6xl lg:text-7xl xl:text-9xl font-bold bebas-neue-regular leading-tight">
+              <h1 className="text-5xl sm:text-6xl md:text-6xl lg:text-7xl font-bold bebas-neue-regular leading-tight">
                 + PLUSSLABS 
               </h1>
               <h6 className="text-xl uppercase font-bold bebas-neue-regular">Bringing care to life!</h6>
@@ -54,7 +54,7 @@ const Landing = () => {
             <div className="bg-[#260b2e] rounded-3xl p-6 md:p-8 flex flex-col gap-5 md:flex-row items-center justify-between text-[#f8be88]">
               <div className="">
                 <h2 className="text-2xl md:text-4xl font-bold mb-3 bebas-neue-regular">
-                <i class="fa-solid fa-headset mr-3"></i> 
+                <i className="fa-solid fa-headset mr-3"></i> 
                  CALL FOR FREE 
                 </h2>
                 <p className="text-center text-sm md:text-base opacity-90">
