@@ -33,3 +33,14 @@ export const requireAdmin = async (req, res, next) => {
     res.status(403).json({ message: "Access denied." });
   }
 };
+
+export const requireSuperAdmin = async (req, res, next) => {
+  try {
+    if (req.user.role !== 'superadmin') {
+      return res.status(403).json({ message: "Access denied. Super Admin only." });
+    }
+    next();
+  } catch (error) {
+    res.status(403).json({ message: "Access denied." });
+  }
+};

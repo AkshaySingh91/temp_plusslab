@@ -106,6 +106,17 @@ const Navbar = () => {
             
             {showDropdown && (
               <div className='absolute -right-4 mt-2 w-48 bg-[#fff1ee] rounded-md shadow-lg py-1 z-50'>
+                {user.role === 'superadmin' && (
+                  <button 
+                    onClick={() => {
+                      navigate('/super-admin');
+                      setShowDropdown(false);
+                    }}
+                    className='block w-full text-center px-4 py-2 text-gray-700 font-semibold hover:bg-gray-200'
+                  >
+                    <i className="fa-solid fa-user-shield mr-2"></i> User Management
+                  </button>
+                )}
                 {user.role === 'admin' && (
                   <button 
                     onClick={() => {

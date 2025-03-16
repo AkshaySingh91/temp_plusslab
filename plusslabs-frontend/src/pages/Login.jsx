@@ -18,7 +18,14 @@ const Login = () => {
       );
       
       if (response.data.success) {
-        navigate('/');
+        // Navigate based on user role
+        if (response.data.user.role === 'superadmin') {
+          navigate('/super-admin');
+        } else if (response.data.user.role === 'admin') {
+          navigate('/dashboard');
+        } else {
+          navigate('/');
+        }
       }
     } catch (error) {
       if (error.response?.status === 404) {

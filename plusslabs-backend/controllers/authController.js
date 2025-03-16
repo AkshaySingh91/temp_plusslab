@@ -15,8 +15,10 @@ export const loginWithGoogle = async (req, res) => {
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
+    console.log('Login attempt:', { email });
+
+    const user = await User.findOne({ email }).select('+password');
     
-    const user = await User.findOne({ email });
     if (!user) {
       return res.status(404).json({ 
         success: false,
@@ -24,14 +26,9 @@ export const login = async (req, res) => {
       });
     }
 
-    if (!user.password) {
-      return res.status(400).json({
-        success: false,
-        message: "Please login with Google"
-      });
-    }
-
     const isMatch = await bcrypt.compare(password, user.password);
+    console.log('Password verification:', { isMatch, role: user.role });
+
     if (!isMatch) {
       return res.status(400).json({ 
         success: false,
@@ -41,12 +38,30 @@ export const login = async (req, res) => {
 
     const token = jwt.sign({ 
       id: user._id,
-      role: user.role // Include role in token
+      role: user.role
     }, process.env.JWT_SECRET);
     
-    res.cookie('token', token, { httpOnly: true });
-    res.json({ success: true, user: { ...user._doc, role: user.role } });
+    res.cookie('token', token, { 
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 24 * 60 * 60 * 1000 
+    });
+
+    // Return role info in response
+    res.json({ 
+      success: true, 
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        avatar: user.avatar
+      },
+      redirectTo: user.role === 'superadmin' ? '/super-admin' : '/'
+    });
   } catch (error) {
+    console.error('Login error:', error);
     res.status(500).json({ success: false, message: error.message });
   }
 };

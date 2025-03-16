@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "create-superadmin": "node scripts/createSuperAdmin.js"
   },
   "keywords": [],
   "author": "",

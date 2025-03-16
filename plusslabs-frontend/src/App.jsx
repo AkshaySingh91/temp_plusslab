@@ -15,6 +15,7 @@ import DashboardContent from "./components/dashboard/DashboardContent";
 import ViewPatients from "./components/ViewPatients";
 import ViewTests from "./components/ViewTests";
 import ProtectedRoute from './components/ProtectedRoute';
+import SuperAdminDashboard from './components/SuperAdminDashboard';
 
 function App() {
   return (
@@ -56,6 +57,12 @@ function App() {
         } />
 
         <Route path="/past-consultancies" element={<PastConsultancies />} />
+
+        <Route path="/super-admin" element={
+          <ProtectedRoute adminOnly={false} superAdminOnly={true}>
+            <SuperAdminDashboard />
+          </ProtectedRoute>
+        } />
       </Routes>
     </BrowserRouter>
   );
