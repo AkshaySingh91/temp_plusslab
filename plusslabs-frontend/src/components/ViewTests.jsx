@@ -1,23 +1,28 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import Navbar from './Navbar';
-import { useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import Navbar from "./Navbar";
+import { useLocation } from "react-router-dom";
+import Footer from "./Footer";
 
 const ViewTests = () => {
   const [tests, setTests] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
   const [user, setUser] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const testsPerPage = 100; // ✅ Display 100 tests per page
+
   const location = useLocation();
-  const isAdminView = location.pathname.includes('/dashboard');
+  const isAdminView = location.pathname.includes("/dashboard");
 
   useEffect(() => {
     const fetchTests = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/tests', {
-          withCredentials: true
+        const response = await axios.get("http://localhost:3000/api/tests", {
+          withCredentials: true,
         });
         setTests(response.data);
       } catch (error) {
-        console.error('Error fetching tests:', error);
+        console.error("Error fetching tests:", error);
       }
     };
 
@@ -27,67 +32,163 @@ const ViewTests = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axios.get('http://localhost:3000/api/auth/profile', {
-          withCredentials: true
+        const res = await axios.get("http://localhost:3000/api/auth/profile", {
+          withCredentials: true,
         });
         setUser(res.data);
       } catch (error) {
-        console.error('Error fetching user:', error);
+        console.error("Error fetching user:", error);
       }
     };
     fetchUser();
   }, []);
 
   const handleDelete = async (testId) => {
-    if (!window.confirm('Are you sure you want to delete this test?')) {
+    if (!window.confirm("Are you sure you want to delete this test?")) {
       return;
     }
 
     try {
       await axios.delete(`http://localhost:3000/api/tests/${testId}`, {
-        withCredentials: true
+        withCredentials: true,
       });
-      setTests(tests.filter(test => test._id !== testId));
-      alert('Test deleted successfully!');
+      setTests(tests.filter((test) => test._id !== testId));
+      alert("Test deleted successfully!");
     } catch (error) {
-      console.error('Error deleting test:', error);
-      alert('Failed to delete test');
+      console.error("Error deleting test:", error);
+      alert("Failed to delete test");
     }
   };
+
+  // ✅ Search by Test Code, Name, or Category
+  const filteredTests = tests.filter(
+    (test) =>
+      test.testCode.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      test.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      test.category.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  // ✅ Pagination Logic
+  const indexOfLastTest = currentPage * testsPerPage;
+  const indexOfFirstTest = indexOfLastTest - testsPerPage;
+  const currentTests = filteredTests.slice(indexOfFirstTest, indexOfLastTest);
+
+  const totalPages = Math.ceil(filteredTests.length / testsPerPage);
 
   return (
     <>
       <Navbar />
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-2xl font-bold mb-6">Available Lab Tests</h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {tests.map((test) => (
-            <div key={test._id} className="bg-white p-6 rounded-lg shadow-md">
-              {isAdminView && user?.role === 'admin' && (
-                <div className="text-sm text-gray-500 mb-2">
-                  Test Code: {test.testCode}
+
+        {/* ✅ Search Input */}
+        <input
+          type="text"
+          placeholder="Search by Test Code, Name, or Category"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="block w-full p-2 mb-4 border rounded"
+        />
+
+        {/* ✅ Admin View: Show as Table */}
+        {isAdminView && user?.role === "admin" ? (
+          <div className="overflow-x-auto">
+            <table className="min-w-full bg-white border border-gray-300 shadow-md">
+              <thead>
+                <tr className="bg-gray-200">
+                  <th className="py-2 px-4 border">Test Code</th>
+                  <th className="py-2 px-4 border">Name</th>
+                  <th className="py-2 px-4 border">Description</th>
+                  <th className="py-2 px-4 border">Category</th>
+                  <th className="py-2 px-4 border">Price</th>
+                  <th className="py-2 px-4 border">Discount</th>
+                  <th className="py-2 px-4 border">Final Price</th>
+                  <th className="py-2 px-4 border">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {currentTests.map((test) => {
+                  const finalPrice = test.price - (test.price * test.discount) / 100;
+                  return (
+                    <tr key={test._id} className="text-center border-t">
+                      <td className="py-2 px-4 border">{test.testCode}</td>
+                      <td className="py-2 px-4 border">{test.name}</td>
+                      <td className="py-2 px-4 border">{test.description}</td>
+                      <td className="py-2 px-4 border">{test.category}</td>
+                      <td className="py-2 px-4 border">₹{test.price}</td>
+                      <td className="py-2 px-4 border">{test.discount}%</td>
+                      <td className="py-2 px-4 border text-green-600 font-bold">₹{finalPrice.toFixed(2)}</td>
+                      <td className="py-2 px-4 border">
+                        <button
+                          onClick={() => handleDelete(test._id)}
+                          className="px-4 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          /* ✅ User View: Show as Cards */
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mt-5">
+            {currentTests.map((test) => {
+              const finalPrice = test.price - (test.price * test.discount) / 100;
+              return (
+                <div key={test._id} className="bg-gray-300 p-4 rounded-lg relative">
+                  <h3 className="text-xl font-semibold mb-2 mt-2">{test.name}</h3>
+                  <p className="text-gray-600 mb-2 text-sm">Code: ({test.testCode})</p>
+                  <span className="text-sm text-gray-800 absolute -top-2 left-0 bg-yellow-300 font-semibold rounded-2xl px-2 py-1"> {test.category}</span>
+                  <div className="flex justify-between items-center mt-2">
+                    <span className="text-gray-500 line-through md:text-xl">₹{test.price}</span>
+                    <span className="text-green-600 font-bold md:text-xl">₹{finalPrice.toFixed(2)}</span>
+                  </div>
+                  {test.discount > 0 && (
+                    <span className="absolute -top-2 right-2 bg-red-600 text-white text-xs px-2 py-1 rounded">
+                      {test.discount}% off
+                    </span>
+                  )}
+                  <span><img src="/assets/icon-removebg-preview.png" alt="icon" className="w-10 h-10 md:w-16 md:h-16 absolute  top-5 right-4"/></span>
+                  <button className="w-full bg-black text-white font-semibold rounded p-2 mt-3">
+                  <i class="fa-regular fa-pen-to-square"></i> Book Now
+                  </button>
                 </div>
-              )}
-              <h3 className="text-xl font-semibold mb-2">{test.name}</h3>
-              <p className="text-gray-600 mb-4">{test.description}</p>
-              <div className="flex justify-between items-center">
-                <span className="text-lg font-bold">₹{test.price}</span>
-                {test.discount > 0 && (
-                  <span className="text-green-600">-{test.discount}% off</span>
-                )}
-              </div>
-              {isAdminView && user?.role === 'admin' && (
-                <button
-                  onClick={() => handleDelete(test._id)}
-                  className="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 w-full"
-                >
-                  Delete Test
-                </button>
-              )}
-            </div>
+              );
+            })}
+          </div>
+        )}
+
+        {/* ✅ Pagination Controls */}
+        <div className="flex justify-center items-center mt-6">
+          <button
+            onClick={() => setCurrentPage(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="px-4 py-2 mx-2 bg-gray-300 rounded disabled:opacity-50"
+          >
+            Previous
+          </button>
+          {Array.from({ length: totalPages }, (_, i) => (
+            <button
+              key={i}
+              onClick={() => setCurrentPage(i + 1)}
+              className={`px-4 py-2 mx-1 rounded ${currentPage === i + 1 ? "bg-blue-500 text-white" : "bg-gray-300"}`}
+            >
+              {i + 1}
+            </button>
           ))}
+          <button
+            onClick={() => setCurrentPage(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className="px-4 py-2 mx-2 bg-gray-300 rounded disabled:opacity-50"
+          >
+            Next
+          </button>
         </div>
       </div>
+      {!isAdminView && <Footer/>}
     </>
   );
 };
