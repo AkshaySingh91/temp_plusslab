@@ -5,6 +5,7 @@ import passport from './config/passport.js'
 import authRoutes from './routes/auth.js'
 import adminRoutes from './routes/admin.routes.js'
 import session from 'express-session'
+import membershipRoutes from './routes/membership.routes.js'
 
 const app = express()
 
@@ -32,5 +33,6 @@ app.use(passport.session())
 
 app.use('/api/auth', authRoutes)
 app.use('/api/admin', adminRoutes)  // Add admin routes
+app.use('/api/membership', membershipRoutes)
 
 export { app }

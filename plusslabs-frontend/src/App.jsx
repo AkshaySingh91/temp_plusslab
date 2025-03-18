@@ -2,7 +2,7 @@ import React from "react";
 import Landing from "./components/Landing";
 import FeaturedHealthCheckup from "./components/FeaturedHealthCheckup";
 import WhyChooseUs from "./components/WhyChooseUs";
-import Footer from "./components/footer";
+import Footer from "./components/Footer";
 import ConcernHealthCheckups from "./components/ConcernHealthCheckups";
 import FunctionSection from "./components/FunctionSection";
 import Signup from "./pages/Signup";
