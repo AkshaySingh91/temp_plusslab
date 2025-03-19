@@ -106,16 +106,18 @@ const Navbar = () => {
             
             {showDropdown && (
               <div className='absolute -right-4 mt-2 w-48 bg-[#fff1ee] rounded-md shadow-lg py-1 z-50'>
-                {/* Dashboard for all users */}
-                <button 
-                  onClick={() => {
-                    navigate('/dashboard');
-                    setShowDropdown(false);
-                  }}
-                  className='block w-full text-center px-4 py-2 text-gray-700 font-semibold hover:bg-gray-200'
-                >
-                  <i className="fa-solid fa-gauge mr-2"></i> Dashboard
-                </button>
+                {/* Only show Dashboard for admin and superadmin */}
+                {(user.role === 'admin' || user.role === 'superadmin') && (
+                  <button 
+                    onClick={() => {
+                      navigate('/dashboard');
+                      setShowDropdown(false);
+                    }}
+                    className='block w-full text-center px-4 py-2 text-gray-700 font-semibold hover:bg-gray-200'
+                  >
+                    <i className="fa-solid fa-gauge mr-2"></i> Dashboard
+                  </button>
+                )}
 
                 {/* Super Admin only section */}
                 {user.role === 'superadmin' && (
