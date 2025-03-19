@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios"; // Add missing import
 
 const AllTests = () => {
@@ -12,6 +12,21 @@ const AllTests = () => {
   });
   const [isEditing, setIsEditing] = useState(false);
   const [testId, setTestId] = useState(null);
+  const [userRole, setUserRole] = useState(null);
+
+  useEffect(() => {
+    const checkUserRole = async () => {
+      try {
+        const res = await axios.get('http://localhost:3000/api/auth/profile', { 
+          withCredentials: true 
+        });
+        setUserRole(res.data.role);
+      } catch (error) {
+        console.error('Error checking role:', error);
+      }
+    };
+    checkUserRole();
+  }, []);
 
   const handleTestCodeChange = async (e) => {
     const code = e.target.value;
@@ -87,6 +102,17 @@ const AllTests = () => {
       alert(error.response?.data?.message || "Failed to process request");
     }
   };
+
+  // Only show form if user is superadmin
+  if (userRole !== 'superadmin') {
+    return (
+      <div className="h-screen p-5">
+        <div className="text-center text-red-500 mt-10">
+          You don't have permission to manage tests.
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="h-screen p-5">

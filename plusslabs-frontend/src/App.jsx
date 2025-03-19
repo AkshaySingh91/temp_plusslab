@@ -36,7 +36,11 @@ function App() {
         <Route path="/dashboard/all-tests" element={<AllTests />} />
         <Route path="/dashboard/all-patients" element={<AllPatients />} />
         <Route path="/dashboard/view-patients" element={<ViewPatients />} />
-        <Route path="/dashboard/view-tests" element={<ViewTests />} />
+        <Route path="/dashboard/view-tests" element={
+          <ProtectedRoute adminOnly={true}>
+            <ViewTests />
+          </ProtectedRoute>
+        } />
 
         <Route path="/dashboard" element={
           <ProtectedRoute adminOnly={true}>

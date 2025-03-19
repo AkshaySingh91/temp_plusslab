@@ -166,100 +166,128 @@ const SuperAdminDashboard = () => {
     <>
       <Navbar />
       <div className="container mx-auto px-4 py-8">
-        <h1 className="text-2xl font-bold mb-6">User Management</h1>
+        <h1 className="text-2xl font-bold mb-6">Super Admin Panel</h1>
 
-        {/* Search Bar */}
-        <input
-          type="text"
-          placeholder="Search by name or email..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full p-2 border rounded mb-4"
-        />
+        {/* Navigation Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          {/* User Management Card */}
+          <div className="bg-white p-6 rounded-lg shadow-lg">
+            <h2 className="text-xl font-semibold mb-4">
+              <i className="fas fa-users-cog mr-2"></i>
+              User Management
+            </h2>
+            <p className="text-gray-600 mb-4">Manage users, roles, and memberships</p>
+          </div>
 
-        <div className="overflow-x-auto">
-          <table className="min-w-full bg-white border rounded-lg">
-            <thead>
-              <tr className="bg-gray-100">
-                <th className="px-6 py-3 text-left">Name</th>
-                <th className="px-6 py-3 text-left">Email</th>
-                <th className="px-6 py-3 text-left">Current Role</th>
-                <th className="px-6 py-3 text-left">Membership</th>
-                <th className="px-6 py-3 text-left">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredUsers.map((user) => (
-                <tr key={user._id} className={`border-t ${
-                  user.membershipStatus === 'gold' ? 'bg-green-50' : ''
-                }`}>
-                  <td className="px-6 py-4">{user.name}</td>
-                  <td className="px-6 py-4">{user.email}</td>
-                  <td className="px-6 py-4">{user.role}</td>
-                  <td className="px-6 py-4">
-                    <div className="flex flex-col gap-1">
-                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                        user.membershipStatus === 'gold' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
-                      }`}>
-                        <span className={`w-2 h-2 mr-1 rounded-full ${
-                          user.membershipStatus === 'gold' ? 'bg-green-400' : 'bg-gray-400'
-                        }`}></span>
-                        {user.membershipStatus === 'gold' ? 'Gold Member' : 'Regular User'}
-                      </span>
-                      {user.membershipEndDate && (
-                        <span className="text-xs text-gray-500">
-                          Expires: {new Date(user.membershipEndDate).toLocaleDateString()}
+          {/* Dashboard Access Card */}
+          <div 
+            onClick={() => window.location.href = '/dashboard'}
+            className="bg-white p-6 rounded-lg shadow-lg cursor-pointer hover:shadow-xl transition-shadow"
+          >
+            <h2 className="text-xl font-semibold mb-4">
+              <i className="fas fa-chart-line mr-2"></i>
+              Dashboard
+            </h2>
+            <p className="text-gray-600 mb-4">Access admin dashboard features</p>
+          </div>
+        </div>
+
+        {/* Existing User Management Table */}
+        <div className="bg-white rounded-lg shadow-lg p-6">
+          <h2 className="text-xl font-semibold mb-4">User List</h2>
+          {/* Search Bar */}
+          <input
+            type="text"
+            placeholder="Search by name or email..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full p-2 border rounded mb-4"
+          />
+
+          <div className="overflow-x-auto">
+            <table className="min-w-full bg-white border rounded-lg">
+              <thead>
+                <tr className="bg-gray-100">
+                  <th className="px-6 py-3 text-left">Name</th>
+                  <th className="px-6 py-3 text-left">Email</th>
+                  <th className="px-6 py-3 text-left">Current Role</th>
+                  <th className="px-6 py-3 text-left">Membership</th>
+                  <th className="px-6 py-3 text-left">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredUsers.map((user) => (
+                  <tr key={user._id} className={`border-t ${
+                    user.membershipStatus === 'gold' ? 'bg-green-50' : ''
+                  }`}>
+                    <td className="px-6 py-4">{user.name}</td>
+                    <td className="px-6 py-4">{user.email}</td>
+                    <td className="px-6 py-4">{user.role}</td>
+                    <td className="px-6 py-4">
+                      <div className="flex flex-col gap-1">
+                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                          user.membershipStatus === 'gold' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
+                        }`}>
+                          <span className={`w-2 h-2 mr-1 rounded-full ${
+                            user.membershipStatus === 'gold' ? 'bg-green-400' : 'bg-gray-400'
+                          }`}></span>
+                          {user.membershipStatus === 'gold' ? 'Gold Member' : 'Regular User'}
                         </span>
-                      )}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 flex gap-2">
-                    <select
-                      value={user.role}
-                      onChange={(e) => handleRoleChange(user._id, e.target.value)}
-                      className="border rounded px-2 py-1"
-                      disabled={user.role === "superadmin"}
-                    >
-                      <option value="user">User</option>
-                      <option value="admin">Admin</option>
-                    </select>
-                    <button
-                      onClick={() => handleDelete(user._id, user.role)}
-                      className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition-colors"
-                      disabled={user.role === "superadmin"}
-                    >
-                      Delete
-                    </button>
-                    <button
-                      onClick={() => {
-                        if (user.membershipStatus === 'gold') {
-                          handleDeactivateMembership(user._id);
-                        } else {
-                          setSelectedUser(user);
-                          setShowMembershipModal(true);
-                        }
-                      }}
-                      className={`px-3 py-1 rounded transition-colors flex items-center gap-1 ${
-                        user.membershipStatus === 'gold'
-                          ? 'bg-red-500 hover:bg-red-600'
-                          : 'bg-green-500 hover:bg-green-600'
-                      } text-white`}
-                    >
-                      <i className={`fas ${user.membershipStatus === 'gold' ? 'fa-user-minus' : 'fa-user-plus'}`}></i>
-                      {user.membershipStatus === 'gold' ? 'Deactivate Gold' : 'Activate Gold'}
-                    </button>
-                  </td>
-                </tr>
-              ))}
-              {filteredUsers.length === 0 && (
-                <tr>
-                  <td colSpan="5" className="text-center py-4 text-gray-500">
-                    No users found
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+                        {user.membershipEndDate && (
+                          <span className="text-xs text-gray-500">
+                            Expires: {new Date(user.membershipEndDate).toLocaleDateString()}
+                          </span>
+                        )}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 flex gap-2">
+                      <select
+                        value={user.role}
+                        onChange={(e) => handleRoleChange(user._id, e.target.value)}
+                        className="border rounded px-2 py-1"
+                        disabled={user.role === "superadmin"}
+                      >
+                        <option value="user">User</option>
+                        <option value="admin">Admin</option>
+                      </select>
+                      <button
+                        onClick={() => handleDelete(user._id, user.role)}
+                        className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition-colors"
+                        disabled={user.role === "superadmin"}
+                      >
+                        Delete
+                      </button>
+                      <button
+                        onClick={() => {
+                          if (user.membershipStatus === 'gold') {
+                            handleDeactivateMembership(user._id);
+                          } else {
+                            setSelectedUser(user);
+                            setShowMembershipModal(true);
+                          }
+                        }}
+                        className={`px-3 py-1 rounded transition-colors flex items-center gap-1 ${
+                          user.membershipStatus === 'gold'
+                            ? 'bg-red-500 hover:bg-red-600'
+                            : 'bg-green-500 hover:bg-green-600'
+                        } text-white`}
+                      >
+                        <i className={`fas ${user.membershipStatus === 'gold' ? 'fa-user-minus' : 'fa-user-plus'}`}></i>
+                        {user.membershipStatus === 'gold' ? 'Deactivate Gold' : 'Activate Gold'}
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+                {filteredUsers.length === 0 && (
+                  <tr>
+                    <td colSpan="5" className="text-center py-4 text-gray-500">
+                      No users found
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
 

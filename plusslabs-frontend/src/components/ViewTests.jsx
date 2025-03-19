@@ -12,7 +12,7 @@ const ViewTests = () => {
   const testsPerPage = 100; // ✅ Display 100 tests per page
 
   const location = useLocation();
-  const isAdminView = location.pathname.includes("/dashboard");
+  const isAdminView = location.pathname.includes("/dashboard") && (user?.role === "admin" || user?.role === "superadmin");
 
   useEffect(() => {
     const fetchTests = async () => {
@@ -41,6 +41,20 @@ const ViewTests = () => {
       }
     };
     fetchUser();
+  }, []);
+
+  useEffect(() => {
+    const checkUserRole = async () => {
+      try {
+        const res = await axios.get('http://localhost:3000/api/auth/profile', { 
+          withCredentials: true 
+        });
+        setUser(res.data);
+      } catch (error) {
+        console.error('Error checking role:', error);
+      }
+    };
+    checkUserRole();
   }, []);
 
   const handleDelete = async (testId) => {
@@ -91,7 +105,7 @@ const ViewTests = () => {
         />
 
         {/* ✅ Admin View: Show as Table */}
-        {isAdminView && user?.role === "admin" ? (
+        {isAdminView ? (
           <div className="overflow-x-auto">
             <table className="min-w-full bg-white border border-gray-300 shadow-md">
               <thead>
@@ -119,12 +133,14 @@ const ViewTests = () => {
                       <td className="py-2 px-4 border">{test.discount}%</td>
                       <td className="py-2 px-4 border text-green-600 font-bold">₹{finalPrice.toFixed(2)}</td>
                       <td className="py-2 px-4 border">
-                        <button
-                          onClick={() => handleDelete(test._id)}
-                          className="px-4 py-1 bg-red-500 text-white rounded hover:bg-red-600"
-                        >
-                          Delete
-                        </button>
+                        {user?.role === 'superadmin' && (
+                          <button
+                            onClick={() => handleDelete(test._id)}
+                            className="px-4 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+                          >
+                            Delete
+                          </button>
+                        )}
                       </td>
                     </tr>
                   );

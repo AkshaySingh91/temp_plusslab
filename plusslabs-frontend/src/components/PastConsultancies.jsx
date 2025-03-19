@@ -7,23 +7,10 @@ const PastConsultancies = () => {
   const [patientData, setPatientData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [expandedTest, setExpandedTest] = useState(null);
-  const [membershipAccess, setMembershipAccess] = useState(false);
-  const [membershipDetails, setMembershipDetails] = useState(null);
 
   useEffect(() => {
-    const checkMembershipAndFetchData = async () => {
+    const fetchData = async () => {
       try {
-        const membershipResponse = await axios.get('http://localhost:3000/api/membership/status', {
-          withCredentials: true
-        });
-
-        if (!membershipResponse.data.active) {
-          setMembershipAccess(false);
-          return;
-        }
-
-        setMembershipAccess(true);
-        setMembershipDetails(membershipResponse.data);
         const userRes = await axios.get("http://localhost:3000/api/auth/profile", {
           withCredentials: true,
         });
@@ -33,14 +20,13 @@ const PastConsultancies = () => {
         setPatientData(patientRes.data || { pastTests: [] });
       } catch (err) {
         console.error("Error:", err);
-        setMembershipAccess(false);
         setPatientData(null);
       } finally {
         setLoading(false);
       }
     };
 
-    checkMembershipAndFetchData();
+    fetchData();
   }, []);
 
   const toggleExpandTest = (index) => {
@@ -56,51 +42,6 @@ const PastConsultancies = () => {
       <div className="flex items-center justify-center min-h-screen">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-500"></div>
       </div>
-    );
-  }
-
-  if (!membershipAccess) {
-    return (
-      <>
-        <Navbar />
-        <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-          <div className="max-w-md w-full bg-white rounded-xl shadow-lg p-8 text-center">
-            <div className="mb-6">
-              <i className="fas fa-crown text-yellow-500 text-4xl"></i>
-            </div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">
-              Gold Membership Required
-            </h2>
-            <p className="text-gray-600 mb-6">
-              This feature is exclusively available for Gold Members.
-            </p>
-            <div className="bg-yellow-50 p-4 rounded-lg mb-6">
-              <h3 className="font-semibold text-gray-800 mb-2">Gold Member Benefits:</h3>
-              <ul className="text-left space-y-2">
-                <li className="flex items-center">
-                  <i className="fas fa-check text-green-500 mr-2"></i>
-                  Access to past consultancies
-                </li>
-                <li className="flex items-center">
-                  <i className="fas fa-check text-green-500 mr-2"></i>
-                  20% discount on all tests
-                </li>
-                <li className="flex items-center">
-                  <i className="fas fa-check text-green-500 mr-2"></i>
-                  Priority support
-                </li>
-              </ul>
-            </div>
-            <button 
-              onClick={() => window.location.href = 'tel:8237006990'}
-              className="w-full bg-yellow-500 text-white py-3 rounded-lg font-semibold hover:bg-yellow-600"
-            >
-              <i className="fas fa-phone-alt mr-2"></i>
-              Call to Activate Membership
-            </button>
-          </div>
-        </div>
-      </>
     );
   }
 
@@ -137,32 +78,6 @@ const PastConsultancies = () => {
   return (
     <>
       <Navbar />
-      {membershipDetails?.active && (
-        <div className="bg-yellow-50 border-l-4 border-yellow-500 p-4">
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
-              <i className="fas fa-clock text-yellow-500 text-xl"></i>
-            </div>
-            <div className="ml-3">
-              <p className="text-sm text-yellow-700">
-                Gold Membership expires on {new Date(membershipDetails.endDate).toLocaleDateString()}
-                {' '}
-                {Math.ceil((new Date(membershipDetails.endDate) - new Date()) / (1000 * 60 * 60 * 24)) <= 7 && (
-                  <span className="font-bold text-red-600">
-                    ({Math.ceil((new Date(membershipDetails.endDate) - new Date()) / (1000 * 60 * 60 * 24))} days left)
-                  </span>
-                )}
-                <button 
-                  onClick={() => window.location.href = 'tel:8237006990'}
-                  className="ml-2 text-blue-600 underline hover:text-blue-800"
-                >
-                  Call to Renew
-                </button>
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
       <div className="bg-[#fef8ec] h-[350px] md:h-[400px] w-full flex items-center  justify-center">
       <div className="container mx-auto px-4 relative">
           <span className="text-white rounded-2xl font-semibold  p-2 bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 ">MEMBERSHIP PERKS</span>

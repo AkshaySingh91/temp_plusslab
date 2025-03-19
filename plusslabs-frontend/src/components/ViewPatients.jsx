@@ -7,6 +7,7 @@ const ViewPatients = () => {
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [userRole, setUserRole] = useState(null);
 
   useEffect(() => {
     const fetchPatients = async () => {
@@ -21,17 +22,41 @@ const ViewPatients = () => {
     fetchPatients();
   }, []);
 
+  useEffect(() => {
+    const fetchUserRole = async () => {
+      try {
+        const res = await axios.get('http://localhost:3000/api/auth/profile', {
+          withCredentials: true
+        });
+        setUserRole(res.data.role);
+      } catch (error) {
+        console.error('Error fetching user role:', error);
+      }
+    };
+    fetchUserRole();
+  }, []);
+
   const handleDelete = async (patientId) => {
     if (!window.confirm("Are you sure you want to delete this patient?")) return;
 
     try {
-      await axios.delete(`http://localhost:3000/api/patients/${patientId}`);
+      await axios.delete(`http://localhost:3000/api/patients/${patientId}`, {
+        withCredentials: true,  // Add this to send cookies
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      
       const updatedPatients = patients.filter((p) => p.patientId !== patientId);
       setPatients(updatedPatients);
       setFilteredPatients(updatedPatients);
       alert("Patient deleted successfully!");
     } catch (error) {
-      alert("Failed to delete patient.");
+      if (error.response?.status === 401) {
+        alert("You are not authorized to delete patients");
+      } else {
+        alert("Failed to delete patient");
+      }
     }
   };
 
@@ -102,12 +127,14 @@ const ViewPatients = () => {
                   >
                     View Tests
                   </button>
-                  <button
-                    onClick={() => handleDelete(patient.patientId)}
-                    className="px-3 py-1 bg-red-500 text-white rounded"
-                  >
-                    Delete
-                  </button>
+                  {userRole === 'superadmin' && (
+                    <button
+                      onClick={() => handleDelete(patient.patientId)}
+                      className="px-3 py-1 bg-red-500 text-white rounded"
+                    >
+                      Delete
+                    </button>
+                  )}
                 </td>
               </tr>
             ))}

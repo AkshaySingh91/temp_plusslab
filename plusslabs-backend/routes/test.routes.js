@@ -1,10 +1,11 @@
 import express from "express";
 import Test from "../models/test.models.js";
+import { protect, requireSuperAdmin, requireAdmin } from '../middlewares/auth.js';
 
 const router = express.Router();
 
-// ✅ Route to add a new test
-router.post("/add", async (req, res) => {
+// Only superadmin can add new tests
+router.post("/add", protect, requireSuperAdmin, async (req, res) => {
   try {
     const { testCode, name, description, price, discount, category } = req.body;
 
@@ -37,7 +38,7 @@ router.post("/add", async (req, res) => {
   }
 });
 
-// ✅ Route to get all tests
+// Public route to get all tests
 router.get("/", async (req, res) => {
   try {
     const tests = await Test.find();
@@ -61,8 +62,8 @@ router.get("/code/:testCode", async (req, res) => {
   }
 });
 
-// Add route to update test
-router.put("/update/:testId", async (req, res) => {
+// Admin and superadmin can update tests
+router.put("/update/:testId", protect, requireAdmin, async (req, res) => {
   try {
     const updatedTest = await Test.findByIdAndUpdate(
       req.params.testId,
@@ -75,7 +76,8 @@ router.put("/update/:testId", async (req, res) => {
   }
 });
 
-router.delete("/:testId", async (req, res) => {
+// Only superadmin can delete tests
+router.delete("/:testId", protect, requireSuperAdmin, async (req, res) => {
   try {
     const { testId } = req.params;
     const deletedTest = await Test.findByIdAndDelete(testId);

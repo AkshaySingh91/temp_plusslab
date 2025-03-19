@@ -137,83 +137,110 @@ const AllPatients = () => {
         </div>
       )}
       <form onSubmit={handleSubmit} className="mb-6 p-4 border rounded-lg shadow">
-        <input 
-          type="text" 
-          name="patientId" 
-          placeholder="Patient ID" 
-          value={formData.patientId} 
-          onChange={handlePatientIdChange}
-          required 
-          className="block w-full p-2 border rounded mb-2" 
-        />
-        
-        <input 
-          type="text" 
-          name="name" 
-          placeholder="Patient Name" 
-          value={formData.name} 
-          onChange={handleChange}
-          required 
-          disabled={isExistingPatient}
-          className={`block w-full p-2 border rounded mb-2 ${isExistingPatient ? 'bg-gray-100' : ''}`}
-        />
-        
-        <input 
-          type="tel" 
-          name="phoneNumber" 
-          placeholder="Phone Number" 
-          value={formData.phoneNumber} 
-          onChange={handleChange}
-          required 
-          disabled={isExistingPatient}
-          className={`block w-full p-2 border rounded mb-2 ${isExistingPatient ? 'bg-gray-100' : ''}`}
-        />
-        
-        <input 
-          type="email" 
-          name="email" 
-          placeholder="Patient Email" 
-          value={formData.email} 
-          onChange={handleChange}
-          required 
-          className="block w-full p-2 border rounded mb-2" 
-        />
-        
-        <input 
-          type="date" 
-          name="dob" 
-          value={formData.dob} 
-          onChange={handleChange} 
-          required 
-          disabled={isExistingPatient}
-          className={`block w-full p-2 border rounded mb-2 ${isExistingPatient ? 'bg-gray-100' : ''}`}
-        />
-        
-        <select 
-          name="gender" 
-          value={formData.gender} 
-          onChange={handleChange} 
-          required 
-          disabled={isExistingPatient}
-          className={`block w-full p-2 border rounded mb-2 ${isExistingPatient ? 'bg-gray-100' : ''}`}
-        >
-          <option value="">Select Gender</option>
-          <option value="Male">Male</option>
-          <option value="Female">Female</option>
-          <option value="Other">Other</option>
-        </select>
-        
-        <input 
-          type="text" 
-          name="bloodType" 
-          placeholder="Blood Type" 
-          value={formData.bloodType} 
-          onChange={handleChange} 
-          required 
-          disabled={isExistingPatient}
-          className={`block w-full p-2 border rounded mb-2 ${isExistingPatient ? 'bg-gray-100' : ''}`}
-        />
-        
+        <div className="mb-4">
+          <label className="block text-sm font-medium mb-1">
+            Patient ID <span className="text-red-500">*</span>
+          </label>
+          <input 
+            type="text" 
+            name="patientId" 
+            value={formData.patientId} 
+            onChange={handlePatientIdChange}
+            required 
+            className="block w-full p-2 border rounded"
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="block text-sm font-medium mb-1">
+            Name <span className="text-red-500">*</span>
+          </label>
+          <input 
+            type="text" 
+            name="name" 
+            value={formData.name} 
+            onChange={handleChange}
+            required 
+            disabled={isExistingPatient}
+            className={`block w-full p-2 border rounded ${isExistingPatient ? 'bg-gray-100' : ''}`}
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="block text-sm font-medium mb-1">
+            Phone Number <span className="text-red-500">*</span>
+          </label>
+          <input 
+            type="tel" 
+            name="phoneNumber" 
+            value={formData.phoneNumber} 
+            onChange={handleChange}
+            required 
+            disabled={isExistingPatient}
+            className={`block w-full p-2 border rounded ${isExistingPatient ? 'bg-gray-100' : ''}`}
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="block text-sm font-medium mb-1">
+            Email
+          </label>
+          <input 
+            type="email" 
+            name="email" 
+            value={formData.email} 
+            onChange={handleChange}
+            className="block w-full p-2 border rounded"
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="block text-sm font-medium mb-1">
+            Date of Birth
+          </label>
+          <input 
+            type="date" 
+            name="dob" 
+            value={formData.dob} 
+            onChange={handleChange}
+            disabled={isExistingPatient}
+            className={`block w-full p-2 border rounded ${isExistingPatient ? 'bg-gray-100' : ''}`}
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="block text-sm font-medium mb-1">
+            Gender <span className="text-red-500">*</span>
+          </label>
+          <select 
+            name="gender" 
+            value={formData.gender} 
+            onChange={handleChange} 
+            required 
+            disabled={isExistingPatient}
+            className={`block w-full p-2 border rounded ${isExistingPatient ? 'bg-gray-100' : ''}`}
+          >
+            <option value="">Select Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <div className="mb-4">
+          <label className="block text-sm font-medium mb-1">
+            Blood Type
+          </label>
+          <input 
+            type="text" 
+            name="bloodType" 
+            value={formData.bloodType} 
+            onChange={handleChange}
+            disabled={isExistingPatient}
+            className={`block w-full p-2 border rounded ${isExistingPatient ? 'bg-gray-100' : ''}`}
+          />
+        </div>
+
         <input 
           type="number" 
           name="weight" 
@@ -235,15 +262,19 @@ const AllPatients = () => {
           className={`block w-full p-2 border rounded mb-2 ${isExistingPatient ? 'bg-gray-100' : ''}`}
         />
         
-        <input 
-          type="text" 
-          name="testName" 
-          placeholder="Test Name" 
-          value={formData.testName} 
-          onChange={handleChange} 
-          required 
-          className="block w-full p-2 border rounded mb-2" 
-        />
+        <div className="mb-4">
+          <label className="block text-sm font-medium mb-1">
+            Test Name <span className="text-red-500">*</span>
+          </label>
+          <input 
+            type="text" 
+            name="testName" 
+            value={formData.testName} 
+            onChange={handleChange}
+            required 
+            className="block w-full p-2 border rounded"
+          />
+        </div>
         
         <div className="mb-4">
           <label className="block text-gray-700 mb-2">Report Images</label>

@@ -36,6 +36,7 @@ const ProtectedRoute = ({ children, adminOnly = false, superAdminOnly = false })
     return <Navigate to="/" />;
   }
 
+  // Update access check for admins
   if (adminOnly && !['admin', 'superadmin'].includes(user.role)) {
     return <Navigate to="/" />;
   }

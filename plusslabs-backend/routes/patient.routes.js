@@ -2,6 +2,7 @@ import express from "express";
 import Patient from "../models/patient.models.js";
 import multer from "multer";
 import cloudinary from "../config/cloudinary.js";
+import { protect, requireSuperAdmin } from '../middlewares/auth.js';
 
 const router = express.Router();
 const upload = multer({ dest: 'uploads/' });
@@ -11,17 +12,21 @@ router.post("/add", upload.array('reportImages', 5), async (req, res) => {
   try {
     const { patientId, name, phoneNumber, email, dob, gender, bloodType, weight, medicalHistory, testName } = req.body;
     
-    // Ensure patientId is provided manually
+    // Only check required fields
     if (!patientId) {
       return res.status(400).json({ message: "Patient ID is required." });
+    }
+
+    if (!name) {
+      return res.status(400).json({ message: "Name is required." });
     }
 
     if (!phoneNumber) {
       return res.status(400).json({ message: "Phone number is required." });
     }
 
-    if (!email) {
-      return res.status(400).json({ message: "Email is required." });
+    if (!gender) {
+      return res.status(400).json({ message: "Gender is required." });
     }
 
     // Check if patientId already exists
@@ -47,10 +52,10 @@ router.post("/add", upload.array('reportImages', 5), async (req, res) => {
       patientId,
       name,
       phoneNumber,
-      email,     // Include email in patient creation
-      dob,
+      email: email || undefined, // Only include if provided
+      dob: dob || undefined, // Only include if provided
       gender,
-      bloodType,
+      bloodType: bloodType || undefined, // Only include if provided
       weight,
       medicalHistory: medicalHistory ? medicalHistory.split(',') : [],
       pastTests: [{
@@ -106,10 +111,10 @@ router.get("/user/:email", async (req, res) => {
     const patient = await Patient.findOne({ email });
 
     if (!patient) {
-      return res.status(404).json({ message: "No records found" });
+      return res.status(404).json({ message: "Patient not found" });
     }
 
-    res.status(200).json(patient);
+    res.json(patient);
   } catch (error) {
     console.error("Error fetching patient:", error);
     res.status(500).json({ message: "Server error", error: error.message });
@@ -117,7 +122,7 @@ router.get("/user/:email", async (req, res) => {
 });
 
 // ➤ Delete a patient
-router.delete("/:patientId", async (req, res) => {
+router.delete("/:patientId", protect, requireSuperAdmin, async (req, res) => {
   try {
     const { patientId } = req.params;
     const deletedPatient = await Patient.findOneAndDelete({ patientId });
