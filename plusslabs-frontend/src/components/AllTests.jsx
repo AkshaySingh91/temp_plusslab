@@ -87,10 +87,18 @@ const AllTests = () => {
       };
 
       if (isEditing && testId) {
-        await axios.put(`http://localhost:3000/api/tests/update/${testId}`, dataToSubmit);
+        await axios.put(
+          `http://localhost:3000/api/tests/update/${testId}`, 
+          dataToSubmit,
+          { withCredentials: true } // Add credentials
+        );
         alert("Test updated successfully!");
       } else {
-        const response = await axios.post("http://localhost:3000/api/tests/add", dataToSubmit);
+        const response = await axios.post(
+          "http://localhost:3000/api/tests/add", 
+          dataToSubmit,
+          { withCredentials: true } // Add credentials
+        );
         if (response.status === 201) {
           alert("Test added successfully!");
           setFormData({ testCode: "", name: "", description: "", price: "", discount: 0, category: "" });
@@ -99,7 +107,12 @@ const AllTests = () => {
       setIsEditing(false);
       setTestId(null);
     } catch (error) {
-      alert(error.response?.data?.message || "Failed to process request");
+      // Improved error handling
+      if (error.response?.status === 401) {
+        alert("Not authorized. Please make sure you are logged in as superadmin.");
+      } else {
+        alert(error.response?.data?.message || "Failed to process request");
+      }
     }
   };
 

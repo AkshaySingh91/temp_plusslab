@@ -51,7 +51,7 @@ router.post('/activate', protect, requireSuperAdmin, async (req, res) => {
       });
     }
 
-    // Create or update membership
+    // Create or update membership with discount info
     const membership = await Membership.findOneAndUpdate(
       { userId },
       {
@@ -60,7 +60,9 @@ router.post('/activate', protect, requireSuperAdmin, async (req, res) => {
           startDate: start,
           endDate: end,
           activatedBy: req.user._id,
-          lastModified: now
+          lastModified: now,
+          discountPercentage: 20,
+          discountType: 'gold'
         }
       },
       { upsert: true, new: true }

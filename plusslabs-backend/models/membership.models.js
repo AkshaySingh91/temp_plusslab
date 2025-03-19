@@ -13,6 +13,16 @@ const membershipSchema = new mongoose.Schema(
     activatedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     deactivatedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     deactivationReason: String,
+    discountPercentage: {
+      type: Number,
+      default: 20, // Default gold membership discount
+      required: true
+    },
+    discountType: {
+      type: String,
+      enum: ["gold"],
+      default: "gold"
+    },
     lastModified: { type: Date, default: Date.now }
   },
   { timestamps: true }

@@ -117,12 +117,14 @@ const ViewTests = () => {
                   <th className="py-2 px-4 border">Price</th>
                   <th className="py-2 px-4 border">Discount</th>
                   <th className="py-2 px-4 border">Final Price</th>
+                  <th className="py-2 px-4 border">Gold Membership Price</th>
                   <th className="py-2 px-4 border">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {currentTests.map((test) => {
-                  const finalPrice = test.price - (test.price * test.discount) / 100;
+                  const finalPrice = test.price * (1 - test.discount/100);
+                  const goldPrice = finalPrice * 0.8; // Additional 20% off final price
                   return (
                     <tr key={test._id} className="text-center border-t">
                       <td className="py-2 px-4 border">{test.testCode}</td>
@@ -131,7 +133,13 @@ const ViewTests = () => {
                       <td className="py-2 px-4 border">{test.category}</td>
                       <td className="py-2 px-4 border">₹{test.price}</td>
                       <td className="py-2 px-4 border">{test.discount}%</td>
-                      <td className="py-2 px-4 border text-green-600 font-bold">₹{finalPrice.toFixed(2)}</td>
+                      <td className="py-2 px-4 border text-green-600 font-bold">
+                        ₹{finalPrice.toFixed(2)}
+                      </td>
+                      <td className="py-2 px-4 border text-blue-600 font-bold">
+                        ₹{goldPrice.toFixed(2)}
+                        <span className="text-xs block text-gray-500">(Extra 20% off)</span>
+                      </td>
                       <td className="py-2 px-4 border">
                         {user?.role === 'superadmin' && (
                           <button
@@ -152,21 +160,27 @@ const ViewTests = () => {
           /* ✅ User View: Show as Cards */
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mt-5">
             {currentTests.map((test) => {
-              const finalPrice = test.price - (test.price * test.discount) / 100;
+              const finalPrice = test.price * (1 - test.discount/100);
+              const goldPrice = finalPrice * 0.8;
               return (
                 <div key={test._id} className="bg-gray-300 p-4 rounded-lg relative">
                   <h3 className="text-xl font-semibold mb-2 mt-2">{test.name}</h3>
                   <p className="text-gray-600 mb-2 text-sm">Code: ({test.testCode})</p>
                   <span className="text-sm text-gray-800 absolute -top-2 left-0 bg-yellow-300 font-semibold rounded-2xl px-2 py-1"> {test.category}</span>
-                  <div className="flex justify-between items-center mt-2">
-                    <span className="text-gray-500 line-through md:text-xl">₹{test.price}</span>
-                    <span className="text-green-600 font-bold md:text-xl">₹{finalPrice.toFixed(2)}</span>
-                  </div>
-                  {test.discount > 0 && (
-                    <span className="absolute -top-2 right-2 bg-red-600 text-white text-xs px-2 py-1 rounded">
-                      {test.discount}% off
+                  <div className="flex flex-col gap-1 mt-2">
+                    <span className="text-gray-500 line-through">₹{test.price}</span>
+                    <span className="text-green-600 font-bold">
+                      ₹{finalPrice.toFixed(2)}
+                      <span className="text-xs ml-1">({test.discount}% off)</span>
                     </span>
-                  )}
+                    {/* Only show gold price if user has gold membership */}
+                    {user?.membershipStatus === 'gold' && (
+                      <span className="text-blue-600 font-bold text-sm">
+                        Gold Price: ₹{goldPrice.toFixed(2)}
+                        <span className="text-xs ml-1">(Extra 20% off)</span>
+                      </span>
+                    )}
+                  </div>
                   <span><img src="/assets/icon-removebg-preview.png" alt="icon" className="w-10 h-10 md:w-16 md:h-16 absolute  top-5 right-4"/></span>
                   <button className="w-full bg-black text-white font-semibold rounded p-2 mt-3">
                   <i class="fa-regular fa-pen-to-square"></i> Book Now

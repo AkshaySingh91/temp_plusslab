@@ -16,6 +16,7 @@ import ViewPatients from "./components/ViewPatients";
 import ViewTests from "./components/ViewTests";
 import ProtectedRoute from './components/ProtectedRoute';
 import SuperAdminDashboard from './components/SuperAdminDashboard';
+import MembershipPage from './components/MembershipPage';
 
 function App() {
   return (
@@ -65,6 +66,12 @@ function App() {
         <Route path="/super-admin" element={
           <ProtectedRoute adminOnly={false} superAdminOnly={true}>
             <SuperAdminDashboard />
+          </ProtectedRoute>
+        } />
+
+        <Route path="/membership" element={
+          <ProtectedRoute>
+            <MembershipPage />
           </ProtectedRoute>
         } />
       </Routes>
