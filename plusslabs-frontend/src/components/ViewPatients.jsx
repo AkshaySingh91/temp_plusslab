@@ -192,7 +192,7 @@ const ViewPatients = () => {
                     <th className="border px-4 py-2">Height</th>
                     <th className="border px-4 py-2">Muscle Mass</th>
                     <th className="border px-4 py-2">Fat %</th>
-                    <th className="border px-4 py-2">Amount</th>
+                    <th className="border px-4 py-2">Bill Amount</th>
                     <th className="border px-4 py-2">Reports</th>
                     {userRole === 'superadmin' && (
                       <th className="border px-4 py-2">Actions</th>
@@ -221,14 +221,8 @@ const ViewPatients = () => {
                       <td className="border px-4 py-2">
                         {test.billing ? (
                           <div className="flex flex-col text-sm">
-                            <span className="text-gray-500 line-through">
-                              ₹{test.billing.originalAmount}
-                            </span>
-                            {test.billing.membershipDiscount && (
-                              <span className="text-blue-600">Gold Member -20%</span>
-                            )}
                             <span className="font-bold text-green-600">
-                              Final: ₹{test.billing.finalAmount}
+                               ₹{test.billing.finalAmount}
                             </span>
                           </div>
                         ) : '-'}

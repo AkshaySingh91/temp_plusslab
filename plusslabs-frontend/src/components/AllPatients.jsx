@@ -21,6 +21,7 @@ const AllPatients = () => {
   const [images, setImages] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [initialLoading, setInitialLoading] = useState(true);
   const [showTestModal, setShowTestModal] = useState(false);
   const [availableTests, setAvailableTests] = useState([]);
   const [selectedTests, setSelectedTests] = useState([]);
@@ -33,33 +34,28 @@ const AllPatients = () => {
     finalAmount: 0,
     finalGoldAmount: 0
   });
+  
+  // Gold discount rate as a constant
+  const GOLD_DISCOUNT_RATE = 0.8; // 20% off
 
   useEffect(() => {
-    const fetchTests = async () => {
+    const fetchInitialData = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/tests", {
-          withCredentials: true,
-        });
-        setAvailableTests(response.data);
+        const [testsResponse, userResponse] = await Promise.all([
+          axios.get("http://localhost:3000/api/tests", { withCredentials: true }),
+          axios.get('http://localhost:3000/api/auth/profile', { withCredentials: true })
+        ]);
+        
+        setAvailableTests(testsResponse.data);
+        setUser(userResponse.data);
       } catch (error) {
-        console.error("Error fetching tests:", error);
+        console.error("Error fetching initial data:", error);
+      } finally {
+        setInitialLoading(false);
       }
     };
-    fetchTests();
-  }, []);
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const res = await axios.get('http://localhost:3000/api/auth/profile', {
-          withCredentials: true
-        });
-        setUser(res.data);
-      } catch (error) {
-        console.error('Error fetching user:', error);
-      }
-    };
-    fetchUser();
+    
+    fetchInitialData();
   }, []);
 
   useEffect(() => {
@@ -76,6 +72,7 @@ const AllPatients = () => {
   }, [searchTestQuery, availableTests]);
 
   const handleChange = (e) => {
+    console.log(formData);
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -138,9 +135,9 @@ const AllPatients = () => {
         // Apply regular discount
         const afterDiscount = test.price * (1 - test.discount/100);
         discountedTotal += afterDiscount;
-        // Apply gold discount  (20% off)
-        finalGoldAmount += test.price * 0.8;
-            });
+        // Apply gold discount
+        finalGoldAmount += test.price * GOLD_DISCOUNT_RATE;
+      });
 
       setBillingDetails({
         originalTotal,
@@ -153,10 +150,11 @@ const AllPatients = () => {
     });
   };
 
-  const handleTestsSubmit = () => {
+  const handleTestsSubmit = (isGold = false) => {
     setFormData(prev => ({
       ...prev,
-      testName: selectedTests.map(t => t.name).join(", ")
+      testName: selectedTests.map(t => t.name).join(", "),
+      isGoldMember: isGold
     }));
     setShowTestModal(false);
   };
@@ -169,7 +167,7 @@ const AllPatients = () => {
     try {
       const formDataToSend = new FormData();
       
-      // Add selected tests data
+      // Add patient form data
       Object.keys(formData).forEach(key => {
         formDataToSend.append(key, formData[key]);
       });
@@ -177,6 +175,7 @@ const AllPatients = () => {
       // Add selected tests array with price information
       formDataToSend.append('selectedTests', JSON.stringify(selectedTests));
       
+      // Add report images if any
       images.forEach(image => {
         formDataToSend.append('reportImages', image);
       });
@@ -189,6 +188,8 @@ const AllPatients = () => {
             headers: { 'Content-Type': 'multipart/form-data' }
           }
         );
+        
+        // Replace alert with more sophisticated notification if needed
         alert("Test added to existing patient successfully!");
       } else {
         // Create new patient
@@ -199,6 +200,8 @@ const AllPatients = () => {
             headers: { 'Content-Type': 'multipart/form-data' }
           }
         );
+        
+        // Replace alert with more sophisticated notification if needed
         alert("New patient added successfully!");
       }
 
@@ -219,6 +222,7 @@ const AllPatients = () => {
         testName: "",
       });
       setImages([]);
+      setSelectedTests([]);
       setIsExistingPatient(false);
     } catch (error) {
       setError(error.response?.data?.message || "Failed to process request");
@@ -241,12 +245,22 @@ const AllPatients = () => {
       <div className="flex justify-between font-bold text-xl border-t pt-2">
         <span>Final Amount:</span>
         <span>₹{billingDetails.finalAmount.toFixed(2)}</span>
-        <span>Final Gold Amount:</span>
+      </div>
+      
+      <div className="flex justify-between text-blue-600 border-t pt-2">
+        <span>Gold Member Price:</span>
         <span>₹{billingDetails.finalGoldAmount.toFixed(2)}</span>
       </div>
     </div>
   );
 
+  if (initialLoading) {
+    return (
+      <div className="h-screen flex items-center justify-center">
+        <p>Loading...</p>
+      </div>
+    );
+  }
   
   return (
     <div className="h-screen p-5">
@@ -260,10 +274,11 @@ const AllPatients = () => {
       )}
       <form onSubmit={handleSubmit} className="mb-6 p-4 border rounded-lg shadow">
         <div className="mb-4">
-          <label className="block text-sm font-medium mb-1">
+          <label htmlFor="patientId" className="block text-sm font-medium mb-1">
             Patient ID <span className="text-red-500">*</span>
           </label>
           <input 
+            id="patientId"
             type="text" 
             name="patientId" 
             value={formData.patientId} 
@@ -274,10 +289,11 @@ const AllPatients = () => {
         </div>
 
         <div className="mb-4">
-          <label className="block text-sm font-medium mb-1">
+          <label htmlFor="name" className="block text-sm font-medium mb-1">
             Name <span className="text-red-500">*</span>
           </label>
           <input 
+            id="name"
             type="text" 
             name="name" 
             value={formData.name} 
@@ -289,10 +305,11 @@ const AllPatients = () => {
         </div>
 
         <div className="mb-4">
-          <label className="block text-sm font-medium mb-1">
+          <label htmlFor="phoneNumber" className="block text-sm font-medium mb-1">
             Phone Number <span className="text-red-500">*</span>
           </label>
           <input 
+            id="phoneNumber"
             type="tel" 
             name="phoneNumber" 
             value={formData.phoneNumber} 
@@ -304,23 +321,26 @@ const AllPatients = () => {
         </div>
 
         <div className="mb-4">
-          <label className="block text-sm font-medium mb-1">
+          <label htmlFor="email" className="block text-sm font-medium mb-1">
             Email
           </label>
           <input 
+            id="email"
             type="email" 
             name="email" 
             value={formData.email} 
             onChange={handleChange}
-            className="block w-full p-2 border rounded"
+            disabled={isExistingPatient}
+            className={`block w-full p-2 border rounded ${isExistingPatient ? 'bg-gray-100' : ''}`}
           />
         </div>
 
         <div className="mb-4">
-          <label className="block text-sm font-medium mb-1">
+          <label htmlFor="dob" className="block text-sm font-medium mb-1">
             Date of Birth
           </label>
           <input 
+            id="dob"
             type="date" 
             name="dob" 
             value={formData.dob} 
@@ -331,10 +351,11 @@ const AllPatients = () => {
         </div>
 
         <div className="mb-4">
-          <label className="block text-sm font-medium mb-1">
+          <label htmlFor="gender" className="block text-sm font-medium mb-1">
             Gender <span className="text-red-500">*</span>
           </label>
           <select 
+            id="gender"
             name="gender" 
             value={formData.gender} 
             onChange={handleChange} 
@@ -350,10 +371,11 @@ const AllPatients = () => {
         </div>
 
         <div className="mb-4">
-          <label className="block text-sm font-medium mb-1">
+          <label htmlFor="bloodType" className="block text-sm font-medium mb-1">
             Blood Type
           </label>
           <input 
+            id="bloodType"
             type="text" 
             name="bloodType" 
             value={formData.bloodType} 
@@ -363,19 +385,26 @@ const AllPatients = () => {
           />
         </div>
 
-        <input 
-          type="text" 
-          name="medicalHistory" 
-          placeholder="Medical History (comma-separated)" 
-          value={formData.medicalHistory} 
-          onChange={handleChange} 
-          disabled={isExistingPatient}
-          className={`block w-full p-2 border rounded mb-2 ${isExistingPatient ? 'bg-gray-100' : ''}`}
-        />
+        <div className="mb-4">
+          <label htmlFor="medicalHistory" className="block text-sm font-medium mb-1">
+            Medical History
+          </label>
+          <input 
+            id="medicalHistory"
+            type="text" 
+            name="medicalHistory" 
+            placeholder="Medical History (comma-separated)" 
+            value={formData.medicalHistory} 
+            onChange={handleChange} 
+            disabled={isExistingPatient}
+            className={`block w-full p-2 border rounded ${isExistingPatient ? 'bg-gray-100' : ''}`}
+          />
+        </div>
         
         <div className="mb-4">
-          <label className="block text-sm font-medium mb-1">Weight (kg)</label>
+          <label htmlFor="weight" className="block text-sm font-medium mb-1">Weight (kg)</label>
           <input 
+            id="weight"
             type="number" 
             name="weight" 
             placeholder="Enter weight in kg (optional)" 
@@ -386,8 +415,9 @@ const AllPatients = () => {
         </div>
 
         <div className="mb-4">
-          <label className="block text-sm font-medium mb-1">Height (cm)</label>
+          <label htmlFor="height" className="block text-sm font-medium mb-1">Height (cm)</label>
           <input 
+            id="height"
             type="number" 
             name="height" 
             placeholder="Enter height in cm (optional)" 
@@ -398,8 +428,9 @@ const AllPatients = () => {
         </div>
 
         <div className="mb-4">
-          <label className="block text-sm font-medium mb-1">Muscle Mass (%)</label>
+          <label htmlFor="muscleMass" className="block text-sm font-medium mb-1">Muscle Mass (%)</label>
           <input 
+            id="muscleMass"
             type="number" 
             name="muscleMass" 
             placeholder="Enter muscle mass % (optional)" 
@@ -410,8 +441,9 @@ const AllPatients = () => {
         </div>
 
         <div className="mb-4">
-          <label className="block text-sm font-medium mb-1">Fat Percentage (%)</label>
+          <label htmlFor="fatPercentage" className="block text-sm font-medium mb-1">Fat Percentage (%)</label>
           <input 
+            id="fatPercentage"
             type="number" 
             name="fatPercentage" 
             placeholder="Enter fat percentage (optional)" 
@@ -422,12 +454,14 @@ const AllPatients = () => {
         </div>
         
         <div className="mb-4">
-          <label className="block text-sm font-medium mb-1">
+          <label htmlFor="testName" className="block text-sm font-medium mb-1">
             Selected Tests <span className="text-red-500">*</span>
           </label>
           <div className="flex gap-2 items-center">
             <input 
+              id="testName"
               type="text"
+              name="testName"
               value={formData.testName}
               readOnly
               className="block w-full p-2 border rounded bg-gray-50"
@@ -442,103 +476,121 @@ const AllPatients = () => {
             </button>
           </div>
         </div>
+        
         {showTestModal && (
-  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-    <div className="bg-white rounded-lg p-6 w-full max-w-3xl max-h-[80vh] overflow-y-auto">
-      <div className="flex justify-between items-center mb-4">
-        <h3 className="text-lg font-bold">Select Tests</h3>
-        <button onClick={() => setShowTestModal(false)} className="text-gray-500">✕</button>
-      </div>
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white rounded-lg p-6 w-full max-w-3xl max-h-[80vh] overflow-y-auto">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-lg font-bold">Select Tests</h3>
+                <button 
+                  onClick={() => setShowTestModal(false)} 
+                  className="text-gray-500"
+                  aria-label="Close modal"
+                >
+                  ✕
+                </button>
+              </div>
 
-      {/* Search Input */}
-      <div className="mb-4">
-        <input
-          type="text"
-          placeholder="Search by test name or code..."
-          value={searchTestQuery}
-          onChange={(e) => setSearchTestQuery(e.target.value)}
-          className="w-full p-2 border rounded focus:outline-none focus:border-blue-500"
-        />
-      </div>
+              {/* Search Input */}
+              <div className="mb-4">
+                <label htmlFor="searchTest" className="sr-only">Search Tests</label>
+                <input
+                  id="searchTest"
+                  type="text"
+                  placeholder="Search by test name or code..."
+                  value={searchTestQuery}
+                  onChange={(e) => setSearchTestQuery(e.target.value)}
+                  className="w-full p-2 border rounded focus:outline-none focus:border-blue-500"
+                />
+              </div>
 
-      {/* Table for displaying tests */}
-      <div className="overflow-x-auto">
-        <table className="w-full border-collapse border rounded">
-          <thead>
-            <tr className="bg-gray-100">
-              <th className="border px-4 py-2 text-left">Name</th>
-              <th className="border px-4 py-2 text-left">Code</th>
-              <th className="border px-4 py-2 text-left">Price (₹)</th>
-              <th className="border px-4 py-2 text-left">Discount (%)</th>
+              {/* Table for displaying tests */}
+              <div className="overflow-x-auto">
+                <table className="w-full border-collapse border rounded">
+                  <thead>
+                    <tr className="bg-gray-100">
+                      <th className="border px-4 py-2 text-left">Name</th>
+                      <th className="border px-4 py-2 text-left">Code</th>
+                      <th className="border px-4 py-2 text-left">Price (₹)</th>
+                      <th className="border px-4 py-2 text-left">Discount (%)</th>
+                      <th className="border px-4 py-2 text-left">After Discount (₹)</th>
+                      <th className="border px-4 py-2 text-center">Gold Price (₹)</th>
+                      <th className="border px-4 py-2 text-center">Select</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredTests.length > 0 ? (
+                      filteredTests.map(test => (
+                        <tr key={test._id} className="hover:bg-gray-50">
+                          <td className="border px-4 py-2">{test.name}</td>
+                          <td className="border px-4 py-2">{test.testCode}</td>
+                          <td className="border px-4 py-2">{test.price}</td>
+                          <td className="border px-4 py-2">{test.discount}</td>
+                          <td className="border px-4 py-2">
+                            {(test.price * (1 - test.discount/100)).toFixed(2)}
+                          </td>
+                          <td className="border px-4 py-2 text-center">
+                            {(test.price * GOLD_DISCOUNT_RATE).toFixed(2)}
+                          </td>
+                          <td className="border px-4 py-2 text-center">
+                            <button
+                              type="button"
+                              onClick={() => handleTestSelect(test)}
+                              className={`px-3 py-1 rounded ${
+                                selectedTests.find(t => t._id === test._id)
+                                  ? "bg-red-500 text-white"
+                                  : "bg-blue-500 text-white"
+                              }`}
+                            >
+                              {selectedTests.find(t => t._id === test._id) ? "Remove" : "Add"}
+                            </button>
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan="7" className="text-center text-gray-500 py-4">
+                          No tests found matching your search
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
 
-              <th className="border px-4 py-2 text-left">Final Price (%)</th>
-              <th className="border px-4 py-2 text-center">Gold Price (20% off)</th>
-              <th className="border px-4 py-2 text-center">Select</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredTests.length > 0 ? (
-              filteredTests.map(test => (
-                <tr key={test._id} className="hover:bg-gray-50">
-                  <td className="border px-4 py-2">{test.name}</td>
-                  <td className="border px-4 py-2">{test.testCode}</td>
-                  <td className="border px-4 py-2">{test.price}</td>
-                  <td className="border px-4 py-2">{test.discount}</td>
+              {selectedTests.length > 0 && <BillingDetails />}
 
-                  <td className="border px-4 py-2">{test.price * (1 - test.discount/100)}</td>
-                  <td className="border px-4 py-2">{test.price * 0.8}</td>
-
-                  <td className="border px-4 py-2 text-center">
-                    <button
-                      onClick={() => handleTestSelect(test)}
-                      className={`px-3 py-1 rounded ${
-                        selectedTests.find(t => t._id === test._id)
-                          ? "bg-red-500 text-white"
-                          : "bg-blue-500 text-white"
-                      }`}
-                    >
-                      {selectedTests.find(t => t._id === test._id) ? "Remove" : "Add"}
-                    </button>
-                  </td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="4" className="text-center text-gray-500 py-4">No tests found matching your search</td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
-
-      {selectedTests.length > 0 && <BillingDetails />}
-
-      <div className="flex justify-end gap-2 mt-4">
-        <button
-          onClick={() => setShowTestModal(false)}
-          className="px-4 py-2 border rounded"
-        >
-          Cancel
-        </button>
-        <button
-          onClick={handleTestsSubmit}
-          className="px-4 py-2 bg-blue-500 text-white rounded"
-        >
-          Add Selected Tests (₹{billingDetails.finalAmount.toFixed(2)})
-        </button>
-        <button
-          onClick={handleTestsSubmit}
-          className="px-4 py-2 bg-blue-500 text-white rounded"
-        >
-          Add Selected Tests (₹{billingDetails.finalGoldAmount.toFixed(2)})
-        </button>
-      </div>
-    </div>
-  </div>
-)}
+              <div className="flex justify-end gap-2 mt-4">
+                <button
+                  type="button"
+                  onClick={() => setShowTestModal(false)}
+                  className="px-4 py-2 border rounded"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleTestsSubmit(false)}
+                  className="px-4 py-2 bg-blue-500 text-white rounded"
+                >
+                  Add Selected Tests (₹{billingDetails.finalAmount.toFixed(2)})
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleTestsSubmit(true)}
+                  className="px-4 py-2 bg-yellow-500 text-white rounded"
+                >
+                  Add as Gold Member (₹{billingDetails.finalGoldAmount.toFixed(2)})
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+        
         <div className="mb-4">
-          <label className="block text-gray-700 mb-2">Report Images</label>
+          <label htmlFor="reportImages" className="block text-sm font-medium mb-1">Report Images</label>
           <input
+            id="reportImages"
             type="file"
             multiple
             accept="image/*"
@@ -564,7 +616,7 @@ const AllPatients = () => {
           className={`px-4 py-2 bg-blue-500 text-white rounded w-full ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
           disabled={loading}
         >
-          {loading ? 'Processing...' : isExistingPatient ? 'Add Patient' : 'Add Patient'}
+          {loading ? 'Processing...' : isExistingPatient ? 'Add Test to Patient' : 'Add New Patient'}
         </button>
       </form>
     </div>
