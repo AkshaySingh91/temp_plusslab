@@ -1,5 +1,6 @@
 import express from "express";
 import Patient from "../models/patient.models.js";
+import User from "../models/user.models.js"; // Add this import
 import multer from "multer";
 import cloudinary from "../config/cloudinary.js";
 import { protect, requireSuperAdmin } from '../middlewares/auth.js';
@@ -47,7 +48,7 @@ router.post("/add", upload.array('reportImages', 5), async (req, res) => {
       uploadedImages = results.map(result => result.secure_url);
     }
 
-    // Create new patient with email
+    // Create new patient with tests including weight
     const newPatient = new Patient({
       patientId,
       name,
@@ -56,11 +57,11 @@ router.post("/add", upload.array('reportImages', 5), async (req, res) => {
       dob: dob || undefined, // Only include if provided
       gender,
       bloodType: bloodType || undefined, // Only include if provided
-      weight,
       medicalHistory: medicalHistory ? medicalHistory.split(',') : [],
       pastTests: [{
         testName,
         testDate: new Date(),
+        weight: weight || undefined, // Add weight to test
         reportImages: uploadedImages
       }]
     });
@@ -138,10 +139,40 @@ router.delete("/:patientId", protect, requireSuperAdmin, async (req, res) => {
   }
 });
 
+// Update addTest route to include weight
 router.put("/addTest/:patientId", upload.array('reportImages', 5), async (req, res) => {
   try {
     const { patientId } = req.params;
-    const { testName } = req.body;
+    const { 
+      testName, 
+      weight, 
+      height,
+      muscleMass,
+      fatPercentage,
+      selectedTests 
+    } = req.body;
+
+    // Calculate total billing
+    let originalAmount = 0;
+    let finalAmount = 0;
+
+    if (selectedTests) {
+      const testsArray = JSON.parse(selectedTests);
+      testsArray.forEach(test => {
+        originalAmount += parseFloat(test.price) || 0;
+        const afterDiscount = test.price * (1 - test.discount/100);
+        finalAmount += afterDiscount;
+      });
+    }
+
+    // Check if user has gold membership
+    const patient = await Patient.findOne({ patientId });
+    const user = await User.findOne({ email: patient.email });
+    const isMembershipUser = user?.membershipStatus === 'gold';
+
+    if (isMembershipUser) {
+      finalAmount = finalAmount * 0.8; // Apply additional 20% membership discount
+    }
 
     // Handle image uploads
     let uploadedImages = [];
@@ -162,7 +193,17 @@ router.put("/addTest/:patientId", upload.array('reportImages', 5), async (req, r
           pastTests: {
             testName,
             testDate: new Date(),
-            reportImages: uploadedImages
+            weight,
+            height,           // Add height field
+            muscleMass,       // Add muscle mass field
+            fatPercentage,    // Add fat percentage field
+            reportImages: uploadedImages,
+            billing: {
+              originalAmount,
+              discount: originalAmount - finalAmount,
+              finalAmount,
+              membershipDiscount: isMembershipUser
+            }
           }
         }
       },

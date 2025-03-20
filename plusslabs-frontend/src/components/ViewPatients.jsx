@@ -142,7 +142,7 @@ const ViewPatients = () => {
         </table>
       </div>
 
-      {/* Modal for Viewing Test History in Tabular Format */}
+      {/* Modal for Test History */}
       {showModal && selectedPatient && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto p-6">
@@ -158,13 +158,18 @@ const ViewPatients = () => {
               </button>
             </div>
 
-            {/* Test Details in Table Format */}
+            {/* Test Details Table */}
             <div className="overflow-x-auto">
               <table className="min-w-full border-collapse border border-gray-300">
                 <thead>
                   <tr className="bg-gray-200">
                     <th className="border px-4 py-2">Test Name</th>
                     <th className="border px-4 py-2">Date</th>
+                    <th className="border px-4 py-2">Weight</th>
+                    <th className="border px-4 py-2">Height</th>
+                    <th className="border px-4 py-2">Muscle Mass</th>
+                    <th className="border px-4 py-2">Fat %</th>
+                    <th className="border px-4 py-2">Amount</th>
                     <th className="border px-4 py-2">Reports</th>
                   </tr>
                 </thead>
@@ -172,7 +177,36 @@ const ViewPatients = () => {
                   {selectedPatient.pastTests?.map((test, index) => (
                     <tr key={index}>
                       <td className="border px-4 py-2">{test.testName}</td>
-                      <td className="border px-4 py-2">{new Date(test.testDate).toLocaleDateString()}</td>
+                      <td className="border px-4 py-2">
+                        {new Date(test.testDate).toLocaleDateString()}
+                      </td>
+                      <td className="border px-4 py-2">
+                        {test.weight ? `${test.weight} kg` : '-'}
+                      </td>
+                      <td className="border px-4 py-2">
+                        {test.height ? `${test.height} cm` : '-'}
+                      </td>
+                      <td className="border px-4 py-2">
+                        {test.muscleMass ? `${test.muscleMass}%` : '-'}
+                      </td>
+                      <td className="border px-4 py-2">
+                        {test.fatPercentage ? `${test.fatPercentage}%` : '-'}
+                      </td>
+                      <td className="border px-4 py-2">
+                        {test.billing ? (
+                          <div className="flex flex-col text-sm">
+                            <span className="text-gray-500 line-through">
+                              ₹{test.billing.originalAmount}
+                            </span>
+                            {test.billing.membershipDiscount && (
+                              <span className="text-blue-600">Gold Member -20%</span>
+                            )}
+                            <span className="font-bold text-green-600">
+                              Final: ₹{test.billing.finalAmount}
+                            </span>
+                          </div>
+                        ) : '-'}
+                      </td>
                       <td className="border px-4 py-2">
                         <div className="flex flex-wrap gap-2">
                           {test.reportImages?.map((image, imgIndex) => (

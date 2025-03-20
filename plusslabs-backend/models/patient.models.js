@@ -15,7 +15,17 @@ const patientSchema = new mongoose.Schema(
         testId: { type: mongoose.Schema.Types.ObjectId, ref: "Test" },
         testName: { type: String, required: true },
         testDate: { type: Date, required: true },
+        weight: { type: String }, // Add weight field to each test entry
+        height: { type: String },
+        muscleMass: { type: String },
+        fatPercentage: { type: String },
         reportImages: [{ type: String }],
+        billing: {
+          originalAmount: { type: Number },
+          discount: { type: Number },
+          finalAmount: { type: Number },
+          membershipDiscount: { type: Boolean, default: false }
+        }
       }
     ],
   },
