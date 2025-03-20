@@ -30,7 +30,8 @@ const AllPatients = () => {
   const [billingDetails, setBillingDetails] = useState({
     originalTotal: 0,
     discountedTotal: 0,
-    finalAmount: 0
+    finalAmount: 0,
+    finalGoldAmount: 0
   });
 
   useEffect(() => {
@@ -130,19 +131,22 @@ const AllPatients = () => {
       // Calculate billing amounts
       let originalTotal = 0;
       let discountedTotal = 0;
+      let finalGoldAmount = 0;
 
       newTests.forEach(test => {
         originalTotal += test.price;
         // Apply regular discount
         const afterDiscount = test.price * (1 - test.discount/100);
-        // Apply gold membership discount if applicable
-        discountedTotal += user?.membershipStatus === 'gold' ? afterDiscount * 0.8 : afterDiscount;
-      });
+        discountedTotal += afterDiscount;
+        // Apply gold discount  (20% off)
+        finalGoldAmount += test.price * 0.8;
+            });
 
       setBillingDetails({
         originalTotal,
         discountedTotal,
-        finalAmount: discountedTotal
+        finalAmount: discountedTotal,
+        finalGoldAmount: finalGoldAmount
       });
       
       return newTests;
@@ -233,19 +237,17 @@ const AllPatients = () => {
         <span>Discounted Amount:</span>
         <span>-₹{(billingDetails.originalTotal - billingDetails.discountedTotal).toFixed(2)}</span>
       </div>
-      {user?.membershipStatus === 'gold' && (
-        <div className="flex justify-between text-blue-600">
-          <span>Gold Member Discount (20%):</span>
-          <span>Extra 20% off</span>
-        </div>
-      )}
+      
       <div className="flex justify-between font-bold text-xl border-t pt-2">
         <span>Final Amount:</span>
         <span>₹{billingDetails.finalAmount.toFixed(2)}</span>
+        <span>Final Gold Amount:</span>
+        <span>₹{billingDetails.finalGoldAmount.toFixed(2)}</span>
       </div>
     </div>
   );
 
+  
   return (
     <div className="h-screen p-5">
       <h1 className="text-2xl font-bold mb-4">
@@ -434,91 +436,106 @@ const AllPatients = () => {
             <button
               type="button"
               onClick={() => setShowTestModal(true)}
-              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              className="px-2 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
             >
-              Select Tests
+              Add Tests
             </button>
           </div>
         </div>
-
         {showTestModal && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg p-6 w-full max-w-2xl max-h-[80vh] overflow-y-auto">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-bold">Select Tests</h3>
-                <button onClick={() => setShowTestModal(false)} className="text-gray-500">✕</button>
-              </div>
+  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div className="bg-white rounded-lg p-6 w-full max-w-3xl max-h-[80vh] overflow-y-auto">
+      <div className="flex justify-between items-center mb-4">
+        <h3 className="text-lg font-bold">Select Tests</h3>
+        <button onClick={() => setShowTestModal(false)} className="text-gray-500">✕</button>
+      </div>
 
-              {/* Add Search Input */}
-              <div className="mb-4">
-                <div className="relative">
-                  <input
-                    type="text"
-                    placeholder="Search by test name or code..."
-                    value={searchTestQuery}
-                    onChange={(e) => setSearchTestQuery(e.target.value)}
-                    className="w-full p-2 pr-10 border rounded focus:outline-none focus:border-blue-500"
-                  />
-                  <span className="absolute right-3 top-2.5 text-gray-400">
-                    <i className="fas fa-search"></i>
-                  </span>
-                </div>
-              </div>
+      {/* Search Input */}
+      <div className="mb-4">
+        <input
+          type="text"
+          placeholder="Search by test name or code..."
+          value={searchTestQuery}
+          onChange={(e) => setSearchTestQuery(e.target.value)}
+          className="w-full p-2 border rounded focus:outline-none focus:border-blue-500"
+        />
+      </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                {filteredTests.map(test => (
-                  <div
-                    key={test._id}
-                    onClick={() => handleTestSelect(test)}
-                    className={`p-3 border rounded cursor-pointer transition-colors ${
-                      selectedTests.find(t => t._id === test._id)
-                        ? 'bg-blue-50 border-blue-500'
-                        : 'hover:bg-gray-50'
-                    }`}
-                  >
-                    <div className="flex items-center gap-2">
-                      <input
-                        type="checkbox"
-                        checked={selectedTests.find(t => t._id === test._id)}
-                        onChange={() => {}}
-                        className="h-4 w-4"
-                      />
-                      <div>
-                        <p className="font-medium">{test.name}</p>
-                        <p className="text-sm text-gray-500">Code: {test.testCode}</p>
-                        <p className="text-sm text-gray-500">Price: ₹{test.price}</p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-                
-                {filteredTests.length === 0 && (
-                  <div className="col-span-2 text-center py-4 text-gray-500">
-                    No tests found matching your search
-                  </div>
-                )}
-              </div>
+      {/* Table for displaying tests */}
+      <div className="overflow-x-auto">
+        <table className="w-full border-collapse border rounded">
+          <thead>
+            <tr className="bg-gray-100">
+              <th className="border px-4 py-2 text-left">Name</th>
+              <th className="border px-4 py-2 text-left">Code</th>
+              <th className="border px-4 py-2 text-left">Price (₹)</th>
+              <th className="border px-4 py-2 text-left">Discount (%)</th>
 
-              {selectedTests.length > 0 && <BillingDetails />}
+              <th className="border px-4 py-2 text-left">Final Price (%)</th>
+              <th className="border px-4 py-2 text-center">Gold Price (20% off)</th>
+              <th className="border px-4 py-2 text-center">Select</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredTests.length > 0 ? (
+              filteredTests.map(test => (
+                <tr key={test._id} className="hover:bg-gray-50">
+                  <td className="border px-4 py-2">{test.name}</td>
+                  <td className="border px-4 py-2">{test.testCode}</td>
+                  <td className="border px-4 py-2">{test.price}</td>
+                  <td className="border px-4 py-2">{test.discount}</td>
 
-              <div className="flex justify-end gap-2 mt-4">
-                <button
-                  onClick={() => setShowTestModal(false)}
-                  className="px-4 py-2 border rounded"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={handleTestsSubmit}
-                  className="px-4 py-2 bg-blue-500 text-white rounded"
-                >
-                  Add Selected Tests (₹{billingDetails.finalAmount.toFixed(2)})
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
+                  <td className="border px-4 py-2">{test.price * (1 - test.discount/100)}</td>
+                  <td className="border px-4 py-2">{test.price * 0.8}</td>
 
+                  <td className="border px-4 py-2 text-center">
+                    <button
+                      onClick={() => handleTestSelect(test)}
+                      className={`px-3 py-1 rounded ${
+                        selectedTests.find(t => t._id === test._id)
+                          ? "bg-red-500 text-white"
+                          : "bg-blue-500 text-white"
+                      }`}
+                    >
+                      {selectedTests.find(t => t._id === test._id) ? "Remove" : "Add"}
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="4" className="text-center text-gray-500 py-4">No tests found matching your search</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+
+      {selectedTests.length > 0 && <BillingDetails />}
+
+      <div className="flex justify-end gap-2 mt-4">
+        <button
+          onClick={() => setShowTestModal(false)}
+          className="px-4 py-2 border rounded"
+        >
+          Cancel
+        </button>
+        <button
+          onClick={handleTestsSubmit}
+          className="px-4 py-2 bg-blue-500 text-white rounded"
+        >
+          Add Selected Tests (₹{billingDetails.finalAmount.toFixed(2)})
+        </button>
+        <button
+          onClick={handleTestsSubmit}
+          className="px-4 py-2 bg-blue-500 text-white rounded"
+        >
+          Add Selected Tests (₹{billingDetails.finalGoldAmount.toFixed(2)})
+        </button>
+      </div>
+    </div>
+  </div>
+)}
         <div className="mb-4">
           <label className="block text-gray-700 mb-2">Report Images</label>
           <input
