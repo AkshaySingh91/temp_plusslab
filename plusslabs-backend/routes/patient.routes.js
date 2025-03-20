@@ -224,4 +224,31 @@ router.put("/addTest/:patientId", upload.array('reportImages', 5), async (req, r
   }
 });
 
+// Add this new route to delete a specific test from patient history
+router.delete("/:patientId/test/:testId", protect, requireSuperAdmin, async (req, res) => {
+  try {
+    const { patientId, testId } = req.params;
+    
+    const patient = await Patient.findOne({ patientId });
+    if (!patient) {
+      return res.status(404).json({ message: "Patient not found" });
+    }
+
+    // Remove the specific test from pastTests array
+    const updatedPatient = await Patient.findOneAndUpdate(
+      { patientId },
+      { $pull: { pastTests: { _id: testId } } },
+      { new: true }
+    );
+
+    res.status(200).json({
+      message: "Test deleted successfully",
+      patient: updatedPatient
+    });
+  } catch (error) {
+    console.error("Error deleting test:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+});
+
 export default router;

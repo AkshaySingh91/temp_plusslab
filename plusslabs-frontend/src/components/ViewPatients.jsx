@@ -65,6 +65,29 @@ const ViewPatients = () => {
     setShowModal(true);
   };
 
+  const handleDeleteTest = async (patientId, testId) => {
+    if (!window.confirm("Are you sure you want to delete this test history?")) {
+      return;
+    }
+
+    try {
+      await axios.delete(
+        `http://localhost:3000/api/patients/${patientId}/test/${testId}`,
+        { withCredentials: true }
+      );
+      
+      // Update the local state to remove the deleted test
+      setSelectedPatient(prev => ({
+        ...prev,
+        pastTests: prev.pastTests.filter(test => test._id !== testId)
+      }));
+      
+      alert("Test history deleted successfully");
+    } catch (error) {
+      alert(error.response?.data?.message || "Failed to delete test history");
+    }
+  };
+
   useEffect(() => {
     if (searchTerm) {
       setFilteredPatients(
@@ -171,6 +194,9 @@ const ViewPatients = () => {
                     <th className="border px-4 py-2">Fat %</th>
                     <th className="border px-4 py-2">Amount</th>
                     <th className="border px-4 py-2">Reports</th>
+                    {userRole === 'superadmin' && (
+                      <th className="border px-4 py-2">Actions</th>
+                    )}
                   </tr>
                 </thead>
                 <tbody>
@@ -226,6 +252,17 @@ const ViewPatients = () => {
                           ))}
                         </div>
                       </td>
+                      {userRole === 'superadmin' && (
+                        <td className="border px-4 py-2">
+                          <button
+                            onClick={() => handleDeleteTest(selectedPatient.patientId, test._id)}
+                            className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 transition-colors"
+                          >
+                            <i className="fas fa-trash mr-1"></i>
+                            Delete
+                          </button>
+                        </td>
+                      )}
                     </tr>
                   ))}
                   {(!selectedPatient.pastTests || selectedPatient.pastTests.length === 0) && (

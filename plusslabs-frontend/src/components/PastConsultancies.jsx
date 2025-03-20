@@ -7,17 +7,24 @@ const PastConsultancies = () => {
   const [patientData, setPatientData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [expandedTest, setExpandedTest] = useState(null);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        // First get the user profile
         const userRes = await axios.get("http://localhost:3000/api/auth/profile", {
           withCredentials: true,
         });
-        const patientRes = await axios.get(
-          `http://localhost:3000/api/patients/user/${userRes.data.email}`
-        );
-        setPatientData(patientRes.data || { pastTests: [] });
+        setUser(userRes.data);
+
+        // Then get patient data if user has email
+        if (userRes.data.email) {
+          const patientRes = await axios.get(
+            `http://localhost:3000/api/patients/user/${userRes.data.email}`
+          );
+          setPatientData(patientRes.data);
+        }
       } catch (err) {
         console.error("Error:", err);
         setPatientData(null);
@@ -37,39 +44,164 @@ const PastConsultancies = () => {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-500"></div>
-      </div>
-    );
-  }
+  const handleActivateMembership = () => {
+    window.location.href = 'tel:8237006990';
+  };
 
-  if (!patientData) {
+  // Function to sort and format health metrics from test history
+  const getHealthMetricsHistory = () => {
+    if (!patientData?.pastTests) return [];
+    
+    return patientData.pastTests
+      .filter(test => test.weight || test.height || test.muscleMass || test.fatPercentage)
+      .map(test => ({
+        date: new Date(test.testDate),
+        metrics: {
+          weight: test.weight,
+          height: test.height,
+          muscleMass: test.muscleMass,
+          fatPercentage: test.fatPercentage
+        }
+      }))
+      .sort((a, b) => b.date - a.date);
+  };
+
+  // Health Metrics History Component
+  const HealthMetricsTimeline = () => (
+    <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-xl font-semibold text-gray-800">
+          Health Metrics History
+        </h2>
+        {user?.membershipStatus === 'gold' ? (
+          <span className="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-medium">
+            <i className="fas fa-crown mr-2"></i>Gold Member
+          </span>
+        ) : (
+          <button
+            onClick={handleActivateMembership}
+            className="bg-gradient-to-r from-yellow-400 to-yellow-600 text-white px-4 py-2 rounded-lg text-sm font-medium"
+          >
+            <i className="fas fa-crown mr-2"></i>
+            Activate Gold Membership
+          </button>
+        )}
+      </div>
+
+      {user?.membershipStatus === 'gold' ? (
+        <div className="overflow-x-auto">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Weight</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Height</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Muscle Mass</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Fat %</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">BMI</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {getHealthMetricsHistory().map((record, index) => {
+                // Calculate BMI if both weight and height are available
+                const bmi = record.metrics.weight && record.metrics.height 
+                  ? (record.metrics.weight / Math.pow(record.metrics.height/100, 2)).toFixed(1)
+                  : '-';
+
+                return (
+                  <tr key={index} className="hover:bg-gray-50">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      {record.date.toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                      })}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      {record.metrics.weight ? `${record.metrics.weight} kg` : '-'}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      {record.metrics.height ? `${record.metrics.height} cm` : '-'}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      {record.metrics.muscleMass ? `${record.metrics.muscleMass}%` : '-'}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      {record.metrics.fatPercentage ? `${record.metrics.fatPercentage}%` : '-'}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      {bmi}
+                    </td>
+                  </tr>
+                );
+              })}
+              {getHealthMetricsHistory().length === 0 && (
+                <tr>
+                  <td colSpan="6" className="px-6 py-4 text-center text-sm text-gray-500">
+                    No health metrics recorded yet
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <div className="bg-gray-50 p-6 rounded-lg text-center">
+          <p className="text-gray-600 mb-4">
+            Upgrade to Gold Membership to track your health metrics and access detailed reports
+          </p>
+          <button
+            onClick={handleActivateMembership}
+            className="bg-yellow-500 text-white px-6 py-2 rounded-lg hover:bg-yellow-600 transition-all"
+          >
+            <i className="fas fa-phone-alt mr-2"></i>
+            Call to Activate (8237006990)
+          </button>
+        </div>
+      )}
+    </div>
+  );
+
+  // Show loading spinner
+  if (loading) {
     return (
       <>
         <Navbar />
-        <div className="bg-[#f9f0dd] h-[400px] w-[95%] mx-auto rounded-2xl mt-4 flex items-center justify-center ">
-        <div className="container mx-auto px-4 relative">
-          <span className="text-white rounded-2xl font-semibold  p-2 bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 ">MEMBERSHIP PERKS</span>
-          <h1 className="text-3xl mt-4 md:text-4xl lg:text-5xl font-bold text-[#0f4726] text-center"><i className="fa-regular fa-circle-check text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600"></i> Your Medical History with PLUSSLABS</h1>
-          <p className="text-[#0f4726] text-center mt-2 md:mt-4 opacity-90 text-lg "><i className="fa-regular fa-chart-bar"></i> Track all your past consultations and medical reports</p>
-          <div className="flex gap-4 justify-center mt-6 md:w-[50%] mx-auto border-t-2 border-[#0f4726] pt-4">
-          <h2 className=" text-[12px] mt-5 md:text-[18px] font-semibold text-[#0f4726] border-[2px] border-[#0f4726] p-2 rounded-lg"><i className="fa-solid fa-tag text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 "></i> 20% off on all tests</h2>
-                  <h2 className=" text-[12px] mt-5 md:text-[18px] font-semibold text-[#0f4726] border-[2px] border-[#0f4726] p-2 rounded-lg"><i className="fa-solid fa-clipboard text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600"></i> View past Consultancies</h2>
-                  <h2 className=" text-[12px] mt-5 md:text-[18px] font-semibold text-[#0f4726] border-[2px] border-[#0f4726] p-2 rounded-lg"><i className="fa-solid fa-clock text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600"></i> Get Reports in 2 hrs</h2>
-          </div>
+        <div className="flex items-center justify-center min-h-screen">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-500"></div>
         </div>
-        
-      </div>
-        <div className="container mx-auto px-4 flex flex-col items-center justify-center min-h-[20vh] mt-10">
-          <div className="bg-red-50 rounded-full p-6">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
+      </>
+    );
+  }
+
+  // Show no data message if no patient data
+  if (!patientData || !patientData.pastTests || patientData.pastTests.length === 0) {
+    return (
+      <>
+        <Navbar />
+        <div className="bg-[#f9f0dd] min-h-screen">
+          {/* ...existing membership perks UI... */}
+          <div className="container mx-auto px-4 flex flex-col items-center justify-center py-10">
+            <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
+              <div className="text-center">
+                <div className="bg-red-50 rounded-full p-6 inline-block mb-4">
+                  <i className="fas fa-clipboard-list text-4xl text-red-500"></i>
+                </div>
+                <h2 className="text-2xl font-semibold text-gray-800 mb-2">No Records Found</h2>
+                <p className="text-gray-600">
+                  We couldn't find any test records associated with your account. 
+                  Book your first test to start tracking your health journey.
+                </p>
+                <button 
+                  onClick={() => window.location.href = 'tel:8237006990'}
+                  className="mt-6 bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600 transition-colors"
+                >
+                  <i className="fas fa-phone-alt mr-2"></i>
+                  Book Now
+                </button>
+              </div>
+            </div>
           </div>
-          <h2 className="text-2xl font-semibold text-gray-800">No Data Found</h2>
-          <p className="text-gray-500 mt-2">We couldn't find any consultancy records for your account.</p>
         </div>
       </>
     );
@@ -93,7 +225,9 @@ const PastConsultancies = () => {
       </div>
 
       <div className="container mx-auto px-4 py-8 -mt-10">
-        <div className="bg-white rounded-xl shadow-lg p-6 md:p-8 ">
+        <HealthMetricsTimeline />
+        
+        <div className="bg-white rounded-xl shadow-lg p-6 md:p-8">
           <h2 className="text-2xl font-semibold text-gray-800 mb-6">Past Consultancies</h2>
 
           {patientData.pastTests?.length > 0 ? (
