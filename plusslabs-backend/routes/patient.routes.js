@@ -11,7 +11,7 @@ const upload = multer({ dest: 'uploads/' });
 // ➤ Add a new patient with images
 router.post("/add", upload.array('reportImages', 5), async (req, res) => {
   try {
-    const { patientId, name, phoneNumber, email, dob, gender, bloodType, weight, medicalHistory, testName } = req.body;
+    const { patientId, name, phoneNumber, email, dob, gender, bloodType, weight, medicalHistory, testName , height, muscleMass, fatPercentage} = req.body;
     
     // Only check required fields
     if (!patientId) {
@@ -62,6 +62,9 @@ router.post("/add", upload.array('reportImages', 5), async (req, res) => {
         testName,
         testDate: new Date(),
         weight: weight || undefined, // Add weight to test
+        height: height || undefined, // Add height to test
+        muscleMass: muscleMass || undefined, // Add muscle mass to test 
+        fatPercentage: fatPercentage || undefined, // Add fat percentage to test
         reportImages: uploadedImages
       }]
     });
