@@ -16,20 +16,19 @@ const testSchema = new mongoose.Schema(
     goldPrice: { 
       type: Number,
       default: function() {
-        // Calculate final price after regular discount
-        const regularDiscountedPrice = this.price * (1 - this.discount/100);
-        // Apply additional 20% gold discount on final price
-        return regularDiscountedPrice * 0.8;
+        // Calculate gold price as 80% of original price (20% discount)
+        return this.price * 0.8;
       }
     }
   },
   { timestamps: true }
 );
 
-// Recalculate goldPrice whenever price or discount changes
-testSchema.pre("save", function (next) {
-  const regularDiscountedPrice = this.price * (1 - this.discount/100);
-  this.goldPrice = regularDiscountedPrice * 0.8;
+// Add middleware to update goldPrice whenever price changes
+testSchema.pre('save', function(next) {
+  if (this.isModified('price')) {
+    this.goldPrice = this.price * 0.8;
+  }
   next();
 });
 

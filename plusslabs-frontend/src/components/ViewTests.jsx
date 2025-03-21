@@ -128,7 +128,7 @@ const ViewTests = () => {
               <tbody>
                 {currentTests.map((test) => {
                   const finalPrice = test.price * (1 - test.discount/100);
-                  const goldPrice = test.price * 0.8; // Additional 20% off final price
+                  const goldPrice = test.price * 0.8; // 20% off original price, not discounted price
                   return (
                     <tr key={test._id} className="text-center border-t">
                       <td className="py-2 px-4 border">{test.testCode}</td>
@@ -142,7 +142,7 @@ const ViewTests = () => {
                       </td>
                       <td className="py-2 px-4 border text-blue-600 font-bold">
                         ₹{goldPrice.toFixed(2)}
-                        <span className="text-xs block text-gray-500">(Extra 20% off)</span>
+                        <span className="text-xs block text-gray-500">(20% off original price)</span>
                       </td>
                       <td className="py-2 px-4 border">
                         {user?.role === 'superadmin' && (
@@ -165,7 +165,7 @@ const ViewTests = () => {
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mt-10">
             {currentTests.map((test) => {
               const finalPrice = test.price * (1 - test.discount/100);
-              const goldPrice = test.price * 0.8;
+              const goldPrice = test.price * 0.8; // 20% off original price
               return (
                 <div
                   key={test._id}
@@ -199,7 +199,7 @@ const ViewTests = () => {
 
                       <span className="text-yellow-800 bg-gradient-to-r border-yellow-400 from-yellow-400 via-yellow-500 to-yellow-600 p-2 rounded-lg font-bold mt-2 relative flex flex-col items-center md:justify-between md:flex-row ">
                         <div className="text-[10px] md:text-sm">
-                          <i class="fa-solid fa-sack-dollar"></i> For Members
+                          <i className="fa-solid fa-sack-dollar"></i> For Members
                           Only
                         </div>
                         <div className="text-xs md:text-xl">
@@ -220,7 +220,7 @@ const ViewTests = () => {
                     />
                   </span>
                   <button className="w-full bg-black text-white font-semibold rounded p-2 mt-2" onClick={()=> handleBook()}>
-                    <i class="fa-regular fa-pen-to-square"></i> Book Now
+                    <i className="fa-regular fa-pen-to-square"></i> Book Now
                   </button>
                 </div>
               );

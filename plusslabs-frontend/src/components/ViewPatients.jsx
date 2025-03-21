@@ -207,7 +207,7 @@ const ViewPatients = () => {
                         {new Date(test.testDate).toLocaleDateString()}
                       </td>
                       <td className="border px-4 py-2">
-                        {test.weight ? `${test.weight} kg` : '-'}
+                        {test.weight || '-'}
                       </td>
                       <td className="border px-4 py-2">
                         {test.height ? `${test.height} cm` : '-'}

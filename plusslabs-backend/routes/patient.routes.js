@@ -11,7 +11,7 @@ const upload = multer({ dest: 'uploads/' });
 // ➤ Add a new patient with images
 router.post("/add", upload.array('reportImages', 5), async (req, res) => {
   try {
-    const { patientId, name, phoneNumber, email, dob, gender, bloodType, weight, medicalHistory, testName , height, muscleMass, fatPercentage} = req.body;
+    const { patientId, name, phoneNumber, email, dob, gender, bloodType, weight, medicalHistory, testName , height, muscleMass, fatPercentage, selectedTests} = req.body;
     
     // Only check required fields
     if (!patientId) {
@@ -48,6 +48,18 @@ router.post("/add", upload.array('reportImages', 5), async (req, res) => {
       uploadedImages = results.map(result => result.secure_url);
     }
 
+    // Update billing calculation to use finalPrice from front-end
+    let originalAmount = 0;
+    let finalAmount = 0;
+
+    if (selectedTests) {
+      const testsArray = JSON.parse(selectedTests);
+      testsArray.forEach(test => {
+        originalAmount += parseFloat(test.price) || 0;
+        finalAmount += parseFloat(test.finalPrice) || 0;
+      });
+    }
+
     // Create new patient with tests including weight
     const newPatient = new Patient({
       patientId,
@@ -65,7 +77,13 @@ router.post("/add", upload.array('reportImages', 5), async (req, res) => {
         height: height || undefined, // Add height to test
         muscleMass: muscleMass || undefined, // Add muscle mass to test 
         fatPercentage: fatPercentage || undefined, // Add fat percentage to test
-        reportImages: uploadedImages
+        reportImages: uploadedImages,
+        billing: {
+          originalAmount,
+          discount: originalAmount - finalAmount,
+          finalAmount,
+          membershipDiscount: isGoldPrice
+        }
       }]
     });
 
@@ -155,7 +173,16 @@ router.put("/addTest/:patientId", upload.array('reportImages', 5), async (req, r
       selectedTests 
     } = req.body;
 
-    // Calculate total billing
+    // First, check if patient exists and get membership status
+    const patient = await Patient.findOne({ patientId });
+    if (!patient) {
+      return res.status(404).json({ message: "Patient not found" });
+    }
+
+    const user = await User.findOne({ email: patient.email });
+    const isMembershipUser = user?.membershipStatus === 'gold';
+
+    // Then calculate billing
     let originalAmount = 0;
     let finalAmount = 0;
 
@@ -163,18 +190,14 @@ router.put("/addTest/:patientId", upload.array('reportImages', 5), async (req, r
       const testsArray = JSON.parse(selectedTests);
       testsArray.forEach(test => {
         originalAmount += parseFloat(test.price) || 0;
-        const afterDiscount = test.price * (1 - test.discount/100);
-        finalAmount += afterDiscount;
+        if (isMembershipUser) {
+          // Apply 20% discount for gold members
+          finalAmount += test.price * 0.8;
+        } else {
+          // Apply regular discount
+          finalAmount += test.price * (1 - test.discount/100);
+        }
       });
-    }
-
-    // Check if user has gold membership
-    const patient = await Patient.findOne({ patientId });
-    const user = await User.findOne({ email: patient.email });
-    const isMembershipUser = user?.membershipStatus === 'gold';
-
-    if (isMembershipUser) {
-      finalAmount = finalAmount * 0.8; // Apply additional 20% membership discount
     }
 
     // Handle image uploads
@@ -189,6 +212,7 @@ router.put("/addTest/:patientId", upload.array('reportImages', 5), async (req, r
       uploadedImages = results.map(result => result.secure_url);
     }
 
+    // Update patient with new test
     const updatedPatient = await Patient.findOneAndUpdate(
       { patientId },
       {
@@ -197,9 +221,9 @@ router.put("/addTest/:patientId", upload.array('reportImages', 5), async (req, r
             testName,
             testDate: new Date(),
             weight,
-            height,           // Add height field
-            muscleMass,       // Add muscle mass field
-            fatPercentage,    // Add fat percentage field
+            height,
+            muscleMass,
+            fatPercentage,
             reportImages: uploadedImages,
             billing: {
               originalAmount,
@@ -212,10 +236,6 @@ router.put("/addTest/:patientId", upload.array('reportImages', 5), async (req, r
       },
       { new: true }
     );
-
-    if (!updatedPatient) {
-      return res.status(404).json({ message: "Patient not found" });
-    }
 
     res.status(200).json({
       message: "Test added successfully",

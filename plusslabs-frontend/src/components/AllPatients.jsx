@@ -34,6 +34,11 @@ const AllPatients = () => {
     finalAmount: 0,
     finalGoldAmount: 0
   });
+  const [paymentDetails, setPaymentDetails] = useState({
+    method: 'cash',
+    status: 'pending'
+  });
+  const [isGoldPrice, setIsGoldPrice] = useState(false);
   
   // Gold discount rate as a constant
   const GOLD_DISCOUNT_RATE = 0.8; // 20% off
@@ -151,6 +156,7 @@ const AllPatients = () => {
   };
 
   const handleTestsSubmit = (isGold = false) => {
+    setIsGoldPrice(isGold);
     setFormData(prev => ({
       ...prev,
       testName: selectedTests.map(t => t.name).join(", "),
@@ -172,13 +178,20 @@ const AllPatients = () => {
         formDataToSend.append(key, formData[key]);
       });
       
-      // Add selected tests array with price information
-      formDataToSend.append('selectedTests', JSON.stringify(selectedTests));
+      // Add selected tests array with correct price
+      const testsWithPrice = selectedTests.map(test => ({
+        ...test,
+        finalPrice: isGoldPrice ? test.price * 0.8 : test.price * (1 - test.discount/100)
+      }));
+      formDataToSend.append('selectedTests', JSON.stringify(testsWithPrice));
       
       // Add report images if any
       images.forEach(image => {
         formDataToSend.append('reportImages', image);
       });
+
+      formDataToSend.append('paymentMethod', paymentDetails.method);
+      formDataToSend.append('paymentStatus', paymentDetails.status);
 
       if (isExistingPatient) {
         await axios.put(
@@ -250,6 +263,31 @@ const AllPatients = () => {
       <div className="flex justify-between text-blue-600 border-t pt-2">
         <span>Gold Member Price:</span>
         <span>₹{billingDetails.finalGoldAmount.toFixed(2)}</span>
+      </div>
+    </div>
+  );
+
+  const PaymentSection = () => (
+    <div className="mt-6 p-4 bg-gray-50 rounded-lg">
+      <h3 className="text-lg font-semibold mb-4">Billing Details</h3>
+      
+      <div className="space-y-4">
+        <div className="flex justify-between items-center">
+          <span>Original Amount:</span>
+          <span className="text-gray-600">₹{billingDetails.originalTotal.toFixed(2)}</span>
+        </div>
+
+        <div className="flex justify-between items-center">
+          <span>{isGoldPrice ? "Gold Member Discount" : "Regular Discount"}:</span>
+          <span className="text-green-600">
+            -₹{(billingDetails.originalTotal - (isGoldPrice ? billingDetails.finalGoldAmount : billingDetails.finalAmount)).toFixed(2)}
+          </span>
+        </div>
+
+        <div className="flex justify-between items-center font-bold text-xl border-t pt-2">
+          <span>Final Amount:</span>
+          <span>₹{(isGoldPrice ? billingDetails.finalGoldAmount : billingDetails.finalAmount).toFixed(2)}</span>
+        </div>
       </div>
     </div>
   );
@@ -609,6 +647,10 @@ const AllPatients = () => {
               />
             </div>
           ))}
+        </div>
+
+        <div className="mb-4">
+          {formData.testName && <PaymentSection />}
         </div>
 
         <button 
