@@ -159,8 +159,7 @@ const AllPatients = () => {
     setIsGoldPrice(isGold);
     setFormData(prev => ({
       ...prev,
-      testName: selectedTests.map(t => t.name).join(", "),
-      isGoldMember: isGold
+      testName: selectedTests.map(t => t.name).join(", ")
     }));
     setShowTestModal(false);
   };

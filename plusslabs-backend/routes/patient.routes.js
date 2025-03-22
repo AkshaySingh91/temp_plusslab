@@ -170,19 +170,17 @@ router.put("/addTest/:patientId", upload.array('reportImages', 5), async (req, r
       height,
       muscleMass,
       fatPercentage,
-      selectedTests 
+      selectedTests,
+      isGoldPrice // Add this to track gold price selection
     } = req.body;
 
-    // First, check if patient exists and get membership status
+    // First, check if patient exists
     const patient = await Patient.findOne({ patientId });
     if (!patient) {
       return res.status(404).json({ message: "Patient not found" });
     }
 
-    const user = await User.findOne({ email: patient.email });
-    const isMembershipUser = user?.membershipStatus === 'gold';
-
-    // Then calculate billing
+    // Calculate billing
     let originalAmount = 0;
     let finalAmount = 0;
 
@@ -190,12 +188,11 @@ router.put("/addTest/:patientId", upload.array('reportImages', 5), async (req, r
       const testsArray = JSON.parse(selectedTests);
       testsArray.forEach(test => {
         originalAmount += parseFloat(test.price) || 0;
-        if (isMembershipUser) {
-          // Apply 20% discount for gold members
-          finalAmount += test.price * 0.8;
+        // Calculate final amount based on price type
+        if (isGoldPrice) {
+          finalAmount += test.price * 0.8; // Gold member price (20% off original)
         } else {
-          // Apply regular discount
-          finalAmount += test.price * (1 - test.discount/100);
+          finalAmount += test.price * (1 - test.discount/100); // Regular discounted price
         }
       });
     }
@@ -229,7 +226,7 @@ router.put("/addTest/:patientId", upload.array('reportImages', 5), async (req, r
               originalAmount,
               discount: originalAmount - finalAmount,
               finalAmount,
-              membershipDiscount: isMembershipUser
+              membershipDiscount: isGoldPrice
             }
           }
         }

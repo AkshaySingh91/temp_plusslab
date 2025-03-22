@@ -8,6 +8,7 @@ const PastConsultancies = () => {
   const [loading, setLoading] = useState(true);
   const [expandedTest, setExpandedTest] = useState(null);
   const [user, setUser] = useState(null);
+  const [membershipData, setMembershipData] = useState(null); // Add this state
 
   useEffect(() => {
     const fetchData = async () => {
@@ -17,6 +18,15 @@ const PastConsultancies = () => {
           withCredentials: true,
         });
         setUser(userRes.data);
+
+        // Get membership status if user exists
+        if (userRes.data) {
+          const membershipRes = await axios.get(
+            "http://localhost:3000/api/membership/status",
+            { withCredentials: true }
+          );
+          setMembershipData(membershipRes.data);
+        }
 
         // Then get patient data if user has email
         if (userRes.data.email) {
@@ -213,6 +223,21 @@ const PastConsultancies = () => {
       <div className="bg-[#fef8ec] h-[350px] md:h-[400px] w-full flex items-center  justify-center">
       <div className="container mx-auto px-4 relative">
           <span className="text-white rounded-2xl font-semibold  p-2 bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 ">MEMBERSHIP PERKS</span>
+          
+          {/* Add membership expiry info */}
+          {user?.membershipStatus === 'gold' && membershipData?.active && (
+            <div className="mt-2 text-center">
+              <span className="bg-yellow-100 text-yellow-800 text-sm font-medium px-4 py-1 rounded-full">
+                <i className="fas fa-clock mr-2"></i>
+                Gold Membership expires on: {new Date(membershipData.endDate).toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric'
+                })}
+              </span>
+            </div>
+          )}
+
           <h1 className="text-3xl mt-4 md:text-4xl lg:text-5xl font-bold text-[#0f4726] text-center"><i className="fa-regular fa-circle-check text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600"></i> Your Medical History with PLUSSLABS</h1>
           <p className="text-[#0f4726] text-center mt-2 md:mt-4 opacity-90 text-lg "><i className="fa-regular fa-chart-bar"></i> Track all your past consultations and medical reports</p>
           <div className="flex gap-4 justify-center mt-6 md:w-[50%] mx-auto border-t-2 border-[#0f4726] pt-4">
