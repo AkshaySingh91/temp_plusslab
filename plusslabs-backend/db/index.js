@@ -8,7 +8,14 @@ const connectDB = async () => {
             process.exit(1);
         }
 
-        const connectionInstance = await mongoose.connect(`${process.env.MONGO_URI}/${DB_NAME}`);
+        const connectionInstance = await mongoose.connect(process.env.MONGO_URI, {
+            dbName: DB_NAME,
+            // Add these options for MongoDB Atlas
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+            retryWrites: true,
+            w: "majority"
+        });
 
         console.log(`\nMongoDB connected! DB HOST: ${connectionInstance.connection.host}`);
     } catch (error) {
