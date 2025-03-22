@@ -6,6 +6,7 @@ import authRoutes from './routes/auth.js'
 import adminRoutes from './routes/admin.routes.js'
 import session from 'express-session'
 import membershipRoutes from './routes/membership.routes.js'
+import MongoStore from 'connect-mongo' // Add this import
 
 const app = express()
 
@@ -20,6 +21,10 @@ app.use(session({
   secret: process.env.JWT_SECRET,
   resave: false,
   saveUninitialized: false,
+  store: MongoStore.create({ 
+    mongoUrl: process.env.MONGO_URI,
+    ttl: 24 * 60 * 60 // 1 day
+  }),
   cookie: { 
     secure: process.env.NODE_ENV === 'production',
     sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',

@@ -4,7 +4,12 @@ import bcrypt from "bcryptjs";
 const userSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
+    email: { 
+      type: String, 
+      required: true,
+      unique: true,
+      index: true // Remove duplicate index definition
+    },
     password: { 
       type: String,
       required: function() {
@@ -25,10 +30,9 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// Remove the duplicate index
-userSchema.index({ email: 1 }, { unique: true, sparse: true });
+// Remove the duplicate index declaration
+// userSchema.index({ email: 1 }, { unique: true, sparse: true });
 
-// Remove all existing middleware and add this simple pre-save hook
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
   
@@ -37,7 +41,6 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-// Add password comparison method
 userSchema.methods.comparePassword = async function(password) {
   return await bcrypt.compare(password, this.password);
 };

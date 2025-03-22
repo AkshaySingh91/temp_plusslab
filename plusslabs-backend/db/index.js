@@ -10,9 +10,7 @@ const connectDB = async () => {
 
         const connectionInstance = await mongoose.connect(process.env.MONGO_URI, {
             dbName: DB_NAME,
-            // Add these options for MongoDB Atlas
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
+            // Remove deprecated options
             retryWrites: true,
             w: "majority"
         });
