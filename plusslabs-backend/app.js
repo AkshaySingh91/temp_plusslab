@@ -41,4 +41,18 @@ app.use('/api/auth', authRoutes)
 app.use('/api/admin', adminRoutes)  // Add admin routes
 app.use('/api/membership', membershipRoutes)
 
+// Add error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ 
+    error: 'Internal Server Error',
+    message: err.message 
+  });
+});
+
+// Add ping route for health check
+app.get('/ping', (req, res) => {
+  res.status(200).send('OK');
+});
+
 export { app }

@@ -10,9 +10,14 @@ const connectDB = async () => {
 
         const connectionInstance = await mongoose.connect(process.env.MONGO_URI, {
             dbName: DB_NAME,
-            // Remove deprecated options
+            ssl: true,
+            tls: true,
+            tlsAllowInvalidCertificates: false,
             retryWrites: true,
-            w: "majority"
+            w: "majority",
+            maxPoolSize: 10,
+            serverSelectionTimeoutMS: 5000,
+            socketTimeoutMS: 45000,
         });
 
         console.log(`\nMongoDB connected! DB HOST: ${connectionInstance.connection.host}`);
