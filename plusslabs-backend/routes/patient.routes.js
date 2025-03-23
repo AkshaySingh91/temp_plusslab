@@ -11,27 +11,27 @@ const upload = multer({ dest: 'uploads/' });
 // ➤ Add a new patient with images
 router.post("/add", upload.array('reportImages', 5), async (req, res) => {
   try {
-    const { patientId, name, phoneNumber, email, dob, gender, bloodType, weight, medicalHistory, testName , height, muscleMass, fatPercentage, selectedTests} = req.body;
+    const { selectedTests, ...otherData } = req.body;
     
     // Only check required fields
-    if (!patientId) {
+    if (!otherData.patientId) {
       return res.status(400).json({ message: "Patient ID is required." });
     }
 
-    if (!name) {
+    if (!otherData.name) {
       return res.status(400).json({ message: "Name is required." });
     }
 
-    if (!phoneNumber) {
+    if (!otherData.phoneNumber) {
       return res.status(400).json({ message: "Phone number is required." });
     }
 
-    if (!gender) {
+    if (!otherData.gender) {
       return res.status(400).json({ message: "Gender is required." });
     }
 
     // Check if patientId already exists
-    const existingPatient = await Patient.findOne({ patientId });
+    const existingPatient = await Patient.findOne({ patientId: otherData.patientId });
     if (existingPatient) {
       return res.status(400).json({ message: "Patient ID already exists." });
     }
@@ -49,40 +49,28 @@ router.post("/add", upload.array('reportImages', 5), async (req, res) => {
     }
 
     // Update billing calculation to use finalPrice from front-end
-    let originalAmount = 0;
     let finalAmount = 0;
 
     if (selectedTests) {
       const testsArray = JSON.parse(selectedTests);
       testsArray.forEach(test => {
-        originalAmount += parseFloat(test.price) || 0;
-        finalAmount += parseFloat(test.finalPrice) || 0;
+        finalAmount += parseFloat(test.finalPrice) || 0; // Use the exact price passed from frontend
       });
     }
 
     // Create new patient with tests including weight
     const newPatient = new Patient({
-      patientId,
-      name,
-      phoneNumber,
-      email: email || undefined, // Only include if provided
-      dob: dob || undefined, // Only include if provided
-      gender,
-      bloodType: bloodType || undefined, // Only include if provided
-      medicalHistory: medicalHistory ? medicalHistory.split(',') : [],
+      ...otherData,
       pastTests: [{
-        testName,
+        testName: otherData.testName,
         testDate: new Date(),
-        weight: weight || undefined, // Add weight to test
-        height: height || undefined, // Add height to test
-        muscleMass: muscleMass || undefined, // Add muscle mass to test 
-        fatPercentage: fatPercentage || undefined, // Add fat percentage to test
+        weight: otherData.weight || undefined, // Add weight to test
+        height: otherData.height || undefined, // Add height to test
+        muscleMass: otherData.muscleMass || undefined, // Add muscle mass to test 
+        fatPercentage: otherData.fatPercentage || undefined, // Add fat percentage to test
         reportImages: uploadedImages,
         billing: {
-          originalAmount,
-          discount: originalAmount - finalAmount,
-          finalAmount,
-          membershipDiscount: isGoldPrice
+          finalAmount // Store only the final amount
         }
       }]
     });
@@ -181,19 +169,12 @@ router.put("/addTest/:patientId", upload.array('reportImages', 5), async (req, r
     }
 
     // Calculate billing
-    let originalAmount = 0;
     let finalAmount = 0;
 
     if (selectedTests) {
       const testsArray = JSON.parse(selectedTests);
       testsArray.forEach(test => {
-        originalAmount += parseFloat(test.price) || 0;
-        // Calculate final amount based on price type
-        if (isGoldPrice) {
-          finalAmount += test.price * 0.8; // Gold member price (20% off original)
-        } else {
-          finalAmount += test.price * (1 - test.discount/100); // Regular discounted price
-        }
+        finalAmount += parseFloat(test.finalPrice) || 0; // Use the exact price passed from frontend
       });
     }
 
@@ -223,10 +204,7 @@ router.put("/addTest/:patientId", upload.array('reportImages', 5), async (req, r
             fatPercentage,
             reportImages: uploadedImages,
             billing: {
-              originalAmount,
-              discount: originalAmount - finalAmount,
-              finalAmount,
-              membershipDiscount: isGoldPrice
+              finalAmount // Store only the final amount
             }
           }
         }

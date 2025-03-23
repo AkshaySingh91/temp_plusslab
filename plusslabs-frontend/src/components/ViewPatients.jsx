@@ -139,7 +139,12 @@ const ViewPatients = () => {
                 <td className="border px-4 py-2">{patient.name}</td>
                 <td className="border px-4 py-2">{patient.email}</td>
                 <td className="border px-4 py-2">{patient.phoneNumber}</td>
-                <td className="border px-4 py-2">{new Date(patient.dob).toLocaleDateString()}</td>
+                <td className="border px-4 py-2">
+                  {patient.dob ? 
+                    new Date(patient.dob).toLocaleDateString() : 
+                    '-'
+                  }
+                </td>
                 <td className="border px-4 py-2">{patient.gender}</td>
                 <td className="border px-4 py-2">{patient.bloodType}</td>
                 <td className="border px-4 py-2">{patient.medicalHistory?.join(", ") || "None"}</td>
@@ -222,7 +227,7 @@ const ViewPatients = () => {
                         {test.billing ? (
                           <div className="flex flex-col text-sm">
                             <span className="font-bold text-green-600">
-                               ₹{test.billing.finalAmount}
+                              ₹{test.billing.finalAmount}
                             </span>
                           </div>
                         ) : '-'}

@@ -22,9 +22,7 @@ const patientSchema = new mongoose.Schema(
         reportImages: [{ type: String }],
         billing: {
           originalAmount: { type: Number },
-          discount: { type: Number },
-          finalAmount: { type: Number },
-          membershipDiscount: { type: Boolean, default: false }
+          finalAmount: { type: Number, required: true } // This will store the exact amount added
         }
       }
     ],
