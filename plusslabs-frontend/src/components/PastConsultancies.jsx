@@ -77,100 +77,205 @@ const PastConsultancies = () => {
   };
 
   // Health Metrics History Component
-  const HealthMetricsTimeline = () => (
-    <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-xl font-semibold text-gray-800">
-          Health Metrics History
-        </h2>
+  // Health Metrics History Component
+  const HealthMetricsTimeline = () => {
+    const [selectedMetric, setSelectedMetric] = useState(null);
+    const metricsHistory = getHealthMetricsHistory();
+    const latestMetrics = metricsHistory.length > 0 ? metricsHistory[0].metrics : {};
+    
+    // Calculate latest BMI
+    const latestBmi = latestMetrics.weight && latestMetrics.height 
+      ? (latestMetrics.weight / Math.pow(latestMetrics.height/100, 2)).toFixed(1)
+      : '-';
+    
+    const metricCards = [
+      { 
+        id: 'weight', 
+        title: 'Weight', 
+        value: latestMetrics.weight ? `${latestMetrics.weight} kg` : '-',
+        icon: '/assets/weight-scale.png',
+        color: 'bg-[#fcd470]',
+        fontawesome: <i className="fa-brands fa-web-awesome  text-yellow-600"></i>
+      },
+      { 
+        id: 'height', 
+        title: 'Height', 
+        value: latestMetrics.height ? `${latestMetrics.height} cm` : '-',
+        icon: '/assets/height.png',
+        color: 'bg-[#a7e9a6]',
+        fontawesome: <i className="fa-brands fa-web-awesome"></i>
+
+      },
+      { 
+        id: 'muscleMass', 
+        title: 'Muscle Mass', 
+        value: latestMetrics.muscleMass ? `${latestMetrics.muscleMass}%` : '-',
+        icon: '/assets/muscle.png',
+        color: 'bg-pink-300',
+        fontawesome: <i className="fa-brands fa-web-awesome "></i>
+
+      },
+      { 
+        id: 'fatPercentage', 
+        title: 'Fat %', 
+        value: latestMetrics.fatPercentage ? `${latestMetrics.fatPercentage}%` : '-',
+        icon: '/assets/body-fat.png',
+        color: 'bg-[#b1e4f9]',
+        fontawesome:<i className="fa-brands fa-web-awesome"></i>
+
+      },
+      { 
+        id: 'bmi', 
+        title: 'BMI', 
+        value: latestBmi,
+        icon: '/assets/bmi.png',
+        color: 'bg-red-200',
+        fontawesome:<i className="fa-brands fa-web-awesome"></i>
+
+      }
+    ];
+  
+    const closeDetailView = () => {
+      setSelectedMetric(null);
+    };
+  
+    return (
+      <div className="bg-white rounded-xl  p-6 mb-8">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-xl md:text-3xl font-semibold text-gray-800">
+            Health Metrics History
+          </h2>
+          {user?.membershipStatus === 'gold' ? (
+            <span className="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-medium text-center">
+              <i className="fas fa-crown mr-2"></i>Gold Member
+            </span>
+          ) : (
+            <button
+              onClick={handleActivateMembership}
+              className="bg-gradient-to-r from-yellow-400 to-yellow-600 text-white px-4 py-2 rounded-lg text-sm font-medium"
+            >
+              <i className="fas fa-crown mr-2"></i>
+              Activate Gold Membership
+            </button>
+          )}
+        </div>
+  
         {user?.membershipStatus === 'gold' ? (
-          <span className="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-medium">
-            <i className="fas fa-crown mr-2"></i>Gold Member
-          </span>
+          <>
+            {selectedMetric ? (
+              // Detail view (table format)
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-lg font-medium text-gray-800">
+                    {metricCards.find(card => card.id === selectedMetric)?.title} History
+                  </h3>
+                  <button 
+                    onClick={closeDetailView}
+                    className="bg-red-500 px-2 py-1 text-white rounded-lg"
+                  >
+                    <i className="fas fa-times "></i> Close
+                  </button>
+                </div>
+                
+                <div className="overflow-x-auto">
+                  <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-yellow-200">
+                      <tr>
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-800 uppercase border-r-2 border-gray-400">Date</th>
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-800 uppercase">
+                          {metricCards.find(card => card.id === selectedMetric)?.title}
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className=" divide-y divide-gray-200">
+                      {metricsHistory.map((record, index) => {
+                        let value = '-';
+                        
+                        if (selectedMetric === 'bmi' && record.metrics.weight && record.metrics.height) {
+                          value = (record.metrics.weight / Math.pow(record.metrics.height/100, 2)).toFixed(1);
+                        } else if (record.metrics[selectedMetric]) {
+                          value = record.metrics[selectedMetric];
+                          
+                          // Add units
+                          if (selectedMetric === 'weight') value += ' kg';
+                          else if (selectedMetric === 'height') value += ' cm';
+                          else if (selectedMetric === 'muscleMass' || selectedMetric === 'fatPercentage') value += '%';
+                        }
+                        
+                        return (
+                          <tr key={index} className="hover:bg-gray-50">
+                            <td className="px-6 py-4 text-center text-sm md:text-md whitespace-nowrap border-r-2 border-gray-400 text-gray-900">
+                              {record.date.toLocaleDateString('en-US', {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric'
+                              })}
+                            </td>
+                            <td className="px-6 py-4 text-sm md:text-md whitespace-nowrap text-center text-gray-900">
+                              {value}
+                            </td>
+                          </tr>
+                        );
+                      })}
+                      {metricsHistory.length === 0 && (
+                        <tr>
+                          <td colSpan="2" className="px-6 py-4 text-center text-sm text-gray-500">
+                            No data recorded yet
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            ) : (
+              // Cards view
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                {metricCards.map(card => (
+                  <div 
+                    key={card.id}
+                    onClick={() => setSelectedMetric(card.id)}
+                    className={`${card.color} rounded-lg  p-4 border border-gray-200 cursor-pointer`}
+                  >
+                    <div className={`flex flex-col items-center text-center ${card.color}`}>
+                      {/* <div className={`w-12 h-12 rounded-full bg-gradient-to-r ${card.color} flex items-center justify-center text-white text-2xl mb-3`}>
+                        {card.icon}
+                      </div>
+                      <h3 className="text-gray-700 font-medium">{card.title}</h3>
+                      <p className="text-2xl font-bold mt-2">{card.value}</p>
+                      <p className="text-xs text-gray-500 mt-2">Click for history</p> */}
+                      <h1 className="text-4xl mt-2 font-semibold bebas-neue-regular  flex gap-4"><span className="border-b-4 border-black">{card.title}</span></h1>
+                      <div className="flex mt-7 gap-10">
+                       <div className="text-center">
+                       <h1 className="text-5xl mt-2 font-semibold bebas-neue-regular">{card.value}</h1>
+                       <p className="text-sm  mt-2 px-3 py-2 rounded-xl bg-[#191c1e] text-[wheat] font-semibold"><i className="fa-solid fa-clock-rotate-left mr-1"></i> History</p>
+                       </div>
+                      <img src={card.icon} alt={card.title} height={100} width={100}/>
+
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </>
         ) : (
-          <button
-            onClick={handleActivateMembership}
-            className="bg-gradient-to-r from-yellow-400 to-yellow-600 text-white px-4 py-2 rounded-lg text-sm font-medium"
-          >
-            <i className="fas fa-crown mr-2"></i>
-            Activate Gold Membership
-          </button>
+          <div className="bg-gray-50 p-6 rounded-lg text-center">
+            <p className="text-gray-600 mb-4">
+              Upgrade to Gold Membership to track your health metrics and access detailed reports
+            </p>
+            <button
+              onClick={handleActivateMembership}
+              className="bg-yellow-500 text-white px-6 py-2 rounded-lg hover:bg-yellow-600 transition-all"
+            >
+              <i className="fas fa-phone-alt mr-2"></i>
+              Call to Activate (8237006990)
+            </button>
+          </div>
         )}
       </div>
-
-      {user?.membershipStatus === 'gold' ? (
-        <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Weight</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Height</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Muscle Mass</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Fat %</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">BMI</th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {getHealthMetricsHistory().map((record, index) => {
-                // Calculate BMI if both weight and height are available
-                const bmi = record.metrics.weight && record.metrics.height 
-                  ? (record.metrics.weight / Math.pow(record.metrics.height/100, 2)).toFixed(1)
-                  : '-';
-
-                return (
-                  <tr key={index} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {record.date.toLocaleDateString('en-US', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
-                      })}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {record.metrics.weight ? `${record.metrics.weight} kg` : '-'}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {record.metrics.height ? `${record.metrics.height} cm` : '-'}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {record.metrics.muscleMass ? `${record.metrics.muscleMass}%` : '-'}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {record.metrics.fatPercentage ? `${record.metrics.fatPercentage}%` : '-'}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {bmi}
-                    </td>
-                  </tr>
-                );
-              })}
-              {getHealthMetricsHistory().length === 0 && (
-                <tr>
-                  <td colSpan="6" className="px-6 py-4 text-center text-sm text-gray-500">
-                    No health metrics recorded yet
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-      ) : (
-        <div className="bg-gray-50 p-6 rounded-lg text-center">
-          <p className="text-gray-600 mb-4">
-            Upgrade to Gold Membership to track your health metrics and access detailed reports
-          </p>
-          <button
-            onClick={handleActivateMembership}
-            className="bg-yellow-500 text-white px-6 py-2 rounded-lg hover:bg-yellow-600 transition-all"
-          >
-            <i className="fas fa-phone-alt mr-2"></i>
-            Call to Activate (8237006990)
-          </button>
-        </div>
-      )}
-    </div>
-  );
+    );
+  };
 
   // Show loading spinner
   if (loading) {
@@ -220,14 +325,14 @@ const PastConsultancies = () => {
   return (
     <>
       <Navbar />
-      <div className="bg-[#fef8ec] h-[350px] md:h-[400px] w-full flex items-center  justify-center">
-      <div className="container mx-auto px-4 relative">
-          <span className="text-white rounded-2xl font-semibold  p-2 bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 ">MEMBERSHIP PERKS</span>
+      <div className="bg-[#fef8ec] h-[400px] md:h-[400px] w-full flex items-center  justify-center">
+      <div className="container max-w-full px-4 relative">
+          <span className="text-white rounded-2xl font-semibold  p-2 bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 ">PLUSSLABS PERKS</span>
           
           {/* Add membership expiry info */}
           {user?.membershipStatus === 'gold' && membershipData?.active && (
-            <div className="mt-2 text-center">
-              <span className="bg-yellow-100 text-yellow-800 text-sm font-medium px-4 py-1 rounded-full">
+            <div className="mt-6 text-center">
+              <span className="bg-yellow-100 text-yellow-800  text-sm font-medium px-4 py-1 rounded-full">
                 <i className="fas fa-clock mr-2"></i>
                 Gold Membership expires on: {new Date(membershipData.endDate).toLocaleDateString('en-US', {
                   year: 'numeric',
@@ -245,11 +350,15 @@ const PastConsultancies = () => {
                   <h2 className=" text-[12px] mt-5 md:text-[18px] font-semibold text-[#0f4726] border-[2px] border-[#0f4726] p-2 rounded-lg"><i className="fa-solid fa-clipboard text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600"></i> View past Consultancies</h2>
                   <h2 className=" text-[12px] mt-5 md:text-[18px] font-semibold text-[#0f4726] border-[2px] border-[#0f4726] p-2 rounded-lg"><i className="fa-solid fa-clock text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600"></i> Get Reports in 2 hrs</h2>
           </div>
+          <img src="/assets/pharmacy.png" alt="pharmacy" className="absolute h-28 w-28 md:top-40 right-10 hidden md:block"/>
+          <img src="/assets/drugstore.png" alt="pharmacy" className="absolute md:h-32 md:w-32 lg:h-40 lg:w-40 bottom-0 left-10 hidden md:block"/>
+          <img src="/assets/medicine.png" alt="pharmacy" className=" h-20 w-20 top-0 right-32 hidden md:block absolute"/>
+
         </div>
         
       </div>
 
-      <div className="container mx-auto px-4 py-8 -mt-10">
+      <div className="container max-w-full mx-auto px-4 py-8 -mt-10">
         <HealthMetricsTimeline />
         
         <div className="bg-white rounded-xl shadow-lg p-6 md:p-8">
