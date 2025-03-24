@@ -16,9 +16,7 @@ if (!GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET) {
 passport.use(new GoogleStrategy({
     clientID: GOOGLE_CLIENT_ID,
     clientSecret: GOOGLE_CLIENT_SECRET,
-    callbackURL: process.env.NODE_ENV === 'production' 
-      ? "https://plusslabs.onrender.com/api/auth/google/callback"
-      : "http://localhost:3000/api/auth/google/callback",
+    callbackURL: "http://localhost:3000/api/auth/google/callback",
     passReqToCallback: true
   },
   async function(request, accessToken, refreshToken, profile, cb) {
