@@ -9,8 +9,8 @@ router.post("/add", protect, requireSuperAdmin, async (req, res) => {
   try {
     const { testCode, name, description, price, discount, category } = req.body;
 
-    if (!testCode || !name || !description || !price || !category) {
-      return res.status(400).json({ message: "Missing required fields." });
+    if (!testCode || !name || !price) {
+      return res.status(400).json({ message: "Test code, name and price are required." });
     }
 
     // Check if testCode already exists
@@ -19,19 +19,18 @@ router.post("/add", protect, requireSuperAdmin, async (req, res) => {
       return res.status(400).json({ message: "Test code already exists." });
     }
 
-    // ✅ Create and save the new test
     const newTest = new Test({
       testCode,
       name,
-      description,
+      description: description || "", // Optional
       price,
       discount: discount || 0,
-      category,
+      category: category || "" // Optional
     });
 
     await newTest.save();
-
     res.status(201).json({ message: "Test added successfully!", test: newTest });
+
   } catch (error) {
     console.error("Error adding test:", error);
     res.status(500).json({ message: "Server error", error: error.message });

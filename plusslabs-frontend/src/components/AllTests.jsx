@@ -140,11 +140,48 @@ const AllTests = () => {
           required 
           className="block w-full p-2 border rounded mb-2" 
         />
-        <input type="text" name="name" placeholder="Test Name" value={formData.name} onChange={handleChange} required className="block w-full p-2 border rounded mb-2" />
-        <input type="text" name="description" placeholder="Description" value={formData.description} onChange={handleChange} required className="block w-full p-2 border rounded mb-2" />
-        <input type="number" name="price" placeholder="Price" value={formData.price} onChange={handleChange} required className="block w-full p-2 border rounded mb-2" />
-        <input type="number" name="discount" placeholder="Discount" value={formData.discount} onChange={handleChange} className="block w-full p-2 border rounded mb-2" />
-        <input type="text" name="category" placeholder="Category" value={formData.category} onChange={handleChange} required className="block w-full p-2 border rounded mb-2" />
+        <input 
+          type="text" 
+          name="name" 
+          placeholder="Test Name" 
+          value={formData.name} 
+          onChange={handleChange} 
+          required 
+          className="block w-full p-2 border rounded mb-2" 
+        />
+        <input 
+          type="text" 
+          name="description" 
+          placeholder="Description (Optional)" 
+          value={formData.description} 
+          onChange={handleChange}
+          className="block w-full p-2 border rounded mb-2" 
+        />
+        <input 
+          type="number" 
+          name="price" 
+          placeholder="Price" 
+          value={formData.price} 
+          onChange={handleChange} 
+          required 
+          className="block w-full p-2 border rounded mb-2" 
+        />
+        <input 
+          type="number" 
+          name="discount" 
+          placeholder="Discount" 
+          value={formData.discount} 
+          onChange={handleChange} 
+          className="block w-full p-2 border rounded mb-2" 
+        />
+        <input 
+          type="text" 
+          name="category" 
+          placeholder="Category (Optional)" 
+          value={formData.category} 
+          onChange={handleChange}
+          className="block w-full p-2 border rounded mb-2" 
+        />
         <button 
           type="submit" 
           className="px-4 py-2 bg-blue-500 text-white rounded"

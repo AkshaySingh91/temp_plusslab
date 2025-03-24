@@ -4,19 +4,18 @@ const testSchema = new mongoose.Schema(
   {
     testCode: { type: String, required: true, unique: true },
     name: { type: String, required: true },
-    description: { type: String, required: true },
+    description: { type: String, required: false }, // Made optional
     price: { type: Number, required: true },
     discount: { 
       type: Number, 
-      default: 0,  // Allow manual discount setting
+      default: 0,
       min: 0,
       max: 100
     },
-    category: { type: String, required: true },
+    category: { type: String, required: false }, // Made optional
     goldPrice: { 
       type: Number,
       default: function() {
-        // Calculate gold price as 80% of original price (20% discount)
         return this.price * 0.8;
       }
     }
