@@ -68,6 +68,11 @@ router.post("/add", upload.array('reportImages', 5), async (req, res) => {
         height: otherData.height || undefined, // Add height to test
         muscleMass: otherData.muscleMass || undefined, // Add muscle mass to test 
         fatPercentage: otherData.fatPercentage || undefined, // Add fat percentage to test
+        bloodPressure: otherData.bloodPressure || undefined,
+        sugarLevels: otherData.sugarLevels || undefined,
+        haemoglobin: otherData.haemoglobin || undefined,
+        calcium: otherData.calcium || undefined,
+        cholesterol: otherData.cholesterol || undefined,
         reportImages: uploadedImages,
         billing: {
           finalAmount // Store only the final amount
@@ -202,6 +207,11 @@ router.put("/addTest/:patientId", upload.array('reportImages', 5), async (req, r
             height,
             muscleMass,
             fatPercentage,
+            bloodPressure: req.body.bloodPressure,
+            sugarLevels: req.body.sugarLevels,
+            haemoglobin: req.body.haemoglobin,
+            calcium: req.body.calcium,
+            cholesterol: req.body.cholesterol,
             reportImages: uploadedImages,
             billing: {
               finalAmount // Store only the final amount

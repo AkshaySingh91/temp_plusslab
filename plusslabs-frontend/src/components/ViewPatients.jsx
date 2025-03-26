@@ -197,6 +197,11 @@ const ViewPatients = () => {
                     <th className="border px-4 py-2">Height</th>
                     <th className="border px-4 py-2">Muscle Mass</th>
                     <th className="border px-4 py-2">Fat %</th>
+                    <th className="border px-4 py-2">BP</th>
+                    <th className="border px-4 py-2">Sugar</th>
+                    <th className="border px-4 py-2">Hb</th>
+                    <th className="border px-4 py-2">Ca</th>
+                    <th className="border px-4 py-2">Cholesterol</th>
                     <th className="border px-4 py-2">Bill Amount</th>
                     <th className="border px-4 py-2">Reports</th>
                     {userRole === 'superadmin' && (
@@ -222,6 +227,21 @@ const ViewPatients = () => {
                       </td>
                       <td className="border px-4 py-2">
                         {test.fatPercentage ? `${test.fatPercentage}%` : '-'}
+                      </td>
+                      <td className="border px-4 py-2">
+                        {test.bloodPressure || '-'}
+                      </td>
+                      <td className="border px-4 py-2">
+                        {test.sugarLevels || '-'}
+                      </td>
+                      <td className="border px-4 py-2">
+                        {test.haemoglobin || '-'}
+                      </td>
+                      <td className="border px-4 py-2">
+                        {test.calcium || '-'}
+                      </td>
+                      <td className="border px-4 py-2">
+                        {test.cholesterol || '-'}
                       </td>
                       <td className="border px-4 py-2">
                         {test.billing ? (
