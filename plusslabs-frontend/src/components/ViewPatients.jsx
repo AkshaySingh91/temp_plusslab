@@ -90,15 +90,15 @@ const ViewPatients = () => {
 
   useEffect(() => {
     if (searchTerm) {
-      setFilteredPatients(
-        patients.filter(
-          (patient) =>
-            patient.patientId.toString().includes(searchTerm) ||
-            patient.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            patient.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            patient.phoneNumber.includes(searchTerm)
-        )
+      const filtered = patients.filter((patient) =>
+        patient.patientId?.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
+        patient.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        patient.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        patient.phoneNumber?.toString().includes(searchTerm) ||
+        patient.gender?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        patient.bloodType?.toLowerCase().includes(searchTerm.toLowerCase())
       );
+      setFilteredPatients(filtered);
     } else {
       setFilteredPatients(patients);
     }
