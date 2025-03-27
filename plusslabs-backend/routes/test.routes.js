@@ -62,7 +62,7 @@ router.get("/code/:testCode", async (req, res) => {
 });
 
 // Admin and superadmin can update tests
-router.put("/update/:testId", protect, requireAdmin, async (req, res) => {
+router.put("/update/:testId", protect, requireSuperAdmin, async (req, res) => {
   try {
     const updatedTest = await Test.findByIdAndUpdate(
       req.params.testId,

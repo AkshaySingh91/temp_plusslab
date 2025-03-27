@@ -19,6 +19,11 @@ const patientSchema = new mongoose.Schema(
         height: { type: String },
         muscleMass: { type: String },
         fatPercentage: { type: String },
+        bloodPressure: { type: String },
+        sugarLevels: { type: String },
+        haemoglobin: { type: String },
+        calcium: { type: String },
+        cholesterol: { type: String },
         reportImages: [{ type: String }],
         billing: {
           originalAmount: { type: Number },

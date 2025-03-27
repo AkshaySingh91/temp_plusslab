@@ -63,20 +63,34 @@ const PastConsultancies = () => {
     if (!patientData?.pastTests) return [];
     
     return patientData.pastTests
-      .filter(test => test.weight || test.height || test.muscleMass || test.fatPercentage)
+      .filter(test => 
+        test.weight || 
+        test.height || 
+        test.muscleMass || 
+        test.fatPercentage ||
+        test.bloodPressure ||
+        test.sugarLevels ||
+        test.haemoglobin ||
+        test.calcium ||
+        test.cholesterol
+      )
       .map(test => ({
         date: new Date(test.testDate),
         metrics: {
           weight: test.weight,
           height: test.height,
           muscleMass: test.muscleMass,
-          fatPercentage: test.fatPercentage
+          fatPercentage: test.fatPercentage,
+          bloodPressure: test.bloodPressure,
+          sugarLevels: test.sugarLevels,
+          haemoglobin: test.haemoglobin,
+          calcium: test.calcium,
+          cholesterol: test.cholesterol
         }
       }))
       .sort((a, b) => b.date - a.date);
   };
 
-  // Health Metrics History Component
   // Health Metrics History Component
   const HealthMetricsTimeline = () => {
     const [selectedMetric, setSelectedMetric] = useState(null);
@@ -132,6 +146,41 @@ const PastConsultancies = () => {
         color: 'bg-red-200',
         fontawesome:<i className="fa-brands fa-web-awesome"></i>
 
+      },
+      { 
+        id: 'bloodPressure', 
+        title: 'Blood Pressure', 
+        value: latestMetrics.bloodPressure || '-',
+        icon: '/assets/blood-pressure.png',
+        color: 'bg-purple-200'
+      },
+      { 
+        id: 'sugarLevels', 
+        title: 'Sugar Levels', 
+        value: latestMetrics.sugarLevels || '-',
+        icon: '/assets/sugar.png',
+        color: 'bg-orange-200'
+      },
+      { 
+        id: 'haemoglobin', 
+        title: 'Haemoglobin', 
+        value: latestMetrics.haemoglobin || '-',
+        icon: '/assets/blood.png',
+        color: 'bg-red-200'
+      },
+      { 
+        id: 'calcium', 
+        title: 'Calcium', 
+        value: latestMetrics.calcium || '-',
+        icon: '/assets/calcium.png',
+        color: 'bg-blue-200'
+      },
+      { 
+        id: 'cholesterol', 
+        title: 'Cholesterol', 
+        value: latestMetrics.cholesterol || '-',
+        icon: '/assets/cholesterol.png',
+        color: 'bg-yellow-200'
       }
     ];
   
@@ -197,9 +246,25 @@ const PastConsultancies = () => {
                           value = record.metrics[selectedMetric];
                           
                           // Add units
-                          if (selectedMetric === 'weight') value += ' kg';
-                          else if (selectedMetric === 'height') value += ' cm';
-                          else if (selectedMetric === 'muscleMass' || selectedMetric === 'fatPercentage') value += '%';
+                          switch(selectedMetric) {
+                            case 'weight':
+                              value += ' kg';
+                              break;
+                            case 'height':
+                              value += ' cm';
+                              break;
+                            case 'muscleMass':
+                            case 'fatPercentage':
+                              value += '%';
+                              break;
+                            case 'bloodPressure':
+                            case 'sugarLevels':
+                            case 'haemoglobin':
+                            case 'calcium':
+                            case 'cholesterol':
+                              value = value; // No units needed
+                              break;
+                          }
                         }
                         
                         return (

@@ -17,6 +17,11 @@ const AllPatients = () => {
     fatPercentage: "",
     medicalHistory: "",
     testName: "",
+    bloodPressure: "",
+    sugarLevels: "",
+    haemoglobin: "",
+    calcium: "",
+    cholesterol: "",
   });
   const [images, setImages] = useState([]);
   const [error, setError] = useState("");
@@ -232,6 +237,11 @@ const AllPatients = () => {
         fatPercentage: "",
         medicalHistory: "",
         testName: "",
+        bloodPressure: "",
+        sugarLevels: "",
+        haemoglobin: "",
+        calcium: "",
+        cholesterol: "",
       });
       setImages([]);
       setSelectedTests([]);
@@ -485,6 +495,71 @@ const AllPatients = () => {
             name="fatPercentage" 
             placeholder="Enter fat percentage (optional)" 
             value={formData.fatPercentage} 
+            onChange={handleChange} 
+            className="block w-full p-2 border rounded"
+          />
+        </div>
+
+        <div className="mb-4">
+          <label htmlFor="bloodPressure" className="block text-sm font-medium mb-1">Blood Pressure</label>
+          <input 
+            id="bloodPressure"
+            type="text" 
+            name="bloodPressure" 
+            placeholder="Enter blood pressure (optional)" 
+            value={formData.bloodPressure} 
+            onChange={handleChange} 
+            className="block w-full p-2 border rounded"
+          />
+        </div>
+
+        <div className="mb-4">
+          <label htmlFor="sugarLevels" className="block text-sm font-medium mb-1">Sugar Levels</label>
+          <input 
+            id="sugarLevels"
+            type="text" 
+            name="sugarLevels" 
+            placeholder="Enter sugar levels (optional)" 
+            value={formData.sugarLevels} 
+            onChange={handleChange} 
+            className="block w-full p-2 border rounded"
+          />
+        </div>
+
+        <div className="mb-4">
+          <label htmlFor="haemoglobin" className="block text-sm font-medium mb-1">Haemoglobin</label>
+          <input 
+            id="haemoglobin"
+            type="text" 
+            name="haemoglobin" 
+            placeholder="Enter haemoglobin (optional)" 
+            value={formData.haemoglobin} 
+            onChange={handleChange} 
+            className="block w-full p-2 border rounded"
+          />
+        </div>
+
+        <div className="mb-4">
+          <label htmlFor="calcium" className="block text-sm font-medium mb-1">Calcium</label>
+          <input 
+            id="calcium"
+            type="text" 
+            name="calcium" 
+            placeholder="Enter calcium levels (optional)" 
+            value={formData.calcium} 
+            onChange={handleChange} 
+            className="block w-full p-2 border rounded"
+          />
+        </div>
+
+        <div className="mb-4">
+          <label htmlFor="cholesterol" className="block text-sm font-medium mb-1">Cholesterol</label>
+          <input 
+            id="cholesterol"
+            type="text" 
+            name="cholesterol" 
+            placeholder="Enter cholesterol levels (optional)" 
+            value={formData.cholesterol} 
             onChange={handleChange} 
             className="block w-full p-2 border rounded"
           />
