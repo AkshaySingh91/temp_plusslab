@@ -163,66 +163,51 @@ const ViewTests = () => {
         ) : (
           /* ✅ User View: Show as Cards */
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mt-10">
-            {currentTests.map((test) => {
-              const finalPrice = test.price * (1 - test.discount/100);
-              const goldPrice = test.price * 0.8; // 20% off original price
-              return (
-                <div
-                  key={test._id}
-                  className="bg-gray-300 p-4 rounded-lg relative"
-                >
-                  <h3 className="text-xl font-semibold mb-2 mt-2">
-                    {test.name}
-                  </h3>
-                  <p className="text-gray-600 mb-2 text-sm">
-                    TestCode: {test.testCode}
-                  </p>
-                  <span className="text-sm text-gray-800 absolute -top-2 left-0 bg-yellow-300 font-semibold rounded-2xl px-2 py-1">
-  
-                    {test.category}
-                  </span>
+          {currentTests.map((test) => {
+            const finalPrice = test.price * (1 - test.discount / 100);
+            const goldPrice = test.price * 0.8; // 20% off original price
+            return (
+              <div
+                key={test._id}
+                className="bg-gray-300 p-4 rounded-lg flex flex-col h-full relative"
+              >
+                {/* Content Section */}
+                <div className="flex-grow">
+                  <h3 className="text-sm md:text-xl font-semibold mb-2 mt-2">{test.name}</h3>
+                  <p className="text-gray-600 mb-2 text-sm">TestCode: {test.testCode}</p>
+        
                   <div className="flex flex-col justify-between mt-2">
                     <div className="flex justify-between">
-                      <span className="text-gray-500 line-through">
-                        ₹{test.price}
-                      </span>
+                      <span className="text-gray-500 line-through">₹{test.price}</span>
                       <span className="text-green-600 text-md md:text-xl font-bold">
                         ₹{finalPrice.toFixed(2)}
                         <span className="text-[10px] md:text-xs ml-1 absolute -top-3 right-2 bg-red-500 text-white p-2 rounded-xl">
                           {test.discount}% off
-
                         </span>
                       </span>
                     </div>
-
-                    {/* Only show gold price if user has gold membership */}
-
-                      <span className="text-yellow-800 bg-gradient-to-r border-yellow-400 from-yellow-400 via-yellow-500 to-yellow-600 p-2 rounded-lg font-bold mt-2 relative flex flex-col items-center md:justify-between md:flex-row ">
-                        <div className="text-[10px] md:text-sm">
-                          <i className="fa-solid fa-sack-dollar"></i> For Members
-                          Only
-                        </div>
-                        <div className="text-xs md:text-xl">
-                          ₹{goldPrice.toFixed(0)}
-                        </div>
-
-                        {/* <span className="text-[8px] md:text-xs ml-1 absolute left-0 -top-3 rounded-xl py-[2px] px-2 bg-yellow-500 border-[1px] border-yellow-800 text-black font-semibold">
-                          20% off
-                        </span> */}
-                      </span>
-                    
                   </div>
-                  <span>
-                    <img
-                      src="/assets/icon-removebg-preview.png"
-                      alt="icon"
-                      className="w-10 h-10 md:w-16 md:h-16 absolute  top-5 right-4 hidden lg:block"
-                    />
+                </div>
+        
+                {/* Buttons Section (Always at Bottom) */}
+                <div className="mt-4">
+                  {/* Gold Membership Price */}
+                  <span className="text-yellow-800 bg-gradient-to-r border-yellow-400 from-yellow-400 via-yellow-500 to-yellow-600 p-2 rounded-lg font-bold relative flex flex-col items-center md:justify-between md:flex-row">
+                    <div className="text-[10px] md:text-sm">
+                      <i className="fa-solid fa-sack-dollar"></i> For Members Only
+                    </div>
+                    <div className="text-xs md:text-xl">₹{goldPrice.toFixed(0)}</div>
                   </span>
-                  <button className="w-full bg-black text-white font-semibold rounded p-2 mt-2" onClick={()=> handleBook()}>
+        
+                  {/* Book Now Button */}
+                  <button
+                    className="text-sm md:text-lg w-full bg-black text-white font-semibold rounded p-2 mt-2"
+                    onClick={() => handleBook()}
+                  >
                     <i className="fa-regular fa-pen-to-square"></i> Book Now
                   </button>
                 </div>
+              </div>
               );
             })}
           </div>
