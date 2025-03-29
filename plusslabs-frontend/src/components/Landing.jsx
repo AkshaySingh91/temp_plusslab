@@ -104,7 +104,7 @@ const Landing = () => {
               </div>
 
               {/* Benefits Card */}
-              <div className="bg-gradient-to-br from-[#e9b2cd] to-[#d4a5c0] rounded-3xl p-5 md:p-6 flex flex-col justify-between text-gray-800 shadow-lg hover:shadow-xl transition-all duration-300 border border-white/20 backdrop-blur-sm relative overflow-hidden group h-[500px]">
+              <div className="bg-gradient-to-br from-[#e9b2cd] to-[#d4a5c0] rounded-3xl p-5 md:p-6 flex flex-col justify-between text-gray-800 shadow-lg hover:shadow-xl transition-all duration-300 border border-white/20 backdrop-blur-sm relative overflow-hidden group h-[520px]">
   {/* Decorative elements */}
   <div className="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-xl"></div>
   <div className="absolute bottom-0 left-0 w-20 h-20 bg-black/5 rounded-full translate-y-1/2 -translate-x-1/2 blur-lg"></div>
