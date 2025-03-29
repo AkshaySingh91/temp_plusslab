@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import axios from 'axios';
 
 const Navbar = () => {
@@ -7,6 +7,7 @@ const Navbar = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
   const dropdownRef = useRef(null);
 
   const defaultAvatar = "https://ui-avatars.com/api/?name=" + (user?.name || "User");
@@ -45,6 +46,27 @@ const Navbar = () => {
     }
   };
 
+  const handleNavigation = (path, section) => {
+    if (location.pathname !== '/') {
+      // If not on home page, first navigate to home
+      navigate('/');
+      // Wait for navigation to complete before scrolling
+      setTimeout(() => {
+        scrollToSection(section);
+      }, 100);
+    } else {
+      // If already on home page, just scroll
+      scrollToSection(section);
+    }
+  };
+
+  const scrollToSection = (sectionId) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <div className='h-[70px] flex justify-between items-center px-4 md:px-8 bg-[#191c1e] text-white relative'>
       {/* Logo */}
@@ -67,19 +89,39 @@ const Navbar = () => {
 
       {/* Navigation Links (Desktop) */}
       <div className='gap-10 font-semibold justify-between hidden md:flex'>
-        <a className='hover:text-gray-300 cursor-pointer'>Services</a>
-        <a className='hover:text-gray-300 cursor-pointer'> Packages</a>
-        <a className='hover:text-gray-300 cursor-pointer'>HealthCare Services</a>
-        <a className='hover:text-gray-300 cursor-pointer'>Why Us</a>
+        <button 
+          onClick={() => handleNavigation('/', 'services')} 
+          className='hover:text-gray-300 cursor-pointer'
+        >
+          Services
+        </button>
+        <button 
+          onClick={() => handleNavigation('/', 'featured-health-packages')} 
+          className='hover:text-gray-300 cursor-pointer'
+        >
+          Packages
+        </button>
+        <button 
+          onClick={() => handleNavigation('/', 'concern-health-checkups')} 
+          className='hover:text-gray-300 cursor-pointer'
+        >
+          HealthCare Services
+        </button>
+        <button 
+          onClick={() => handleNavigation('/', 'why-choose-us')} 
+          className='hover:text-gray-300 cursor-pointer'
+        >
+          Why Us
+        </button>
       </div>
 
       {/* Mobile Menu */}
       {menuOpen && (
         <div className='absolute top-16 left-0 w-full bg-[#191c1e] p-4 flex z-[9999] flex-col items-center gap-4 md:hidden'>
-          <a >Services</a>
-          <a >Health Packages</a>
-          <a >HealthCare Services</a>
-          <a >Why Us</a>
+          <button onClick={() => handleNavigation('/', 'services')}>Services</button>
+          <button onClick={() => handleNavigation('/', 'featured-health-packages')}>Packages</button>
+          <button onClick={() => handleNavigation('/', 'concern-health-checkups')}>HealthCare Services</button>
+          <button onClick={() => handleNavigation('/', 'why-choose-us')}>Why Us</button>
         </div>
       )}
 

@@ -12,7 +12,7 @@ const ConcernHealthCheckups = () => {
   };
 
   return (
-    <div className="w-full py-12 px-6">
+    <section id="concern-health-checkups" className="w-full py-12 px-6">
       <h2 className="text-3xl md:text-6xl bebas-neue-regular font-bold text-black text-center mb-6">
         FIND TESTS BY HEALTH CONCERN
       </h2>
@@ -102,7 +102,7 @@ const ConcernHealthCheckups = () => {
           </div>
         </div>
       )}
-    </div>
+    </section>
   );
 };
 

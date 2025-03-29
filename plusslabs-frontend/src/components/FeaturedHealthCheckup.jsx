@@ -64,7 +64,7 @@ const FeaturedHealthCheckup = () => {
       : healthPackages.filter((pkg) => pkg.category === selectedCategory);
 
   return (
-    <section className="w-full py-12 px-6">
+    <section id="featured-health-packages" className="w-full py-12 px-6">
       <h2 className="text-3xl md:text-6xl bebas-neue-regular font-bold text-black text-center mb-6">
         FEATURED HEALTH CHECK-UP PACKAGES
       </h2>
