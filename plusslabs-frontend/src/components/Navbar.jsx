@@ -106,19 +106,7 @@ const Navbar = () => {
             
             {showDropdown && (
               <div className='absolute -right-4 mt-2 w-48 bg-[#fff1ee] rounded-md shadow-lg py-1 z-50'>
-                {/* Add Membership button before logout */}
-                <button 
-                  onClick={() => {
-                    navigate('/membership');
-                    setShowDropdown(false);
-                  }}
-                  className='block w-full text-center px-4 py-2 text-gray-700 font-semibold hover:bg-gray-200'
-                >
-                  <i className="fa-solid fa-crown mr-2 text-yellow-500"></i> 
-                  Membership
-                </button>
-
-                {/* Only show Dashboard for admin and superadmin */}
+                {/* Remove membership button and only show dashboard buttons */}
                 {(user.role === 'admin' || user.role === 'superadmin') && (
                   <button 
                     onClick={() => {

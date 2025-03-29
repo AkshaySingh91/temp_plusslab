@@ -590,107 +590,108 @@ const AllPatients = () => {
         </div>
         
         {showTestModal && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg p-6 w-full max-w-3xl max-h-[80vh] overflow-y-auto">
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-lg p-6 w-[95%] h-[90vh] max-w-7xl flex flex-col">
               <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-bold">Select Tests</h3>
+                <h3 className="text-xl font-bold">Select Tests</h3>
                 <button 
                   onClick={() => setShowTestModal(false)} 
-                  className="text-gray-500"
-                  aria-label="Close modal"
+                  className="text-gray-500 hover:text-gray-700"
                 >
-                  ✕
+                  <i className="fas fa-times text-xl"></i>
                 </button>
               </div>
 
               {/* Search Input */}
               <div className="mb-4">
-                <label htmlFor="searchTest" className="sr-only">Search Tests</label>
                 <input
-                  id="searchTest"
                   type="text"
                   placeholder="Search by test name or code..."
                   value={searchTestQuery}
                   onChange={(e) => setSearchTestQuery(e.target.value)}
-                  className="w-full p-2 border rounded focus:outline-none focus:border-blue-500"
+                  className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
 
-              {/* Table for displaying tests */}
-              <div className="overflow-x-auto">
-                <table className="w-full border-collapse border rounded">
-                  <thead>
-                    <tr className="bg-gray-100">
-                      <th className="border px-4 py-2 text-left">Name</th>
-                      <th className="border px-4 py-2 text-left">Code</th>
-                      <th className="border px-4 py-2 text-left">Price (₹)</th>
-                      <th className="border px-4 py-2 text-left">Discount (%)</th>
-                      <th className="border px-4 py-2 text-left">After Discount (₹)</th>
-                      <th className="border px-4 py-2 text-center">Gold Price (₹)</th>
-                      <th className="border px-4 py-2 text-center">Select</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {filteredTests.length > 0 ? (
-                      filteredTests.map(test => (
-                        <tr key={test._id} className="hover:bg-gray-50">
-                          <td className="border px-4 py-2">{test.name}</td>
-                          <td className="border px-4 py-2">{test.testCode}</td>
-                          <td className="border px-4 py-2">{test.price}</td>
-                          <td className="border px-4 py-2">{test.discount}</td>
-                          <td className="border px-4 py-2">
-                            {(test.price * (1 - test.discount/100)).toFixed(2)}
-                          </td>
-                          <td className="border px-4 py-2 text-center">
-                            {(test.price * GOLD_DISCOUNT_RATE).toFixed(2)}
-                          </td>
-                          <td className="border px-4 py-2 text-center">
-                            <button
-                              type="button"
-                              onClick={() => handleTestSelect(test)}
-                              className={`px-3 py-1 rounded ${
-                                selectedTests.find(t => t._id === test._id)
-                                  ? "bg-red-500 text-white"
-                                  : "bg-blue-500 text-white"
-                              }`}
-                            >
-                              {selectedTests.find(t => t._id === test._id) ? "Remove" : "Add"}
-                            </button>
-                          </td>
+              {/* Table Container with both vertical and horizontal scroll */}
+              <div className="flex-1 overflow-auto">
+                <div className="inline-block min-w-full align-middle">
+                  <div className="overflow-x-auto border rounded-lg">
+                    <table className="min-w-full divide-y divide-gray-200">
+                      <thead className="sticky top-0 bg-white">
+                        <tr className="bg-gray-100">
+                          <th className="border px-4 py-2 text-left">Name</th>
+                          <th className="border px-4 py-2 text-left">Code</th>
+                          <th className="border px-4 py-2 text-left">Price (₹)</th>
+                          <th className="border px-4 py-2 text-left">Discount (%)</th>
+                          <th className="border px-4 py-2 text-left">After Discount (₹)</th>
+                          <th className="border px-4 py-2 text-center">Gold Price (₹)</th>
+                          <th className="border px-4 py-2 text-center">Select</th>
                         </tr>
-                      ))
-                    ) : (
-                      <tr>
-                        <td colSpan="7" className="text-center text-gray-500 py-4">
-                          No tests found matching your search
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
+                      </thead>
+                      <tbody className="divide-y divide-gray-200 bg-white">
+                        {filteredTests.length > 0 ? (
+                          filteredTests.map(test => (
+                            <tr key={test._id} className="hover:bg-gray-50">
+                              <td className="border px-4 py-2">{test.name}</td>
+                              <td className="border px-4 py-2">{test.testCode}</td>
+                              <td className="border px-4 py-2">{test.price}</td>
+                              <td className="border px-4 py-2">{test.discount}</td>
+                              <td className="border px-4 py-2">
+                                {(test.price * (1 - test.discount/100)).toFixed(2)}
+                              </td>
+                              <td className="border px-4 py-2 text-center">
+                                {(test.price * GOLD_DISCOUNT_RATE).toFixed(2)}
+                              </td>
+                              <td className="border px-4 py-2 text-center">
+                                <button
+                                  type="button"
+                                  onClick={() => handleTestSelect(test)}
+                                  className={`px-3 py-1 rounded ${
+                                    selectedTests.find(t => t._id === test._id)
+                                      ? "bg-red-500 text-white"
+                                      : "bg-blue-500 text-white"
+                                  }`}
+                                >
+                                  {selectedTests.find(t => t._id === test._id) ? "Remove" : "Add"}
+                                </button>
+                              </td>
+                            </tr>
+                          ))
+                        ) : (
+                          <tr>
+                            <td colSpan="7" className="text-center text-gray-500 py-4">
+                              No tests found matching your search
+                            </td>
+                          </tr>
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
               </div>
 
               {selectedTests.length > 0 && <BillingDetails />}
 
-              <div className="flex justify-end gap-2 mt-4">
+              <div className="flex justify-end gap-2 mt-4 pt-4 border-t">
                 <button
                   type="button"
                   onClick={() => setShowTestModal(false)}
-                  className="px-4 py-2 border rounded"
+                  className="px-4 py-2 border rounded hover:bg-gray-50"
                 >
                   Cancel
                 </button>
                 <button
                   type="button"
                   onClick={() => handleTestsSubmit(false)}
-                  className="px-4 py-2 bg-blue-500 text-white rounded"
+                  className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
                 >
                   Add Selected Tests (₹{billingDetails.finalAmount.toFixed(2)})
                 </button>
                 <button
                   type="button"
                   onClick={() => handleTestsSubmit(true)}
-                  className="px-4 py-2 bg-yellow-500 text-white rounded"
+                  className="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
                 >
                   Add as Gold Member (₹{billingDetails.finalGoldAmount.toFixed(2)})
                 </button>
