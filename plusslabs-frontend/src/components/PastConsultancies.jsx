@@ -8,7 +8,7 @@ const PastConsultancies = () => {
   const [loading, setLoading] = useState(true);
   const [expandedTest, setExpandedTest] = useState(null);
   const [user, setUser] = useState(null);
-  const [membershipData, setMembershipData] = useState(null); // Add this state
+  const [membershipData, setMembershipData] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -91,7 +91,7 @@ const PastConsultancies = () => {
       .sort((a, b) => b.date - a.date);
   };
 
-  // Health Metrics History Component
+  // Health Metrics Timeline Component
   const HealthMetricsTimeline = () => {
     const [selectedMetric, setSelectedMetric] = useState(null);
     const metricsHistory = getHealthMetricsHistory();
@@ -109,7 +109,7 @@ const PastConsultancies = () => {
         value: latestMetrics.weight ? `${latestMetrics.weight} kg` : '-',
         icon: '/assets/weight-scale.png',
         color: 'bg-[#fcd470]',
-        fontawesome: <i className="fa-brands fa-web-awesome  text-yellow-600"></i>
+        fontawesome: <i className="fa-brands fa-web-awesome text-yellow-600"></i>
       },
       { 
         id: 'height', 
@@ -118,7 +118,6 @@ const PastConsultancies = () => {
         icon: '/assets/height.png',
         color: 'bg-[#a7e9a6]',
         fontawesome: <i className="fa-brands fa-web-awesome"></i>
-
       },
       { 
         id: 'muscleMass', 
@@ -126,8 +125,7 @@ const PastConsultancies = () => {
         value: latestMetrics.muscleMass ? `${latestMetrics.muscleMass}%` : '-',
         icon: '/assets/muscle.png',
         color: 'bg-pink-300',
-        fontawesome: <i className="fa-brands fa-web-awesome "></i>
-
+        fontawesome: <i className="fa-brands fa-web-awesome"></i>
       },
       { 
         id: 'fatPercentage', 
@@ -135,8 +133,7 @@ const PastConsultancies = () => {
         value: latestMetrics.fatPercentage ? `${latestMetrics.fatPercentage}%` : '-',
         icon: '/assets/body-fat.png',
         color: 'bg-[#b1e4f9]',
-        fontawesome:<i className="fa-brands fa-web-awesome"></i>
-
+        fontawesome: <i className="fa-brands fa-web-awesome"></i>
       },
       { 
         id: 'bmi', 
@@ -144,8 +141,7 @@ const PastConsultancies = () => {
         value: latestBmi,
         icon: '/assets/bmi.png',
         color: 'bg-red-200',
-        fontawesome:<i className="fa-brands fa-web-awesome"></i>
-
+        fontawesome: <i className="fa-brands fa-web-awesome"></i>
       },
       { 
         id: 'bloodPressure', 
@@ -158,14 +154,14 @@ const PastConsultancies = () => {
         id: 'sugarLevels', 
         title: 'Sugar Levels', 
         value: latestMetrics.sugarLevels || '-',
-        icon: '/assets/sugar.png',
+        icon: '/assets/high-blood-sugar.png',
         color: 'bg-orange-200'
       },
       { 
         id: 'haemoglobin', 
         title: 'Haemoglobin', 
         value: latestMetrics.haemoglobin || '-',
-        icon: '/assets/blood.png',
+        icon: '/assets/haemoglobin.png',
         color: 'bg-red-200'
       },
       { 
@@ -179,7 +175,7 @@ const PastConsultancies = () => {
         id: 'cholesterol', 
         title: 'Cholesterol', 
         value: latestMetrics.cholesterol || '-',
-        icon: '/assets/cholesterol.png',
+        icon: '/assets/high.png',
         color: 'bg-yellow-200'
       }
     ];
@@ -189,19 +185,19 @@ const PastConsultancies = () => {
     };
   
     return (
-      <div className="bg-white rounded-xl  p-6 mb-8">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-xl md:text-3xl font-semibold text-gray-800">
+      <div className="bg-white rounded-xl p-4 sm:p-6 mb-6 sm:mb-8 shadow-md">
+        <div className="flex flex-col sm:flex-row justify-between items-center mb-4 sm:mb-6 gap-3">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-gray-800 text-center sm:text-left">
             Health Metrics History
           </h2>
           {user?.membershipStatus === 'gold' ? (
-            <span className="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-medium text-center">
+            <span className="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-medium text-center whitespace-nowrap">
               <i className="fas fa-crown mr-2"></i>Gold Member
             </span>
           ) : (
             <button
               onClick={handleActivateMembership}
-              className="bg-gradient-to-r from-yellow-400 to-yellow-600 text-white px-4 py-2 rounded-lg text-sm font-medium"
+              className="bg-gradient-to-r from-yellow-400 to-yellow-600 text-white px-4 py-2 rounded-lg text-sm font-medium w-full sm:w-auto"
             >
               <i className="fas fa-crown mr-2"></i>
               Activate Gold Membership
@@ -214,15 +210,15 @@ const PastConsultancies = () => {
             {selectedMetric ? (
               // Detail view (table format)
               <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-medium text-gray-800">
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+                  <h3 className="text-lg font-medium text-gray-800 text-center sm:text-left">
                     {metricCards.find(card => card.id === selectedMetric)?.title} History
                   </h3>
                   <button 
                     onClick={closeDetailView}
-                    className="bg-red-500 px-2 py-1 text-white rounded-lg"
+                    className="bg-red-500 px-2 py-1 text-white rounded-lg w-full sm:w-auto"
                   >
-                    <i className="fas fa-times "></i> Close
+                    <i className="fas fa-times mr-1"></i> Close
                   </button>
                 </div>
                 
@@ -230,13 +226,13 @@ const PastConsultancies = () => {
                   <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-yellow-200">
                       <tr>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-800 uppercase border-r-2 border-gray-400">Date</th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-800 uppercase">
+                        <th className="px-4 sm:px-6 py-2 sm:py-3 text-center text-xs font-medium text-gray-800 uppercase border-r-2 border-gray-400">Date</th>
+                        <th className="px-4 sm:px-6 py-2 sm:py-3 text-center text-xs font-medium text-gray-800 uppercase">
                           {metricCards.find(card => card.id === selectedMetric)?.title}
                         </th>
                       </tr>
                     </thead>
-                    <tbody className=" divide-y divide-gray-200">
+                    <tbody className="divide-y divide-gray-200">
                       {metricsHistory.map((record, index) => {
                         let value = '-';
                         
@@ -269,14 +265,14 @@ const PastConsultancies = () => {
                         
                         return (
                           <tr key={index} className="hover:bg-gray-50">
-                            <td className="px-6 py-4 text-center text-sm md:text-md whitespace-nowrap border-r-2 border-gray-400 text-gray-900">
+                            <td className="px-4 sm:px-6 py-3 sm:py-4 text-center text-xs sm:text-sm whitespace-nowrap border-r-2 border-gray-400 text-gray-900">
                               {record.date.toLocaleDateString('en-US', {
                                 year: 'numeric',
-                                month: 'long',
+                                month: 'short',
                                 day: 'numeric'
                               })}
                             </td>
-                            <td className="px-6 py-4 text-sm md:text-md whitespace-nowrap text-center text-gray-900">
+                            <td className="px-4 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm whitespace-nowrap text-center text-gray-900">
                               {value}
                             </td>
                           </tr>
@@ -284,7 +280,7 @@ const PastConsultancies = () => {
                       })}
                       {metricsHistory.length === 0 && (
                         <tr>
-                          <td colSpan="2" className="px-6 py-4 text-center text-sm text-gray-500">
+                          <td colSpan="2" className="px-4 sm:px-6 py-3 sm:py-4 text-center text-sm text-gray-500">
                             No data recorded yet
                           </td>
                         </tr>
@@ -295,28 +291,29 @@ const PastConsultancies = () => {
               </div>
             ) : (
               // Cards view
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
                 {metricCards.map(card => (
-                  <div 
+                  <div
                     key={card.id}
                     onClick={() => setSelectedMetric(card.id)}
-                    className={`${card.color} rounded-lg  p-4 border border-gray-200 cursor-pointer`}
+                    className={`${card.color} rounded-lg p-3  sm:p-4 border border-gray-200 cursor-pointer transition-transform hover:shadow-lg hover:scale-105`}
                   >
                     <div className={`flex flex-col items-center text-center ${card.color}`}>
-                      {/* <div className={`w-12 h-12 rounded-full bg-gradient-to-r ${card.color} flex items-center justify-center text-white text-2xl mb-3`}>
-                        {card.icon}
-                      </div>
-                      <h3 className="text-gray-700 font-medium">{card.title}</h3>
-                      <p className="text-2xl font-bold mt-2">{card.value}</p>
-                      <p className="text-xs text-gray-500 mt-2">Click for history</p> */}
-                      <h1 className="text-4xl mt-2 font-semibold bebas-neue-regular  flex gap-4"><span className="border-b-4 border-black">{card.title}</span></h1>
-                      <div className="flex mt-7 gap-10">
-                       <div className="text-center">
-                       <h1 className="text-5xl mt-2 font-semibold bebas-neue-regular">{card.value}</h1>
-                       <p className="text-sm  mt-2 px-3 py-2 rounded-xl bg-[#191c1e] text-[wheat] font-semibold"><i className="fa-solid fa-clock-rotate-left mr-1"></i> History</p>
-                       </div>
-                      <img src={card.icon} alt={card.title} height={100} width={100}/>
-
+                      <h1 className="text-2xl md:text-3xl font-semibold bebas-neue-regular flex gap-2">
+                        <span className="border-b-2 border-black">{card.title}</span>
+                      </h1>
+                      <div className="flex flex-row mt-5 sm:mt-3 gap-2 sm:gap-4 items-center justify-around w-full">
+                        <div className="text-center">
+                          <h1 className="text-xl sm:text-2xl md:text-3xl font-semibold bebas-neue-regular">{card.value}</h1>
+                          <p className="text-xs mt-1 p-2 rounded-xl bg-[#191c1e] text-[wheat] font-semibold">
+                           History
+                          </p>
+                        </div>
+                        <img 
+                          src={card.icon} 
+                          alt={card.title} 
+                          className="w-16 h-16 lg:w-20 lg:h-20"
+                        />
                       </div>
                     </div>
                   </div>
@@ -325,13 +322,13 @@ const PastConsultancies = () => {
             )}
           </>
         ) : (
-          <div className="bg-gray-50 p-6 rounded-lg text-center">
+          <div className="bg-gray-50 p-4 sm:p-6 rounded-lg text-center">
             <p className="text-gray-600 mb-4">
               Upgrade to Gold Membership to track your health metrics and access detailed reports
             </p>
             <button
               onClick={handleActivateMembership}
-              className="bg-yellow-500 text-white px-6 py-2 rounded-lg hover:bg-yellow-600 transition-all"
+              className="bg-yellow-500 text-white px-4 sm:px-6 py-2 rounded-lg hover:bg-yellow-600 transition-all w-full sm:w-auto"
             >
               <i className="fas fa-phone-alt mr-2"></i>
               Call to Activate (8237006990)
@@ -360,57 +357,75 @@ const PastConsultancies = () => {
       <>
         <Navbar />
         <div className="bg-[#f9f0dd] min-h-screen">
-        <div className="bg-[#fef8ec] h-[400px] md:h-[400px] w-full flex items-center  justify-center">
-      <div className="container max-w-full px-4 relative">
-          <span className="text-white rounded-2xl font-semibold  p-2 bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 ">PLUSSLABS PERKS</span>
-          
-          {/* Add membership expiry info */}
-          {user?.membershipStatus === 'gold' && membershipData?.active && (
-            <div className="mt-6 text-center">
-              <span className="bg-yellow-100 text-yellow-800  text-sm font-medium px-4 py-1 rounded-full">
-                <i className="fas fa-clock mr-2"></i>
-                Gold Membership expires on: {new Date(membershipData.endDate).toLocaleDateString('en-US', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric'
-                })}
-              </span>
-            </div>
-          )}
-
-          <h1 className="text-3xl mt-4 md:text-4xl lg:text-5xl font-bold text-[#0f4726] text-center"><i className="fa-regular fa-circle-check text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600"></i> Your Medical History with PLUSSLABS</h1>
-          <p className="text-[#0f4726] text-center mt-2 md:mt-4 opacity-90 text-lg "><i className="fa-regular fa-chart-bar"></i> Track all your past consultations and medical reports</p>
-          <div className="flex gap-4 justify-center mt-6 md:w-[50%] mx-auto border-t-2 border-[#0f4726] pt-4">
-          <h2 className=" text-[12px] mt-5 md:text-[18px] font-semibold text-[#0f4726] border-[2px] border-[#0f4726] p-2 rounded-lg"><i className="fa-solid fa-tag text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 "></i> 20% off on all tests</h2>
-                  <h2 className=" text-[12px] mt-5 md:text-[18px] font-semibold text-[#0f4726] border-[2px] border-[#0f4726] p-2 rounded-lg"><i className="fa-solid fa-clipboard text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600"></i> View past Consultancies</h2>
-                  <h2 className=" text-[12px] mt-5 md:text-[18px] font-semibold text-[#0f4726] border-[2px] border-[#0f4726] p-2 rounded-lg"><i className="fa-solid fa-clock text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600"></i> Get Reports in 2 hrs</h2>
-          </div>
-          <img src="/assets/pharmacy.png" alt="pharmacy" className="absolute h-28 w-28 md:top-40 right-10 hidden md:block"/>
-          <img src="/assets/drugstore.png" alt="pharmacy" className="absolute md:h-32 md:w-32 lg:h-40 lg:w-40 bottom-0 left-10 hidden md:block"/>
-          <img src="/assets/medicine.png" alt="pharmacy" className=" h-20 w-20 top-0 right-32 hidden md:block absolute"/>
-
-        </div>
-        
-      </div>
-          {/* ...existing membership perks UI... */}
-          <div className="container mx-auto px-4 flex flex-col items-center justify-center py-10">
-            <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
-              <div className="text-center">
-                <div className="bg-red-50 rounded-full p-6 inline-block mb-4">
-                  <i className="fas fa-clipboard-list text-4xl text-red-500"></i>
+          <div className="bg-[#fef8ec] py-8 sm:py-12 md:py-16 w-full flex items-center justify-center">
+            <div className="container max-w-full px-4 relative">
+              <span className="text-white rounded-2xl font-semibold p-2 bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600">PLUSSLABS PERKS</span>
+              
+              {/* Add membership expiry info */}
+              {user?.membershipStatus === 'gold' && membershipData?.active && (
+                <div className="mt-4 sm:mt-6 text-center">
+                  <span className="bg-yellow-100 text-yellow-800 text-xs sm:text-sm font-medium px-3 sm:px-4 py-1 rounded-full inline-block">
+                    <i className="fas fa-clock mr-2"></i>
+                    Gold Membership expires on: {new Date(membershipData.endDate).toLocaleDateString('en-US', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric'
+                    })}
+                  </span>
                 </div>
-                <h2 className="text-2xl font-semibold text-gray-800 mb-2">No Records Found</h2>
-                <p className="text-gray-600">
-                  We couldn't find any test records associated with your account. 
-                  Book your first test to start tracking your health journey.
-                </p>
-                <button 
-                  onClick={() => window.location.href = 'tel:8237006990'}
-                  className="mt-6 bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600 transition-colors"
-                >
-                  <i className="fas fa-phone-alt mr-2"></i>
-                  Book Now
-                </button>
+              )}
+
+              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[#0f4726] text-center mt-4">
+                <i className="fa-regular fa-circle-check text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600"></i> 
+                Your Medical History with PLUSSLABS
+              </h1>
+              <p className="text-[#0f4726] text-center mt-2 md:mt-4 opacity-90 text-base sm:text-lg">
+                <i className="fa-regular fa-chart-bar"></i> Track all your past consultations and medical reports
+              </p>
+              
+              <div className="flex flex-wrap gap-2 sm:gap-4 justify-center mt-4 sm:mt-6 sm:w-full md:w-[80%] lg:w-[50%] mx-auto border-t-2 border-[#0f4726] pt-4">
+                <h2 className="text-[10px] xs:text-xs sm:text-sm md:text-base font-semibold text-[#0f4726] border-[2px] border-[#0f4726] p-1 sm:p-2 rounded-lg">
+                  <i className="fa-solid fa-tag text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600"></i> 
+                   20% off on all tests
+                </h2>
+                <h2 className="text-[10px] xs:text-xs sm:text-sm md:text-base font-semibold text-[#0f4726] border-[2px] border-[#0f4726] p-1 sm:p-2 rounded-lg">
+                  <i className="fa-solid fa-clipboard text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600"></i> 
+                   View past Consultancies
+                </h2>
+                <h2 className="text-[10px] xs:text-xs sm:text-sm md:text-base font-semibold text-[#0f4726] border-[2px] border-[#0f4726] p-1 sm:p-2 rounded-lg">
+                  <i className="fa-solid fa-clock text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600"></i> 
+                   Get Reports in 2 hrs
+                </h2>
+              </div>
+              
+              {/* Hidden on small screens */}
+              <img src="/assets/pharmacy.png" alt="pharmacy" className="absolute h-16 w-16 md:h-28 md:w-28 top-10 md:top-40 right-2 sm:right-10 hidden md:block"/>
+              <img src="/assets/drugstore.png" alt="pharmacy" className="absolute md:h-24 md:w-24 lg:h-32 lg:w-32 bottom-0 left-2 sm:left-10 hidden md:block"/>
+              <img src="/assets/medicine.png" alt="pharmacy" className="h-16 w-16 md:h-20 md:w-20 top-0 right-20 sm:right-32 hidden md:block absolute"/>
+            </div>
+          </div>
+          
+          {/* No records UI */}
+          <div className="container mx-auto px-4 py-6 sm:py-10">
+            <div className="flex flex-col items-center justify-center">
+              <div className="bg-white p-6 sm:p-8 rounded-lg shadow-lg max-w-md w-full">
+                <div className="text-center">
+                  <div className="bg-red-50 rounded-full p-4 sm:p-6 inline-block mb-4">
+                    <i className="fas fa-clipboard-list text-3xl sm:text-4xl text-red-500"></i>
+                  </div>
+                  <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-2">No Records Found</h2>
+                  <p className="text-gray-600">
+                    We couldn't find any test records associated with your account. 
+                    Book your first test to start tracking your health journey.
+                  </p>
+                  <button 
+                    onClick={() => window.location.href = 'tel:8237006990'}
+                    className="mt-4 sm:mt-6 bg-red-500 text-white px-4 sm:px-6 py-2 rounded-lg hover:bg-red-600 transition-colors w-full sm:w-auto"
+                  >
+                    <i className="fas fa-phone-alt mr-2"></i>
+                    Book Now
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -422,14 +437,14 @@ const PastConsultancies = () => {
   return (
     <>
       <Navbar />
-      <div className="bg-[#fef8ec] h-[400px] md:h-[400px] w-full flex items-center  justify-center">
-      <div className="container max-w-full px-4 relative">
-          <span className="text-white rounded-2xl font-semibold  p-2 bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 ">PLUSSLABS PERKS</span>
+      <div className="bg-[#fef8ec] py-8 sm:py-12 md:py-16 w-full flex items-center justify-center">
+        <div className="container max-w-full px-4 relative">
+          <span className="text-white rounded-2xl font-semibold p-2 bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600">PLUSSLABS PERKS</span>
           
           {/* Add membership expiry info */}
           {user?.membershipStatus === 'gold' && membershipData?.active && (
-            <div className="mt-6 text-center">
-              <span className="bg-yellow-100 text-yellow-800  text-sm font-medium px-4 py-1 rounded-full">
+            <div className="mt-4 sm:mt-6 text-center">
+              <span className="bg-yellow-100 text-yellow-800 text-xs sm:text-sm font-medium px-3 sm:px-4 py-1 rounded-full inline-block">
                 <i className="fas fa-clock mr-2"></i>
                 Gold Membership expires on: {new Date(membershipData.endDate).toLocaleDateString('en-US', {
                   year: 'numeric',
@@ -440,68 +455,83 @@ const PastConsultancies = () => {
             </div>
           )}
 
-          <h1 className="text-3xl mt-4 md:text-4xl lg:text-5xl font-bold text-[#0f4726] text-center"><i className="fa-regular fa-circle-check text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600"></i> Your Medical History with PLUSSLABS</h1>
-          <p className="text-[#0f4726] text-center mt-2 md:mt-4 opacity-90 text-lg "><i className="fa-regular fa-chart-bar"></i> Track all your past consultations and medical reports</p>
-          <div className="flex gap-4 justify-center mt-6 md:w-[50%] mx-auto border-t-2 border-[#0f4726] pt-4">
-          <h2 className=" text-[12px] mt-5 md:text-[18px] font-semibold text-[#0f4726] border-[2px] border-[#0f4726] p-2 rounded-lg"><i className="fa-solid fa-tag text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 "></i> 20% off on all tests</h2>
-                  <h2 className=" text-[12px] mt-5 md:text-[18px] font-semibold text-[#0f4726] border-[2px] border-[#0f4726] p-2 rounded-lg"><i className="fa-solid fa-clipboard text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600"></i> View past Consultancies</h2>
-                  <h2 className=" text-[12px] mt-5 md:text-[18px] font-semibold text-[#0f4726] border-[2px] border-[#0f4726] p-2 rounded-lg"><i className="fa-solid fa-clock text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600"></i> Get Reports in 2 hrs</h2>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[#0f4726] text-center mt-4">
+            <i className="fa-regular fa-circle-check text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600"></i> 
+            Your Medical History with PLUSSLABS
+          </h1>
+          <p className="text-[#0f4726] text-center mt-2 md:mt-4 opacity-90 text-base sm:text-lg">
+            <i className="fa-regular fa-chart-bar"></i> Track all your past consultations and medical reports
+          </p>
+          
+          <div className="flex flex-wrap gap-2 sm:gap-4 justify-center mt-4 sm:mt-6 sm:w-full md:w-[80%] lg:w-[50%] mx-auto border-t-2 border-[#0f4726] pt-4">
+            <h2 className="text-[10px] xs:text-xs sm:text-sm md:text-base font-semibold text-[#0f4726] border-[2px] border-[#0f4726] p-1 sm:p-2 rounded-lg">
+              <i className="fa-solid fa-tag text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600"></i> 
+              20% off on all tests
+            </h2>
+            <h2 className="text-[10px] xs:text-xs sm:text-sm md:text-base font-semibold text-[#0f4726] border-[2px] border-[#0f4726] p-1 sm:p-2 rounded-lg">
+              <i className="fa-solid fa-clipboard text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600"></i> 
+              View past Consultancies
+            </h2>
+            <h2 className="text-[10px] xs:text-xs sm:text-sm md:text-base font-semibold text-[#0f4726] border-[2px] border-[#0f4726] p-1 sm:p-2 rounded-lg">
+              <i className="fa-solid fa-clock text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600"></i> 
+              Get Reports in 2 hrs
+            </h2>
           </div>
-          <img src="/assets/pharmacy.png" alt="pharmacy" className="absolute h-28 w-28 md:top-40 right-10 hidden md:block"/>
-          <img src="/assets/drugstore.png" alt="pharmacy" className="absolute md:h-32 md:w-32 lg:h-40 lg:w-40 bottom-0 left-10 hidden md:block"/>
-          <img src="/assets/medicine.png" alt="pharmacy" className=" h-20 w-20 top-0 right-32 hidden md:block absolute"/>
-
+          
+          {/* Hidden on small screens */}
+          <img src="/assets/pharmacy.png" alt="pharmacy" className="absolute h-16 w-16 md:h-28 md:w-28 top-10 md:top-40 right-2 sm:right-10 hidden md:block"/>
+          <img src="/assets/drugstore.png" alt="pharmacy" className="absolute md:h-24 md:w-24 lg:h-32 lg:w-32 bottom-0 left-2 sm:left-10 hidden md:block"/>
+          <img src="/assets/medicine.png" alt="pharmacy" className="h-16 w-16 md:h-20 md:w-20 top-0 right-20 sm:right-32 hidden md:block absolute"/>
         </div>
-        
       </div>
 
-      <div className="container max-w-full mx-auto px-4 py-8 -mt-10">
+      <div className="container max-w-full mx-auto px-4 py-6 sm:py-8 -mt-4 sm:-mt-6 md:-mt-10">
         <HealthMetricsTimeline />
         
-        <div className="bg-white rounded-xl shadow-lg p-6 md:p-8">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-6">Past Consultancies</h2>
+        <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6 md:p-8">
+          <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-4 sm:mb-6">Past Consultancies</h2>
 
           {patientData.pastTests?.length > 0 ? (
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               {patientData.pastTests.map((test, index) => (
                 <div 
                   key={index} 
                   className="bg-white border border-gray-200 rounded-lg overflow-hidden transition-all duration-300 hover:shadow-md"
                 >
                   <div 
-                    className="flex flex-wrap items-center justify-between p-4 cursor-pointer"
+                    className="flex flex-wrap items-center justify-between p-3 sm:p-4 cursor-pointer"
                     onClick={() => toggleExpandTest(index)}
                   >
-                    <div className="flex items-center space-x-4">
-                      <div className="bg-green-100 rounded-full p-3">
-                        <FileIcon className="h-6 w-6 text-green-500" />
+                    <div className="flex items-center space-x-2 sm:space-x-4 w-full sm:w-auto mb-2 sm:mb-0">
+                      <div className="bg-green-100 rounded-full p-2 sm:p-3">
+                        <FileIcon className="h-4 w-4 sm:h-6 sm:w-6 text-green-500" />
                       </div>
                       <div>
-                        <h3 className="text-lg font-medium text-gray-800">Tests : {test.testName}</h3>
-                        <div className="flex items-center mt-1 text-sm text-gray-500">
-                          <CalendarIcon className="h-4 w-4 mr-1" />
+                        <h3 className="text-base sm:text-lg font-medium text-gray-800">Tests: {test.testName}</h3>
+                        <div className="flex items-center mt-1 text-xs sm:text-sm text-gray-500">
+                          <CalendarIcon className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
                           {new Date(test.testDate).toLocaleDateString('en-US', {
                             year: 'numeric',
-                            month: 'long',
+                            month: 'short',
                             day: 'numeric'
                           })}
                         </div>
                       </div>
                     </div>
-                    <div className="flex items-center mt-2 sm:mt-0">
-                      <span className="text-sm text-gray-500 mr-2">
+                    <div className="flex items-center w-full sm:w-auto justify-between sm:justify-end">
+                      <span className="text-xs sm:text-sm text-gray-500 mr-2">
                         {test.reportImages?.length || 0} Reports
                       </span>
                       <ChevronRightIcon 
-                        className={`h-5 w-5 text-gray-400 transition-transform duration-300 ${expandedTest === index ? 'transform rotate-90' : ''}`} 
+                        className={`h-4 w-4 sm:h-5 sm:w-5 text-gray-400 transition-transform duration-300 ${expandedTest === index ? 'transform rotate-90' : ''}`} 
                       />
                     </div>
                   </div>
 
                   {expandedTest === index && test.reportImages?.length > 0 && (
-                    <div className="border-t border-gray-100 p-4 bg-gray-50">
-                      <p className="text-sm text-gray-500 mb-3">Medical Reports:</p>
-                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+                    <div className="border-t border-gray-100 p-3 sm:p-4 bg-gray-50">
+                      <p className="text-xs sm:text-sm text-gray-500 mb-2 sm:mb-3">Medical Reports:</p>
+                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 sm:gap-3">
                         {test.reportImages.map((image, imgIndex) => (
                           <a 
                             key={imgIndex} 
