@@ -17,7 +17,7 @@ passport.use(new GoogleStrategy({
   clientID: GOOGLE_CLIENT_ID,
   clientSecret: GOOGLE_CLIENT_SECRET,
   callbackURL: process.env.NODE_ENV === 'production'
-    ? 'https://147.93.30.88/api/auth/google/callback'
+    ? 'https://plusslabs.duckdns.org/api/auth/google/callback'
     : 'http://localhost:3000/api/auth/google/callback',
   passReqToCallback: true
 },
