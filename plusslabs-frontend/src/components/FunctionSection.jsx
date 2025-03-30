@@ -36,7 +36,7 @@ const FunctionSection = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center gap-5 md:gap-10 p-4">
+    <div id="services"  className="flex flex-col justify-center items-center gap-5 md:gap-10 p-4">
       <div>
         <h1 className="text-5xl text-left font-bold bebas-neue-regular">
           OUR SERVICES

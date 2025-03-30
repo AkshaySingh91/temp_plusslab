@@ -44,7 +44,7 @@ const Footer = () => {
             </li>
             <li>
               <button 
-                onClick={() => handleNavigation('/view-tests')} 
+                onClick={() => handleNavigation('/', 'services')} 
                 className="hover:text-yellow-500"
               >
                 Services
@@ -60,10 +60,18 @@ const Footer = () => {
             </li>
             <li>
               <button 
-                onClick={() => handleNavigation('/', 'health-concerns')} 
+                onClick={() => handleNavigation('/', 'concern-health-checkups')} 
                 className="hover:text-yellow-500"
               >
                 HealthCare Service
+              </button>
+            </li>
+            <li>
+              <button 
+                onClick={() => handleNavigation('/', 'why-choose-us')} 
+                className="hover:text-yellow-500"
+              >
+                Why Us
               </button>
             </li>
           </ul>
@@ -95,14 +103,6 @@ const Footer = () => {
                 className="hover:text-yellow-500"
               >
                 Home Sample Collection
-              </button>
-            </li>
-            <li>
-              <button 
-                onClick={() => handleNavigation('/')} 
-                className="hover:text-yellow-500"
-              >
-                Corporate Wellness
               </button>
             </li>
           </ul>

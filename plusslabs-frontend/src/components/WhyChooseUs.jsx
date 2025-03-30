@@ -3,7 +3,7 @@ import { MoveLeftIcon, Shield, ClipboardCheck } from "lucide-react";
 
 const WhyChooseUs = () => {
   return (
-    <section className="w-[95%] m-auto py-20 px-6 text-black relative overflow-hidden">
+    <section id="why-choose-us" className="w-[95%] m-auto py-20 px-6 text-black relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-20">
         <div className="absolute rounded-3xl inset-0 bg-gradient-to-r from-yellow-200 to-yellow-400" />
