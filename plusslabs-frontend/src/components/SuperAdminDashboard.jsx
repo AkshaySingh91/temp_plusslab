@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Navbar from "./Navbar";
+const api_url = import.meta.env.VITE_API_URL;
 
 const SuperAdminDashboard = () => {
   const [users, setUsers] = useState([]);
@@ -21,15 +22,15 @@ const SuperAdminDashboard = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/api/admin/users", {
+      const response = await axios.get(`${api_url}/api/admin/users`, {
         withCredentials: true,
       });
-      
+
       // Map over users to get their membership status
       const usersWithMembership = await Promise.all(response.data.map(async (user) => {
         try {
           const membershipRes = await axios.get(
-            `http://localhost:3000/api/membership/user/${user._id}`,
+            `${api_url}/api/membership/user/${user._id}`,
             { withCredentials: true }
           );
           return {
@@ -54,7 +55,7 @@ const SuperAdminDashboard = () => {
   const handleRoleChange = async (userId, newRole) => {
     try {
       await axios.put(
-        `http://localhost:3000/api/admin/users/${userId}/role`,
+        `${api_url}/api/admin/users/${userId}/role`,
         { role: newRole },
         { withCredentials: true }
       );
@@ -76,7 +77,7 @@ const SuperAdminDashboard = () => {
     }
 
     try {
-      await axios.delete(`http://localhost:3000/api/admin/users/${userId}`, {
+      await axios.delete(`${api_url}/api/admin/users/${userId}`, {
         withCredentials: true,
       });
       fetchUsers(); // Refresh the list
@@ -94,13 +95,13 @@ const SuperAdminDashboard = () => {
 
     try {
       const response = await axios.post(
-        'http://localhost:3000/api/membership/activate',
+        `${api_url}/api/membership/activate`,
         {
           userId,
           startDate: membershipDates.startDate,
           endDate: membershipDates.endDate
         },
-        { 
+        {
           withCredentials: true,
           headers: {
             'Content-Type': 'application/json'
@@ -128,7 +129,7 @@ const SuperAdminDashboard = () => {
 
     try {
       const response = await axios.post(
-        'http://localhost:3000/api/membership/deactivate',
+        `${api_url}/api/membership/deactivate`,
         { userId },
         { withCredentials: true }
       );
@@ -180,7 +181,7 @@ const SuperAdminDashboard = () => {
           </div>
 
           {/* Dashboard Access Card */}
-          <div 
+          <div
             onClick={() => window.location.href = '/dashboard'}
             className="bg-white p-6 rounded-lg shadow-lg cursor-pointer hover:shadow-xl transition-shadow"
           >
@@ -217,20 +218,17 @@ const SuperAdminDashboard = () => {
               </thead>
               <tbody>
                 {filteredUsers.map((user) => (
-                  <tr key={user._id} className={`border-t ${
-                    user.membershipStatus === 'gold' ? 'bg-green-50' : ''
-                  }`}>
+                  <tr key={user._id} className={`border-t ${user.membershipStatus === 'gold' ? 'bg-green-50' : ''
+                    }`}>
                     <td className="px-6 py-4">{user.name}</td>
                     <td className="px-6 py-4">{user.email}</td>
                     <td className="px-6 py-4">{user.role}</td>
                     <td className="px-6 py-4">
                       <div className="flex flex-col gap-1">
-                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                          user.membershipStatus === 'gold' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
-                        }`}>
-                          <span className={`w-2 h-2 mr-1 rounded-full ${
-                            user.membershipStatus === 'gold' ? 'bg-green-400' : 'bg-gray-400'
-                          }`}></span>
+                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${user.membershipStatus === 'gold' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
+                          }`}>
+                          <span className={`w-2 h-2 mr-1 rounded-full ${user.membershipStatus === 'gold' ? 'bg-green-400' : 'bg-gray-400'
+                            }`}></span>
                           {user.membershipStatus === 'gold' ? 'Gold Member' : 'Regular User'}
                         </span>
                         {user.membershipEndDate && (
@@ -266,11 +264,10 @@ const SuperAdminDashboard = () => {
                             setShowMembershipModal(true);
                           }
                         }}
-                        className={`px-3 py-1 rounded transition-colors flex items-center gap-1 ${
-                          user.membershipStatus === 'gold'
+                        className={`px-3 py-1 rounded transition-colors flex items-center gap-1 ${user.membershipStatus === 'gold'
                             ? 'bg-red-500 hover:bg-red-600'
                             : 'bg-green-500 hover:bg-green-600'
-                        } text-white`}
+                          } text-white`}
                       >
                         <i className={`fas ${user.membershipStatus === 'gold' ? 'fa-user-minus' : 'fa-user-plus'}`}></i>
                         {user.membershipStatus === 'gold' ? 'Deactivate Gold' : 'Activate Gold'}

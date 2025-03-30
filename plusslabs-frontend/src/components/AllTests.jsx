@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios"; // Add missing import
+const api_url = import.meta.env.VITE_API_URL;
 
 const AllTests = () => {
   const [formData, setFormData] = useState({
@@ -17,7 +18,7 @@ const AllTests = () => {
   useEffect(() => {
     const checkUserRole = async () => {
       try {
-        const res = await axios.get('http://localhost:3000/api/auth/profile', { 
+        const res = await axios.get(`${api_url}/api/auth/profile`, { 
           withCredentials: true 
         });
         setUserRole(res.data.role);
@@ -49,7 +50,7 @@ const AllTests = () => {
 
     if (code.length >= 3) {
       try {
-        const response = await axios.get(`http://localhost:3000/api/tests/code/${code}`);
+        const response = await axios.get(`${api_url}/api/tests/code/${code}`);
         if (response.data) {
           setIsEditing(true);
           setTestId(response.data._id);
@@ -88,14 +89,14 @@ const AllTests = () => {
 
       if (isEditing && testId) {
         await axios.put(
-          `http://localhost:3000/api/tests/update/${testId}`, 
+          `${api_url}/api/tests/update/${testId}`, 
           dataToSubmit,
           { withCredentials: true } // Add credentials
         );
         alert("Test updated successfully!");
       } else {
         const response = await axios.post(
-          "http://localhost:3000/api/tests/add", 
+          `${api_url}/api/tests/add`, 
           dataToSubmit,
           { withCredentials: true } // Add credentials
         );

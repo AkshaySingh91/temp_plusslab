@@ -10,7 +10,7 @@ import membershipRoutes from './routes/membership.routes.js'
 const app = express()
 
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: ['http://localhost:5173', "https://temp-plusslab.vercel.app", "https://www.temp-plusslab.vercel.app"],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization']
@@ -20,7 +20,7 @@ app.use(session({
   secret: process.env.JWT_SECRET,
   resave: false,
   saveUninitialized: false,
-  cookie: { 
+  cookie: {
     secure: false, // set to true in production with HTTPS
     maxAge: 24 * 60 * 60 * 1000 // 24 hours
   }

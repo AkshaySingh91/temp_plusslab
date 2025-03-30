@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Navbar from "./Navbar";
 import { CalendarIcon, FileIcon, ChevronRightIcon } from "lucide-react";
+const api_url = import.meta.env.VITE_API_URL;
 
 const PastConsultancies = () => {
   const [patientData, setPatientData] = useState(null);
@@ -14,7 +15,7 @@ const PastConsultancies = () => {
     const fetchData = async () => {
       try {
         // First get the user profile
-        const userRes = await axios.get("http://localhost:3000/api/auth/profile", {
+        const userRes = await axios.get(`${api_url}/api/auth/profile`, {
           withCredentials: true,
         });
         setUser(userRes.data);
@@ -22,7 +23,7 @@ const PastConsultancies = () => {
         // Get membership status if user exists
         if (userRes.data) {
           const membershipRes = await axios.get(
-            "http://localhost:3000/api/membership/status",
+            `${api_url}/api/membership/status`,
             { withCredentials: true }
           );
           setMembershipData(membershipRes.data);
@@ -31,7 +32,7 @@ const PastConsultancies = () => {
         // Then get patient data if user has email
         if (userRes.data.email) {
           const patientRes = await axios.get(
-            `http://localhost:3000/api/patients/user/${userRes.data.email}`
+            `${api_url}/api/patients/user/${userRes.data.email}`
           );
           setPatientData(patientRes.data);
         }

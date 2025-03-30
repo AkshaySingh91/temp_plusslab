@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+const api_url = import.meta.env.VITE_API_URL;
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -12,7 +13,7 @@ const Login = () => {
     e.preventDefault();
     setError('');
     try {
-      const response = await axios.post('http://localhost:3000/api/auth/login',
+      const response = await axios.post(`${api_url}/api/auth/login`,
         { email, password },
         { withCredentials: true }
       );
@@ -39,7 +40,7 @@ const Login = () => {
   };
 
   const handleGoogleLogin = () => {
-    window.location.href = 'http://localhost:3000/api/auth/google';
+    window.location.href = `${api_url}/api/auth/google`;
   };
 
   return (
