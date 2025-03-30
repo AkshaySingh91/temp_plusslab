@@ -10,7 +10,7 @@ import membershipRoutes from './routes/membership.routes.js'
 const app = express()
 
 app.use(cors({
-  origin: ['http://localhost:5173', "https://temp-plusslab-x93p.vercel.app", "https://www.temp-plusslab-x93p.vercel.app"],
+  origin: "*",
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization']
