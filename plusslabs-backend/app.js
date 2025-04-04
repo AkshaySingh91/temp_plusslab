@@ -10,13 +10,14 @@ import membershipRoutes from './routes/membership.routes.js'
 const app = express()
 app.use(cookieParser())
 app.use(express.json())
-
-app.use(cors({
-  origin: "*",
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}))
+const corsOptions = {
+  origin: ["https://plusslabs.com", "https://www.plusslabs.com"], // Allow frontend origin
+  methods: "GET,POST,PUT,DELETE",
+  allowedHeaders: "Content-Type,Authorization",
+  credentials: true, // Allow cookies & auth headers
+};
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
 
 app.use(session({
   secret: process.env.JWT_SECRET,
