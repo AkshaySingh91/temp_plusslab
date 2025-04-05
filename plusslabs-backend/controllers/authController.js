@@ -1,11 +1,7 @@
 import User from '../models/user.models.js';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
-
-const FRONTEND_URL = process.env.NODE_ENV === 'production'
-  ? 'https://plusslabs.com'
-  : 'http://localhost:5173';
-
+ 
 export const loginWithGoogle = async (req, res) => {
   try {
     const token = jwt.sign({ id: req.user._id }, process.env.JWT_SECRET);
