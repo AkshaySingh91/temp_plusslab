@@ -17,7 +17,7 @@ passport.use(new GoogleStrategy({
   clientID: GOOGLE_CLIENT_ID,
   clientSecret: GOOGLE_CLIENT_SECRET,
   callbackURL: process.env.NODE_ENV === 'production'
-    ? 'https://plusslabs.duckdns.org/api/auth/google/callback'
+    ? 'https://plusslabs.com/api/auth/google/callback'
     : 'http://localhost:3000/api/auth/google/callback',
   passReqToCallback: true
 },
@@ -43,8 +43,8 @@ passport.use(new GoogleStrategy({
     } catch (error) {
       return cb(error, null);
     }
-  }
-));
+  }));
+;
 
 passport.serializeUser((user, done) => {
   done(null, user.id);
