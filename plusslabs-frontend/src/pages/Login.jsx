@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+const api_url = import.meta.env.VITE_API_URL;
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -12,11 +13,11 @@ const Login = () => {
     e.preventDefault();
     setError('');
     try {
-      const response = await axios.post('http://localhost:3000/api/auth/login', 
+      const response = await axios.post(`${api_url}/api/auth/login`,
         { email, password },
         { withCredentials: true }
       );
-      
+
       if (response.data.success) {
         // Navigate based on user role
         if (response.data.user.role === 'superadmin') {
@@ -39,7 +40,7 @@ const Login = () => {
   };
 
   const handleGoogleLogin = () => {
-    window.location.href = 'http://localhost:3000/api/auth/google';
+    window.location.href = `${api_url}/api/auth/google`;
   };
 
   return (
@@ -48,17 +49,17 @@ const Login = () => {
       <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-teal-500 to-blue-600 text-white flex-col justify-between">
         <div className="p-12">
           <div className="flex items-center">
-          <img src='/assets/logo.jpeg' alt='logo' className='rounded-full w-10 h-10'/>
+            <img src='/assets/logo.jpeg' alt='logo' className='rounded-full w-10 h-10' />
             <h1 className="ml-2 text-2xl font-bold"> PlussLabs</h1>
           </div>
         </div>
-        
+
         <div className="p-12">
           <div className="mb-8">
             <h2 className="text-4xl font-bold mb-6">Your Health, Our Priority</h2>
             <p className="text-xl opacity-80">Access your premium pharmacy service. Manage prescriptions, track orders, and consult with our pharmacists in real-time.</p>
           </div>
-          
+
           <div className="grid grid-cols-2 gap-4 mb-8">
             <div className="bg-white bg-opacity-20 p-4 rounded-lg">
               <div className="text-white text-opacity-90 mb-2">
@@ -68,7 +69,7 @@ const Login = () => {
               </div>
               <h3 className="font-medium text-lg">Prescription Management</h3>
             </div>
-            
+
             <div className="bg-white bg-opacity-20 p-4 rounded-lg">
               <div className="text-white text-opacity-90 mb-2">
                 <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -77,7 +78,7 @@ const Login = () => {
               </div>
               <h3 className="font-medium text-lg">Medication Reminders</h3>
             </div>
-            
+
             <div className="bg-white bg-opacity-20 p-4 rounded-lg">
               <div className="text-white text-opacity-90 mb-2">
                 <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -86,7 +87,7 @@ const Login = () => {
               </div>
               <h3 className="font-medium text-lg">Pharmacist Consultation</h3>
             </div>
-            
+
             <div className="bg-white bg-opacity-20 p-4 rounded-lg">
               <div className="text-white text-opacity-90 mb-2">
                 <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -98,7 +99,7 @@ const Login = () => {
           </div>
         </div>
       </div>
-      
+
       {/* Right side - Login form */}
       <div className="w-full lg:w-1/2 flex items-center justify-center px-6 md:px-12 xl:px-20">
         <div className="w-full max-w-md">
@@ -106,7 +107,7 @@ const Login = () => {
             <h2 className="text-3xl font-bold text-gray-800">Welcome Back</h2>
             <p className="mt-3 text-gray-600">Sign in to your PlussLabs account</p>
           </div>
-          
+
           {error && (
             <div className="mb-6 p-4 bg-red-50 text-red-600 rounded-lg border border-red-100 flex items-center">
               <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
@@ -122,7 +123,7 @@ const Login = () => {
               </div>
             </div>
           )}
-          
+
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
@@ -141,7 +142,7 @@ const Login = () => {
                 />
               </div>
             </div>
-            
+
             <div>
               <div className="flex items-center justify-between mb-1">
                 <label className="block text-sm font-medium text-gray-700">Password</label>
@@ -161,7 +162,7 @@ const Login = () => {
                 />
               </div>
             </div>
-            
+
             <div className="flex items-center">
               <input
                 id="remember-me"
@@ -173,7 +174,7 @@ const Login = () => {
                 Remember me
               </label>
             </div>
-            
+
             <div className="space-y-4">
               <button
                 type="submit"
@@ -181,7 +182,7 @@ const Login = () => {
               >
                 Sign in
               </button>
-              
+
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
                   <div className="w-full border-t border-gray-300"></div>
@@ -190,7 +191,7 @@ const Login = () => {
                   <span className="px-2 bg-white text-gray-500">Or continue with</span>
                 </div>
               </div>
-              
+
               <button
                 type="button"
                 onClick={handleGoogleLogin}
@@ -201,7 +202,7 @@ const Login = () => {
               </button>
             </div>
           </form>
-          
+
           <p className="mt-8 text-center text-sm text-gray-600">
             Don't have an account?{' '}
             <Link to="/signup" className="font-medium text-teal-600 hover:text-teal-500">

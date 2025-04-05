@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+const api_url = import.meta.env.VITE_API_URL;
 
 const AllPatients = () => {
   const [isExistingPatient, setIsExistingPatient] = useState(false);
@@ -52,8 +53,8 @@ const AllPatients = () => {
     const fetchInitialData = async () => {
       try {
         const [testsResponse, userResponse] = await Promise.all([
-          axios.get("http://localhost:3000/api/tests", { withCredentials: true }),
-          axios.get('http://localhost:3000/api/auth/profile', { withCredentials: true })
+          axios.get(`${api_url}/api/tests`, { withCredentials: true }),
+          axios.get(`${api_url}/api/auth/profile`, { withCredentials: true })
         ]);
         
         setAvailableTests(testsResponse.data);
@@ -92,7 +93,7 @@ const AllPatients = () => {
     
     if (newPatientId) {
       try {
-        const response = await axios.get(`http://localhost:3000/api/patients/${newPatientId}`);
+        const response = await axios.get(`${api_url}/api/patients/${newPatientId}`);
         if (response.data) {
           setIsExistingPatient(true);
           setFormData(prev => ({
@@ -199,7 +200,7 @@ const AllPatients = () => {
 
       if (isExistingPatient) {
         await axios.put(
-          `http://localhost:3000/api/patients/addTest/${formData.patientId}`,
+          `${api_url}/api/patients/addTest/${formData.patientId}`,
           formDataToSend,
           {
             headers: { 'Content-Type': 'multipart/form-data' }
@@ -211,7 +212,7 @@ const AllPatients = () => {
       } else {
         // Create new patient
         await axios.post(
-          "http://localhost:3000/api/patients/add",
+          `${api_url}/api/patients/add`,
           formDataToSend,
           {
             headers: { 'Content-Type': 'multipart/form-data' }

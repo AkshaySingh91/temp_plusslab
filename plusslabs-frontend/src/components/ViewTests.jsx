@@ -3,6 +3,7 @@ import axios from "axios";
 import Navbar from "./Navbar";
 import { useLocation } from "react-router-dom";
 import Footer from "./Footer";
+const api_url = import.meta.env.VITE_API_URL;
 
 const ViewTests = () => {
   const [tests, setTests] = useState([]);
@@ -17,7 +18,7 @@ const ViewTests = () => {
   useEffect(() => {
     const fetchTests = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/tests", {
+        const response = await axios.get(`${api_url}/api/tests`, {
           withCredentials: true,
         });
         setTests(response.data);
@@ -32,7 +33,7 @@ const ViewTests = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axios.get("http://localhost:3000/api/auth/profile", {
+        const res = await axios.get(`${api_url}/api/auth/profile`, {
           withCredentials: true,
         });
         setUser(res.data);
@@ -46,7 +47,7 @@ const ViewTests = () => {
   useEffect(() => {
     const checkUserRole = async () => {
       try {
-        const res = await axios.get('http://localhost:3000/api/auth/profile', { 
+        const res = await axios.get(`${api_url}/api/auth/profile`, { 
           withCredentials: true 
         });
         setUser(res.data);
@@ -63,7 +64,7 @@ const ViewTests = () => {
     }
 
     try {
-      await axios.delete(`http://localhost:3000/api/tests/${testId}`, {
+      await axios.delete(`${api_url}/api/tests/${testId}`, {
         withCredentials: true,
       });
       setTests(tests.filter((test) => test._id !== testId));

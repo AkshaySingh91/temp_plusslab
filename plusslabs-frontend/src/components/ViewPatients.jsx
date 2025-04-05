@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+const api_url = import.meta.env.VITE_API_URL;
 
 const ViewPatients = () => {
   const [patients, setPatients] = useState([]);
@@ -12,7 +13,7 @@ const ViewPatients = () => {
   useEffect(() => {
     const fetchPatients = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/patients");
+        const response = await axios.get(`${api_url}/api/patients`);
         setPatients(response.data);
         setFilteredPatients(response.data);
       } catch (error) {
@@ -25,7 +26,7 @@ const ViewPatients = () => {
   useEffect(() => {
     const fetchUserRole = async () => {
       try {
-        const res = await axios.get('http://localhost:3000/api/auth/profile', {
+        const res = await axios.get(`${api_url}/api/auth/profile`, {
           withCredentials: true
         });
         setUserRole(res.data.role);
@@ -40,7 +41,7 @@ const ViewPatients = () => {
     if (!window.confirm("Are you sure you want to delete this patient?")) return;
 
     try {
-      await axios.delete(`http://localhost:3000/api/patients/${patientId}`, {
+      await axios.delete(`${api_url}/api/patients/${patientId}`, {
         withCredentials: true,  // Add this to send cookies
         headers: {
           'Content-Type': 'application/json'
@@ -72,7 +73,7 @@ const ViewPatients = () => {
 
     try {
       await axios.delete(
-        `http://localhost:3000/api/patients/${patientId}/test/${testId}`,
+        `${api_url}/api/patients/${patientId}/test/${testId}`,
         { withCredentials: true }
       );
       

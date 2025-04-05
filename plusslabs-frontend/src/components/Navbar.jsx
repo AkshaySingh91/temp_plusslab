@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import axios from 'axios';
+const api_url = import.meta.env.VITE_API_URL;
 
 const Navbar = () => {
   const [user, setUser] = useState(null);
@@ -15,7 +16,7 @@ const Navbar = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axios.get('http://localhost:3000/api/auth/profile', { withCredentials: true });
+        const res = await axios.get(`${api_url}/api/auth/profile`, { withCredentials: true });
         setUser(res.data);
       } catch (error) {
         console.error('Error fetching user:', error);
@@ -37,7 +38,7 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     try {
-      await axios.get('http://localhost:3000/api/auth/logout', { withCredentials: true });
+      await axios.get(`${api_url}/api/auth/logout`, { withCredentials: true });
       setUser(null);
       setShowDropdown(false);
       navigate('/');

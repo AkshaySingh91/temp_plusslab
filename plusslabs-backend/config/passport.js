@@ -14,20 +14,22 @@ if (!GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET) {
 }
 
 passport.use(new GoogleStrategy({
-    clientID: GOOGLE_CLIENT_ID,
-    clientSecret: GOOGLE_CLIENT_SECRET,
-    callbackURL: "http://localhost:3000/api/auth/google/callback",
-    passReqToCallback: true
-  },
-  async function(request, accessToken, refreshToken, profile, cb) {
+  clientID: GOOGLE_CLIENT_ID,
+  clientSecret: GOOGLE_CLIENT_SECRET,
+  callbackURL: process.env.NODE_ENV === 'production'
+    ? 'https://plusslabs.com/api/auth/google/callback'
+    : 'http://localhost:3000/api/auth/google/callback',
+  passReqToCallback: true
+},
+  async function (request, accessToken, refreshToken, profile, cb) {
     try {
-      let user = await User.findOne({ 
+      let user = await User.findOne({
         $or: [
           { email: profile.emails[0].value },
           { googleId: profile.id }
         ]
       });
-      
+
       if (!user) {
         user = await User.create({
           name: profile.displayName,
@@ -36,13 +38,13 @@ passport.use(new GoogleStrategy({
           avatar: profile.photos[0].value
         });
       }
-      
+
       return cb(null, user);
     } catch (error) {
       return cb(error, null);
     }
-  }
-));
+  }));
+
 
 passport.serializeUser((user, done) => {
   done(null, user.id);

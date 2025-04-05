@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+const api_url = import.meta.env.VITE_API_URL;
 
 const services = [
   {
@@ -24,7 +25,7 @@ const FunctionSection = () => {
 
   const handleProtectedLink = async (path) => {
     try {
-      const res = await axios.get('http://localhost:3000/api/auth/profile', { 
+      const res = await axios.get(`${api_url}/api/auth/profile`, { 
         withCredentials: true 
       });
       if (res.data) {
@@ -58,7 +59,7 @@ const FunctionSection = () => {
             <h3 className="text-lg font-semibold text-gray-800">
               {service.title}
             </h3>
-            <i class="fa-solid fa-arrow-right-to-bracket"></i>
+            <i className="fa-solid fa-arrow-right-to-bracket"></i>
           </div>
         </div>
       ))}

@@ -10,20 +10,24 @@ router.get('/google',
   passport.authenticate('google', { scope: ['profile', 'email'] })
 );
 
+const FRONTEND_URL = process.env.NODE_ENV === 'production'
+  ? 'https://plusslabs.com'
+  : 'http://localhost:5173';
+
 router.get('/google/callback', 
-  passport.authenticate('google', { failureRedirect: 'http://localhost:5173/login' }),
+  passport.authenticate('google', { failureRedirect: `${FRONTEND_URL}/login` }),
   (req, res) => {
     try {
       const token = jwt.sign({ id: req.user._id }, process.env.JWT_SECRET);
       res.cookie('token', token, { 
         httpOnly: true,
-        secure: false, // set to true in production
+        secure: process.env.NODE_ENV === 'production', // true in production, false in dev
         sameSite: 'lax',
         maxAge: 24 * 60 * 60 * 1000 // 24 hours
       });
-      res.redirect('http://localhost:5173/'); // Changed to redirect to home
+      res.redirect(FRONTEND_URL);
     } catch (error) {
-      res.redirect('http://localhost:5173/login');
+      res.redirect(`${FRONTEND_URL}/login`);
     }
   }
 );

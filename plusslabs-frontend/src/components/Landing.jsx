@@ -85,7 +85,7 @@ const Landing = () => {
                   <span className="text-[10px] border border-gray-800 p-1 rounded-md inline-block w-fit">
                     MOST POPULAR
                   </span>
-                  <h1 class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 font-bold text-3xl">GOLD MEMBERSHIP</h1>
+                  <h1 className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 font-bold text-3xl">GOLD MEMBERSHIP</h1>
                   <div className="flex flex-col gap-5 ">
                   <h2 className="text-3xl text-left text-[#0f4726] font-semibold">Membership has --</h2>
                   <h2 className="text-5xl text-center text-[#0f4726] font-bold bebas-neue-regular">It's Perks</h2>

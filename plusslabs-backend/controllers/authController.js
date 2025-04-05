@@ -1,17 +1,21 @@
 import User from '../models/user.models.js';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
-
+ 
 export const loginWithGoogle = async (req, res) => {
   try {
     const token = jwt.sign({ id: req.user._id }, process.env.JWT_SECRET);
     res.cookie('token', token, { httpOnly: true });
-    res.redirect('http://localhost:5173/dashboard');
+    
+    const FRONTEND_URL = process.env.NODE_ENV === 'production'
+      ? 'https://plusslabs.com'
+      : 'http://localhost:5173';
+      
+    res.redirect(`${FRONTEND_URL}/dashboard`);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
-
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;

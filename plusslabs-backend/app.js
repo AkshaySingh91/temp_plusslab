@@ -8,26 +8,27 @@ import session from 'express-session'
 import membershipRoutes from './routes/membership.routes.js'
 
 const app = express()
-
-app.use(cors({
-  origin: 'http://localhost:5173',
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}))
+app.use(cookieParser())
+app.use(express.json())
+const corsOptions = {
+  origin: ["https://plusslabs.com", "https://www.plusslabs.com","http://localhost:5173"], // Allow frontend origin
+  methods: "GET,POST,PUT,DELETE",
+  allowedHeaders: "Content-Type,Authorization",
+  credentials: true, // Allow cookies & auth headers
+};
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
 
 app.use(session({
   secret: process.env.JWT_SECRET,
   resave: false,
   saveUninitialized: false,
-  cookie: { 
+  cookie: {
     secure: false, // set to true in production with HTTPS
     maxAge: 24 * 60 * 60 * 1000 // 24 hours
   }
 }))
 
-app.use(cookieParser())
-app.use(express.json())
 app.use(passport.initialize())
 app.use(passport.session())
 

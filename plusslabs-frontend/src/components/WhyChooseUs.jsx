@@ -15,7 +15,7 @@ const WhyChooseUs = () => {
           {/* Header Section */}
           <div className="text-center mb-16">
             <h2 className="text-5xl md:text-7xl font-bold text-gray-800 mb-4 tracking-tight flex flex-col md:flex-row gap-2 items-center justify-center md:gap-5">
-            <i class="fa-solid fa-users"></i>
+            <i className="fa-solid fa-users"></i>
               Why Choose US
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">

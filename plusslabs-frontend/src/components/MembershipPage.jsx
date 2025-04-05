@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Navbar from './Navbar';
+const api_url = import.meta.env.VITE_API_URL;
 
 const MembershipPage = () => {
   const [user, setUser] = useState(null);
@@ -9,7 +10,7 @@ const MembershipPage = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axios.get('http://localhost:3000/api/auth/profile', {
+        const res = await axios.get(`${api_url}/api/auth/profile`, {
           withCredentials: true
         });
         setUser(res.data);

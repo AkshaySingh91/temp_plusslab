@@ -1,6 +1,7 @@
 import { Navigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+const api_url = import.meta.env.VITE_API_URL;
 
 const ProtectedRoute = ({ children, adminOnly = false, superAdminOnly = false }) => {
   const [user, setUser] = useState(null);
@@ -9,7 +10,7 @@ const ProtectedRoute = ({ children, adminOnly = false, superAdminOnly = false })
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const res = await axios.get('http://localhost:3000/api/auth/profile', { withCredentials: true });
+        const res = await axios.get(`${api_url}/api/auth/profile`, { withCredentials: true });
         setUser(res.data);
       } catch (error) {
         setUser(null);
