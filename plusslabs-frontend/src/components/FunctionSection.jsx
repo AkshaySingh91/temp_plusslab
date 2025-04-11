@@ -4,13 +4,13 @@ import axios from 'axios';
 const api_url = import.meta.env.VITE_API_URL;
 
 const services = [
-  {
-    title: "View Lab Tests",
-    imageUrl:
-      "https://media.istockphoto.com/id/1420900785/vector/simple-and-clean-chemical-test-tube-vector-icon-illustration.jpg?s=612x612&w=0&k=20&c=LoxXUY39CSc0u2JpUFub-6LLHo4Tu3rZQiR_oat5cUg=",
-    bgColor: "bg-green-300",
-    path:'view-tests'
-  },
+  // {
+  //   title: "View Lab Tests",
+  //   imageUrl:
+  //     "https://media.istockphoto.com/id/1420900785/vector/simple-and-clean-chemical-test-tube-vector-icon-illustration.jpg?s=612x612&w=0&k=20&c=LoxXUY39CSc0u2JpUFub-6LLHo4Tu3rZQiR_oat5cUg=",
+  //   bgColor: "bg-green-300",
+  //   path:'view-tests'
+  // },
   {
     title: "Visit Past Consultancies",
     imageUrl:
