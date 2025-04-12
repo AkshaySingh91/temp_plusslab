@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 const healthPackages = [
   {
-    title: "MEDICARE FULL BODY HEALTH CHECKUP",
+    title: "ECG & FULL BODY CHECKUP AT HOME",
     tests: "Includes 10 Tests",
     price: "₹2000",
     discount: "",
@@ -11,7 +11,7 @@ const healthPackages = [
     category: "FULL BODY CHECKUP",
   },
   {
-    title: "DIABETES SCREENING",
+    title: "GYM & SPORTS TEST PACKAGE ",
     tests: "Includes 22 Tests",
     price: "₹2000",
     discount: "",
@@ -20,7 +20,7 @@ const healthPackages = [
     category: "DIABETES",
   },
   {
-    title: "FULL BODY CHECKUP WITH VITAMIN D & B12",
+    title: "TESTS FOR WEAKNESS & BODY PAIN",
     tests: "Includes 12 Tests",
     price: "₹2000",
     icon: "https://cdn-icons-png.flaticon.com/512/4464/4464982.png",
@@ -29,7 +29,7 @@ const healthPackages = [
     category: "FULL BODY CHECKUP",
   },
   {
-    title: "WOMAN’S HEALTH CHECKUP",
+    title: "WOMAN’S FITNESS & PERSONAL PROBLEMS",
     tests: "Includes 12 Tests",
     price: "₹2000",
     icon: "https://cdn-icons-png.flaticon.com/512/2463/2463980.png",
@@ -42,13 +42,13 @@ const healthPackages = [
 const categories = [
   "ALL TESTS",
   "FULL BODY CHECKUP",
-  "DIABETES",
-  "HEART",
-  "WOMEN HEALTH",
-  "VITAMINS",
-  "LIVER",
-  "KIDNEY",
-  "CANCER",
+  "FEVER PROFILE",
+  "VIT D3 | B-12",
+  "RENAL PROFILE",
+  "LIPID PROFILE",
+  "THYROID",
+  "TYPHOID/JAUNDICE",
+  "MALARIA/DENGUE",
 ];
 
 const FeaturedHealthCheckup = () => {
@@ -98,10 +98,10 @@ const FeaturedHealthCheckup = () => {
 
       {/* Bottom Section */}
       <div className="flex justify-between items-center">
-        <div className="text-lg lg:text-xl font-semibold">{pkg.price}</div>
+        {/* <div className="text-lg lg:text-xl font-semibold">{pkg.price}</div> */}
         <button 
           onClick={handleBook}
-          className="bg-black text-white px-4 py-2 rounded-2xl text-sm md:text-base lg:text-2xl hover:bg-gray-800 transition-colors"
+          className="bg-black text-white px-4 py-2 rounded-2xl text-sm md:text-base lg:text-2xl bebas-neue-regular hover:bg-gray-800 transition-colors"
         >
           BOOK
         </button>
