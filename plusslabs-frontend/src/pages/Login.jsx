@@ -47,17 +47,22 @@ const Login = () => {
     <div className="flex h-screen w-full bg-gradient-to-br from-blue-50 to-teal-50">
       {/* Left side - Brand section */}
       <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-teal-500 to-blue-600 text-white flex-col justify-between">
-        <div className="p-12">
-          <div className="flex items-center">
-            <img src='/assets/logo.jpeg' alt='logo' className='rounded-full w-10 h-10' />
-            <h1 className="ml-2 text-2xl font-bold"> PlussLabs</h1>
+        <div className="p-12 flex flex-col items-center">
+          <div className="flex">
+            <img src='/assets/logo.jpeg' alt='logo' className='rounded-full w-20 h-20' />
+            <div>
+            <h1 className="ml-4 text-5xl font-bold"> PlussLabs</h1>
+
+            <h1 className='ml-4 text-xl  font-semibold'>Bringing Care to You</h1>
+
+            </div>
           </div>
         </div>
 
         <div className="p-12">
           <div className="mb-8">
-            <h2 className="text-4xl font-bold mb-6">Your Health, Our Priority</h2>
-            <p className="text-xl opacity-80">Access your premium pharmacy service. Manage prescriptions, track orders, and consult with our pharmacists in real-time.</p>
+            <h2 className="text-4xl font-bold mb-6">YOUR HEALTH, YOUR PROILE! <br /> Start Now</h2>
+            <p className="text-xl opacity-80">Login & Get Started with your wellness profile</p>
           </div>
 
           <div className="grid grid-cols-2 gap-4 mb-8">
@@ -67,7 +72,7 @@ const Login = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                 </svg>
               </div>
-              <h3 className="font-medium text-lg">Prescription Management</h3>
+              <h3 className="font-medium text-lg">Blood Pressure & ECG checkup at home</h3>
             </div>
 
             <div className="bg-white bg-opacity-20 p-4 rounded-lg">
@@ -76,7 +81,7 @@ const Login = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <h3 className="font-medium text-lg">Medication Reminders</h3>
+              <h3 className="font-medium text-lg">View Past blood reports & health data</h3>
             </div>
 
             <div className="bg-white bg-opacity-20 p-4 rounded-lg">
@@ -85,7 +90,7 @@ const Login = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" />
                 </svg>
               </div>
-              <h3 className="font-medium text-lg">Pharmacist Consultation</h3>
+              <h3 className="font-medium text-lg">Free Pharmacist Consultations for medicines</h3>
             </div>
 
             <div className="bg-white bg-opacity-20 p-4 rounded-lg">
@@ -94,7 +99,7 @@ const Login = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                 </svg>
               </div>
-              <h3 className="font-medium text-lg">Secure Payments</h3>
+              <h3 className="font-medium text-lg">Free Doctor consultation available</h3>
             </div>
           </div>
         </div>
