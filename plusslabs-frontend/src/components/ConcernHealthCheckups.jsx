@@ -14,7 +14,7 @@ const ConcernHealthCheckups = () => {
   return (
     <section id="concern-health-checkups" className="w-full py-12 px-6">
       <h2 className="text-3xl md:text-6xl bebas-neue-regular font-bold text-black text-center mb-6">
-        FIND TESTS BY HEALTH CONCERN
+        SMART HEALTH PLANS FOR ORGANIZATIONS
       </h2>
       <div className="flex flex-wrap justify-around gap-5 lg:px-36 flex-row">
         <div
@@ -22,19 +22,17 @@ const ConcernHealthCheckups = () => {
           onClick={() => setSelectedImage(imageMap["/assets/elder.png"])}
         >
           <h1 className="text-lg text-gray-800 font-semibold w-[75%]">
-            Senior Citizen Health Checkup
+            Firm and Organization Checkup
           </h1>
           <h2 className="text-[13px] w-1/2 mt-2 text-gray-600">
-            Offering 20+ tests concerned to Senior citizens.
+            Customized checkups for Employees.
           </h2>
-          <h1 className="text-[12px] mt-5">Starts at</h1>
-          <h1 className="text-2xl font-bold bebas-neue-regular">Rs.999/- Only</h1>
-          <img
-            src="/assets/snior-gym.png"
+          <button className="text-2xl font-bold bebas-neue-regular mt-5 bg-slate-800 text-white text-center p-2 rounded-xl">KNOW MORE</button>          <img
+            src="/assets/firm.png"
             alt=""
             height={250}
             width={250}
-            className="absolute top-12 md:top-8 left-40"
+            className="absolute top-12 md:top-4 left-40"
           />
         </div>
 
@@ -43,19 +41,18 @@ const ConcernHealthCheckups = () => {
           onClick={() => setSelectedImage(imageMap["/assets/gym.png"])}
         >
           <h1 className="text-lg text-gray-800 font-semibold w-[50%] z-10">
-            Gym Package for always staying healthy Checkup
+            Gym wellness services
           </h1>
           <h2 className="text-[13px] w-1/2 mt-2 text-gray-600">
-            Offering 20+ tests concerned to Senior citizens.
+            Track your gym members health paramters easily.
           </h2>
-          <h1 className="text-[12px] mt-2">Starts at</h1>
-          <h1 className="text-2xl font-bold bebas-neue-regular">Rs.299/- Only</h1>
-          <img
+         
+          <button className="text-2xl font-bold bebas-neue-regular mt-5 bg-slate-800 text-white text-center p-2 rounded-xl">KNOW MORE</button>          <img
             src="/assets/male-gym.png"
             alt=""
             height={50}
             width={50}
-            className="absolute h-60 w-64 top-0 left-24 md:left-32 -z-9"
+            className="absolute h-60 w-64 top-0 left-32 md:left-32 -z-9"
           />
         </div>
 
@@ -70,19 +67,18 @@ const ConcernHealthCheckups = () => {
           }
         >
           <h1 className="text-lg text-gray-800 font-semibold w-[75%]">
-            Women's staying strong health Checkup
+          Health service for Schools & colleges
           </h1>
           <h2 className="text-[13px] w-1/2 mt-2 text-gray-600">
-            Offering 20+ tests concerned to Senior citizens.
+          Track your student progress easily
           </h2>
-          <h1 className="text-[12px] mt-5">FLAT</h1>
-          <h1 className="text-2xl font-bold bebas-neue-regular">10% Discount</h1>
+          <button className="text-2xl font-bold bebas-neue-regular mt-5 bg-slate-800 text-white text-center p-2 rounded-xl">KNOW MORE</button>
           <img
             src="https://cdn-icons-png.flaticon.com/512/6401/6401473.png"
             alt=""
             height={200}
             width={200}
-            className="absolute bottom-0 left-36 "
+            className="absolute bottom-0 left-40 "
           />
         </div>
       </div>

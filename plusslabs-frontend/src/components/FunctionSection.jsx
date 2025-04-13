@@ -12,7 +12,7 @@ const services = [
   //   path:'view-tests'
   // },
   {
-    title: "Visit Past Consultancies",
+    title: "Visit Past Checkup Reports",
     imageUrl:
       "https://media.istockphoto.com/id/1065743020/vector/stethoscope-icon.jpg?s=612x612&w=0&k=20&c=k0BDgRcsFea0D_zpbjOn9xgKRarrvo4ZsNjhdHdlajg=",
     bgColor: "bg-orange-200",
@@ -40,7 +40,7 @@ const FunctionSection = () => {
     <div id="services"  className="flex flex-col justify-center items-center gap-5 md:gap-10 p-4">
       <div>
         <h1 className="text-5xl text-left font-bold bebas-neue-regular">
-          OUR SERVICES
+          TRACK YOUR HEALTH 
         </h1>
       </div>
       <div className="flex gap-5 flex-wrap justify-center items-center">

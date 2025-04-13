@@ -48,8 +48,7 @@ const Landing = () => {
               </CustomCarousel>
               <p className="text-lg md:text-4xl font-semibold rounded-2xl bg-[#191c1e] text-white bebas-neue-regular p-2 md:p-4 text-center mt-4 flex items-center justify-center gap-4">
                 <i className="fa-solid fa-vial-circle-check border-r-2 px-3"></i>
-                TESTS STARTING ONLY AT <span className="md:text-5xl">₹ 50</span>
-                /-
+                TESTS STARS ONLY AT <span className="md:text-5xl">₹ 50</span>
               </p>
             </div>
           </div>

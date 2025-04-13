@@ -33,10 +33,9 @@ const WhyChooseUs = () => {
                     <Shield className="w-8 h-8 text-green-600" />
                   </div>
                 </div>
-                <h3 className="text-3xl font-bold mb-4 text-gray-800">100% Safe & Hygienic</h3>
+                <h3 className="text-3xl font-bold mb-4 text-gray-800">Track Health parameters</h3>
                 <p className="text-gray-600 leading-relaxed">
-                  We maintain the highest standards of safety and hygiene in all our procedures. 
-                  Our facilities are regularly sanitized and follow strict medical protocols.
+                  Track Health Parameters and view past blood reports easily on your mobile. Thus reduce health risk factors!
                 </p>
               </div>
             </div>
@@ -49,10 +48,9 @@ const WhyChooseUs = () => {
                     <MoveLeftIcon className="w-8 h-8 text-pink-600" />
                   </div>
                 </div>
-                <h3 className="text-3xl font-bold mb-4 text-gray-800">Home Sample Pick up</h3>
+                <h3 className="text-3xl font-bold mb-4 text-gray-800">Easy Home Painless checkup</h3>
                 <p className="text-gray-600 leading-relaxed">
-                  Enjoy the convenience of doorstep service. Our trained professionals will collect 
-                  samples from your home at your preferred time.
+                  Easy Home painless checkups which includes ECG, BP, Blood tests, Flu, quick checkup in just 15 minutes!
                 </p>
               </div>
             </div>
@@ -65,10 +63,9 @@ const WhyChooseUs = () => {
                     <ClipboardCheck className="w-8 h-8 text-yellow-600" />
                   </div>
                 </div>
-                <h3 className="text-3xl font-bold mb-4 text-gray-800">View Reports Online</h3>
+                <h3 className="text-3xl font-bold mb-4 text-gray-800">Partner with Plusslabs</h3>
                 <p className="text-gray-600 leading-relaxed">
-                  Access your test results instantly through our secure online portal. 
-                  Download, share, and store your reports with complete privacy.
+                  Partner with Plusslabs and add value to your organization with health dashboard & checkup plans
                 </p>
               </div>
             </div>

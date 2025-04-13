@@ -49,11 +49,11 @@ function App() {
           </ProtectedRoute>
         } />
 
-        <Route path="/view-tests" element={
+        {/* <Route path="/view-tests" element={
           <ProtectedRoute>
             <ViewTests />
           </ProtectedRoute>
-        } />
+        } /> */}
 
         <Route path="/past-consultancies" element={
           <ProtectedRoute>
