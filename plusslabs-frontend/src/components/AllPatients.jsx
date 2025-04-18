@@ -45,6 +45,9 @@ const AllPatients = () => {
     status: 'pending'
   });
   const [isGoldPrice, setIsGoldPrice] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [showErrorModal, setShowErrorModal] = useState(false);
   
   // Gold discount rate as a constant
   const GOLD_DISCOUNT_RATE = 0.8; // 20% off
@@ -170,9 +173,50 @@ const AllPatients = () => {
     setShowTestModal(false);
   };
 
+  const handleCloseModals = () => {
+    setShowSuccessModal(false);
+    setShowErrorModal(false);
+    setSuccessMessage("");
+    setError("");
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+
+    // Required fields validation
+    const requiredFields = {
+      patientId: "Patient ID",
+      name: "Name", 
+      phoneNumber: "Phone Number",
+      gender: "Gender",
+      testName: "Test Selection"
+    };
+
+    for (const [field, label] of Object.entries(requiredFields)) {
+      if (!formData[field]) {
+        const element = document.getElementById(field);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          element.focus();
+        }
+        setError(`Please fill in the required field: ${label}`);
+        setShowErrorModal(true);
+        return;
+      }
+    }
+
+    if (selectedTests.length === 0) {
+      const element = document.getElementById('testName');
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        element.focus();
+      }
+      setError('Please select at least one test');
+      setShowErrorModal(true);
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -207,20 +251,40 @@ const AllPatients = () => {
           }
         );
         
-        // Replace alert with more sophisticated notification if needed
-        alert("Test added to existing patient successfully!");
+        setSuccessMessage("Test added to existing patient successfully!");
+        setShowSuccessModal(true);
+        setTimeout(() => {
+          setShowSuccessModal(false);
+          setSuccessMessage("");
+        }, 5000); // Show for 5 seconds
       } else {
-        // Create new patient
-        await axios.post(
-          `${api_url}/api/patients/add`,
-          formDataToSend,
-          {
-            headers: { 'Content-Type': 'multipart/form-data' }
+        try {
+          await axios.post(
+            `${api_url}/api/patients/add`,
+            formDataToSend,
+            {
+              headers: { 'Content-Type': 'multipart/form-data' }
+            }
+          );
+          setSuccessMessage("New patient added successfully!");
+          setShowSuccessModal(true);
+          setTimeout(() => {
+            setShowSuccessModal(false);
+            setSuccessMessage("");
+          }, 5000); // Show for 5 seconds
+        } catch (error) {
+          if (error.response?.data?.message.includes('email already exists')) {
+            setError('A patient with this email already exists. Please use a different email.');
+            setShowErrorModal(true);
+            setTimeout(() => {
+              setShowErrorModal(false);
+              setError("");
+            }, 5000); // Show for 5 seconds
+            setLoading(false);
+            return;
           }
-        );
-        
-        // Replace alert with more sophisticated notification if needed
-        alert("New patient added successfully!");
+          throw error;
+        }
       }
 
       // Reset form
@@ -249,6 +313,11 @@ const AllPatients = () => {
       setIsExistingPatient(false);
     } catch (error) {
       setError(error.response?.data?.message || "Failed to process request");
+      setShowErrorModal(true);
+      setTimeout(() => {
+        setShowErrorModal(false);
+        setError("");
+      }, 5000); // Show for 5 seconds
     } finally {
       setLoading(false);
     }
@@ -737,6 +806,32 @@ const AllPatients = () => {
           {loading ? 'Processing...' : isExistingPatient ? 'Add Test to Patient' : 'Add New Patient'}
         </button>
       </form>
+      {showSuccessModal && (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <div className="bg-green-500 text-white px-8 py-4 rounded-lg shadow-lg text-center max-w-sm mx-4 relative">
+            <button 
+              onClick={handleCloseModals}
+              className="absolute top-2 right-2 text-white hover:text-gray-200"
+            >
+              ✕
+            </button>
+            {successMessage}
+          </div>
+        </div>
+      )}
+      {showErrorModal && (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <div className="bg-red-500 text-white px-8 py-4 rounded-lg shadow-lg text-center max-w-sm mx-4 relative">
+            <button 
+              onClick={handleCloseModals}
+              className="absolute top-2 right-2 text-white hover:text-gray-200"
+            >
+              ✕
+            </button>
+            {error}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

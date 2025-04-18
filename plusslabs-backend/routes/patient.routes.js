@@ -30,6 +30,14 @@ router.post("/add", upload.array('reportImages', 5), async (req, res) => {
       return res.status(400).json({ message: "Gender is required." });
     }
 
+    // Add email uniqueness check if email is provided
+    if (otherData.email) {
+      const existingPatientWithEmail = await Patient.findOne({ email: otherData.email });
+      if (existingPatientWithEmail) {
+        return res.status(400).json({ message: "A patient with this email already exists." });
+      }
+    }
+
     // Check if patientId already exists
     const existingPatient = await Patient.findOne({ patientId: otherData.patientId });
     if (existingPatient) {

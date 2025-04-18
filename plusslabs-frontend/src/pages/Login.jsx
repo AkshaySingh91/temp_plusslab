@@ -12,8 +12,20 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+
+    // Special check for superadmin
+    if (email === 'admin@plusslabs.com') {
+      // Allow superadmin login without email validation
+    } 
+    // Regular user email validation
+    else if (!email.endsWith('@gmail.com')) {
+      setError('Please enter a valid Gmail address');
+      return;
+    }
+
     try {
-      const response = await axios.post(`${api_url}/api/auth/login`,
+      const response = await axios.post(
+        `${api_url}/api/auth/login`,
         { email, password },
         { withCredentials: true }
       );
@@ -31,10 +43,10 @@ const Login = () => {
     } catch (error) {
       if (error.response?.status === 404) {
         setError('User does not exist. Please signup first.');
-      } else if (error.response?.data?.message) {
-        setError(error.response.data.message);
+      } else if (error.response?.status === 401) {
+        setError('Invalid credentials. Please check your email and password.');
       } else {
-        setError('An error occurred. Please try again.');
+        setError('Login failed. Please try again.');
       }
     }
   };
