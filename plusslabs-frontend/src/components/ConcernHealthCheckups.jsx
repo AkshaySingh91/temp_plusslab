@@ -3,12 +3,11 @@ import React, { useState } from "react";
 const ConcernHealthCheckups = () => {
   const [selectedImage, setSelectedImage] = useState(null);
 
-  // Dummy image for now, replace with your own
+  // Simplified key-based image map
   const imageMap = {
-    "https://img.freepik.com/free-vector/illustrated-seniors-focusing-health_53876-37198.jpg": "/assets/gym.png",
-    "https://img.freepik.com/free-vector/male-friends-exercising-gym-together_74855-7600.jpg?semt=ais_hybrid": "/assets/elder.png",
-    "https://proactiveforher.com/_next/image/?url=https%3A%2F%2Fpfh-images-production.s3.ap-south-1.amazonaws.com%2FHero_Image_1_e54d12f321.png&w=3840&q=75":
-      "/assets/gym.png",
+    firm: "/assets/org.png",
+    gym: "/assets/gyms.png",
+    school: "/assets/schools.png",
   };
 
   return (
@@ -16,10 +15,12 @@ const ConcernHealthCheckups = () => {
       <h2 className="text-3xl md:text-6xl bebas-neue-regular font-bold text-black text-center mb-6">
         SMART HEALTH PLANS FOR ORGANIZATIONS
       </h2>
+
       <div className="flex flex-wrap justify-around gap-5 lg:px-36 flex-row">
+        {/* Firm Card */}
         <div
           className="h-60 w-80 bg-[#feeb68] rounded-2xl p-5 relative overflow-hidden cursor-pointer"
-          onClick={() => setSelectedImage(imageMap["/assets/elder.png"])}
+          onClick={() => setSelectedImage(imageMap.firm)}
         >
           <h1 className="text-lg text-gray-800 font-semibold w-[75%]">
             Firm and Organization Checkup
@@ -27,7 +28,10 @@ const ConcernHealthCheckups = () => {
           <h2 className="text-[13px] w-1/2 mt-2 text-gray-600">
             Customized checkups for Employees.
           </h2>
-          <button className="text-2xl font-bold bebas-neue-regular mt-5 bg-slate-800 text-white text-center p-2 rounded-xl">KNOW MORE</button>          <img
+          <button className="text-2xl font-bold bebas-neue-regular mt-5 bg-slate-800 text-white text-center p-2 rounded-xl">
+            KNOW MORE
+          </button>
+          <img
             src="/assets/firm.png"
             alt=""
             height={250}
@@ -36,18 +40,21 @@ const ConcernHealthCheckups = () => {
           />
         </div>
 
+        {/* Gym Card */}
         <div
           className="h-60 w-80 bg-[#a0e2e1] rounded-2xl p-5 relative overflow-hidden cursor-pointer"
-          onClick={() => setSelectedImage(imageMap["/assets/gym.png"])}
+          onClick={() => setSelectedImage(imageMap.gym)}
         >
           <h1 className="text-lg text-gray-800 font-semibold w-[50%] z-10">
             Gym wellness services
           </h1>
           <h2 className="text-[13px] w-1/2 mt-2 text-gray-600">
-            Track your gym members health paramters easily.
+            Track your gym members' health parameters easily.
           </h2>
-         
-          <button className="text-2xl font-bold bebas-neue-regular mt-5 bg-slate-800 text-white text-center p-2 rounded-xl">KNOW MORE</button>          <img
+          <button className="text-2xl font-bold bebas-neue-regular mt-5 bg-slate-800 text-white text-center p-2 rounded-xl">
+            KNOW MORE
+          </button>
+          <img
             src="/assets/male-gym.png"
             alt=""
             height={50}
@@ -56,29 +63,26 @@ const ConcernHealthCheckups = () => {
           />
         </div>
 
+        {/* School/College Card */}
         <div
           className="h-60 w-80 bg-[#fec091] rounded-2xl p-5 relative overflow-hidden cursor-pointer"
-          onClick={() =>
-            setSelectedImage(
-              imageMap[
-                "https://proactiveforher.com/_next/image/?url=https%3A%2F%2Fpfh-images-production.s3.ap-south-1.amazonaws.com%2FHero_Image_1_e54d12f321.png&w=3840&q=75"
-              ]
-            )
-          }
+          onClick={() => setSelectedImage(imageMap.school)}
         >
           <h1 className="text-lg text-gray-800 font-semibold w-[75%]">
-          Health service for Schools & colleges
+            Health service for Schools & Colleges
           </h1>
           <h2 className="text-[13px] w-1/2 mt-2 text-gray-600">
-          Track your student progress easily
+            Track your student progress easily
           </h2>
-          <button className="text-2xl font-bold bebas-neue-regular mt-5 bg-slate-800 text-white text-center p-2 rounded-xl">KNOW MORE</button>
+          <button className="text-2xl font-bold bebas-neue-regular mt-5 bg-slate-800 text-white text-center p-2 rounded-xl">
+            KNOW MORE
+          </button>
           <img
             src="https://cdn-icons-png.flaticon.com/512/6401/6401473.png"
             alt=""
             height={200}
             width={200}
-            className="absolute bottom-0 left-40 "
+            className="absolute bottom-0 left-40"
           />
         </div>
       </div>

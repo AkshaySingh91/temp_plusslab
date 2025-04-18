@@ -4,22 +4,22 @@ import CustomCarousel from "../utils/customer-slider/custom.slider.jsx"; // Make
 const images = [
   {
     imgURL:
-      "https://www.metropolisindia.com/newdata/landing_page/savetax23_12_2024_04_51_28_90_1736336300.webp",
+      "/assets/2.png",
     imgAlt: "img-1",
   },
   {
     imgURL:
-      "https://www.metropolisindia.com/newdata/images/bannerimages/Metropolis-web-banner-1-with-text.webp",
+      "/assets/3.png",
     imgAlt: "img-2",
   },
   {
     imgURL:
-      "https://images.pexels.com/photos/1128678/pexels-photo-1128678.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260",
+      "/assets/4.png",
     imgAlt: "img-3",
   },
   {
     imgURL:
-      "https://images.pexels.com/photos/54455/cook-food-kitchen-eat-54455.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260",
+      "/assets/5.png",
     imgAlt: "img-4",
   },
 ];
@@ -39,16 +39,16 @@ const Landing = () => {
                 Bringing care to You!
               </h6>
 
-              <CustomCarousel>
+              <CustomCarousel >
                 {images.map((image, index) => {
                   return (
-                    <img key={index} src={image.imgURL} alt={image.imgAlt} />
+                    <img key={index} src={image.imgURL} alt={image.imgAlt} className="h-auto outline-none border-4 border-white rounded-2xl"/>
                   );
                 })}
               </CustomCarousel>
-              <p className="text-lg md:text-4xl font-semibold rounded-2xl bg-[#191c1e] text-white bebas-neue-regular p-2 md:p-4 text-center mt-4 flex items-center justify-center gap-4">
+              <p className="text-lg md:text-4xl font-semibold rounded-2xl bg-[#191c1e] text-white bebas-neue-regular p-2 md:p-4 text-center mt-4 flex items-center justify-center gap-2">
                 <i className="fa-solid fa-vial-circle-check border-r-2 px-3"></i>
-                TESTS STARS ONLY AT <span className="md:text-5xl">₹ 50</span>
+                TESTS STARS ONLY AT<span className="md:text-5xl">₹ 50</span>
               </p>
             </div>
           </div>
