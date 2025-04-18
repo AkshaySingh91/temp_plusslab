@@ -60,7 +60,7 @@ const Landing = () => {
               <div className="">
                 <h2 className="text-4xl font-bold  bebas-neue-regular">
                   <i className="fa-solid fa-headset mr-3"></i>
-                  CALL FOR FREE
+                  CALL NOW
                 </h2>
                 <p className="text-center text-sm md:text-base opacity-90">
                   For Home checkup & Blood tests
