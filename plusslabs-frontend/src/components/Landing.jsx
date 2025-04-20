@@ -23,6 +23,40 @@ const images = [
     imgAlt: "img-4",
   },
 ];
+
+const healthMetrics = [
+  {
+    icon: "/assets/trans-fat.png",
+    name: "Fat",
+    value: "50%",
+  },
+  {
+    icon: "/assets/weakness.png",
+    name: "Muscle %",
+    value: "50%",
+  },
+  {
+    icon: "/assets/bone.png",
+    name: "Bone Mass",
+    value: "50%",
+  },
+  {
+    icon: "/assets/cholesterol.png",
+    name: "Cholesterol",
+    value: "50%",
+  },
+  {
+    icon: "/assets/high-blood-sugar-1.png",
+    name: "Sugar Level",
+    value: "50%",
+  },
+  {
+    icon: "/assets/blood-pressure-1.png",
+    name: "Blood Pressure",
+    value: "50%",
+  },
+];
+
 const Landing = () => {
   return (
     <div className="min-h-screen flex flex-col">
@@ -30,19 +64,22 @@ const Landing = () => {
       <main className="flex-1 p-4 md:p-6">
         <div className="flex flex-col lg:flex-row gap-4 md:gap-6 max-w-[1440px] mx-auto">
           {/* Left Hero Section */}
-          <div className="bg-[#f1da6a] rounded-3xl p-6 md:p-8 lg:p-10 flex flex-col justify-between text-black w-full lg:w-1/2 min-h-[300px] lg:min-h-[500px] hover:shadow-2xl transition-shadow duration-300">
+          <div className="bg-[#f1da6a] rounded-3xl p-6 md:p-8 lg:p-8 flex flex-col justify-between text-black w-full lg:w-1/2 min-h-[300px] lg:min-h-[500px] hover:shadow-2xl transition-shadow duration-300 relative">
             <div className="flex flex-col h-full justify-between text-center">
-              <h1 className="text-5xl sm:text-6xl md:text-6xl lg:text-6xl font-bold bebas-neue-regular leading-tight">
+              {/* <h1 className="text-5xl sm:text-6xl md:text-6xl lg:text-6xl font-bold bebas-neue-regular leading-tight">
                 PLUSSLABS
               </h1>
               <h6 className="text-sm md:text-xl uppercase font-bold  mb-2">
                 Bringing care to You!
-              </h6>
+              </h6> */}
+              <div className="overflow-hidden w-full h-24 ">
+              <img src="/assets/plusslogo.png" alt="" className="h-40 w-80 -mt-7 mx-auto mix-blend-overlay"/>
 
+              </div>
               <CustomCarousel >
                 {images.map((image, index) => {
                   return (
-                    <img key={index} src={image.imgURL} alt={image.imgAlt} className="h-auto outline-none border-4 border-white rounded-2xl"/>
+                    <img key={index} src={image.imgURL} alt={image.imgAlt} className="h-[200px] md:h-[400px] outline-none border-4 border-white rounded-2xl mt-5"/>
                   );
                 })}
               </CustomCarousel>
@@ -69,13 +106,13 @@ const Landing = () => {
               <div className="flex gap-4 text-sm md:text-xl">
                 <a
                   href="tel:8237006990"
-                  className="rounded-2xl p-2 font-semibold bg-[#260b2e] text-[#f8be88]"
+                  className="rounded-2xl py-2 px-4 font-semibold bg-[#260b2e] text-[#f8be88]"
                 >
                   <i className="fa-solid fa-phone-volume"></i> 7276763563
                 </a>
                 <a
                   href="tel:8237006990"
-                  className="rounded-2xl p-2 font-semibold bg-[#260b2e] text-[#f8be88]"
+                  className="rounded-2xl py-2 px-4 font-semibold bg-[#260b2e] text-[#f8be88]"
                 >
                   <i className="fa-solid fa-phone-volume"></i> 9022936795
                 </a>
@@ -87,7 +124,7 @@ const Landing = () => {
               {/* Healthy Lifestyle Card */}
 
               {/* Benefits Card */}
-              <div className="bg-gradient-to-br from-[#e9b2cd] to-[#d4a5c0] rounded-3xl p-5 md:p-6 flex flex-col justify-between text-gray-800 shadow-lg hover:shadow-xl transition-all duration-300 border border-white/20 backdrop-blur-sm relative overflow-hidden group h-[520px]">
+              <div className="bg-pink-300  rounded-3xl p-4 md:p-4 flex flex-col justify-between text-gray-800 shadow-lg hover:shadow-xl transition-all duration-300  border-white/20 backdrop-blur-sm relative overflow-hidden group h-[550px]">
                 {/* Decorative elements */}
                 <div className="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-xl"></div>
                 <div className="absolute bottom-0 left-0 w-20 h-20 bg-black/5 rounded-full translate-y-1/2 -translate-x-1/2 blur-lg"></div>
@@ -124,14 +161,22 @@ const Landing = () => {
                   </div>
 
                   {/* Main content - condensed */}
-                  <p className="text-md mb-3 text-gray-800 leading-tight">
+                  <p className="text-md text-gray-800 leading-tight">
                      Create your Health profile and easily track & check your health data and past reports anywhere and anytime.
                   </p>
 
+                  <div className="w-full px-4 md:px-0 h-full py-4 mx-auto grid grid-cols-2 justify-center">
+                    {healthMetrics.map((health, index) => (
+                      <div key={index} className="h-24 w-36 bg-pink-200 rounded-2xl px-1 py-3 flex flex-col items-center text-center">
+                          <img src={health.icon} alt="icons" className="h-8 w-8 mb-2"/>
+                          <h1 className="text-sm font-semibold">{health.name} - {health.value}</h1>
+                      </div>
+                    ))}
+                  </div>
                  
                 </div>
               </div>
-              <div className="bg-[#fef8ec] text-black rounded-3xl p-6 shadow-lg  transition-all duration-300 flex flex-col gap-4 text-center md:text-left overflow-hidden relative h-[500px] md:min-h-[520px]">
+              <div className="bg-[#fef8ec] text-black rounded-3xl p-6 shadow-lg  transition-all duration-300 flex flex-col gap-4 text-center md:text-left overflow-hidden relative h-[500px] md:min-h-[550px]">
                 <span className="text-[10px] border border-gray-800 p-1 rounded-md inline-block w-fit">
                   MOST POPULAR
                 </span>
@@ -160,7 +205,7 @@ const Landing = () => {
                     </h2>
                   </div>
                 </div>
-                <button className="bg-[#0f4726] px-5  py-2 text-white absolute bottom-4 rounded-2xl ">
+                <button className="bg-[#0f4726] px-5  py-2 text-white absolute bottom-12 rounded-2xl ">
                   Discover the benefits
                 </button>
                 <img

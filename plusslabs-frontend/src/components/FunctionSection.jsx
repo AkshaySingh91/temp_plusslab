@@ -47,7 +47,7 @@ const FunctionSection = () => {
       {services.map((service, index) => (
         <div
           key={index}
-          className={`w-60 p-3 rounded-lg shadow-md flex flex-row items-center cursor-pointer ${service.bgColor}`}
+          className={`w-120 p-3 rounded-lg shadow-md flex flex-row items-center cursor-pointer ${service.bgColor}`}
           onClick={()=> handleProtectedLink(service.path)}
         >
           <img

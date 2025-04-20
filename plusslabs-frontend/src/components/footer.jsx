@@ -83,7 +83,7 @@ const Footer = () => {
           <ul className="mt-3 space-y-2 text-gray-400">
             <li>
               <button 
-                onClick={() => handleNavigation('/view-tests')} 
+                onClick={() => handleNavigation('/')} 
                 className="hover:text-yellow-500"
               >
                 Pathology Tests
