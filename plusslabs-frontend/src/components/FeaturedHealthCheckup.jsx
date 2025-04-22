@@ -118,7 +118,7 @@ const FeaturedHealthCheckup = () => {
   const [selectedCategory, setSelectedCategory] = useState("ALL TESTS");
 
   const handleBook = () => {
-    window.location.href = 'tel:8237006990';
+    window.location.href = 'tel:7276763563';
   };
 
   const filteredPackages =

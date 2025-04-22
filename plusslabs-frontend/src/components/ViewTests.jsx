@@ -91,7 +91,7 @@ const ViewTests = () => {
   const totalPages = Math.ceil(filteredTests.length / testsPerPage);
 
   const handleBook = () => {
-    window.location.href = 'tel:8237006990';
+    window.location.href = 'tel:7276763563';
   }
 
   return (

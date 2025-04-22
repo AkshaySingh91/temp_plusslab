@@ -99,7 +99,7 @@ const Footer = () => {
             </li>
             <li>
               <button 
-                onClick={() => window.location.href = 'tel:8237006990'} 
+                onClick={() => window.location.href = 'tel:7276763563'} 
                 className="hover:text-yellow-500"
               >
                 Home Sample Collection

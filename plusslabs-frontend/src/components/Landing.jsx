@@ -28,32 +28,32 @@ const healthMetrics = [
   {
     icon: "/assets/trans-fat.png",
     name: "Fat",
-    value: "50%",
+    value: "25%",
   },
   {
     icon: "/assets/weakness.png",
     name: "Muscle %",
-    value: "50%",
+    value: "70%",
   },
   {
     icon: "/assets/bone.png",
     name: "Bone Mass",
-    value: "50%",
+    value: "3.2kg",
   },
   {
     icon: "/assets/cholesterol.png",
     name: "Cholesterol",
-    value: "50%",
+    value: "220mg/dl",
   },
   {
     icon: "/assets/high-blood-sugar-1.png",
     name: "Sugar Level",
-    value: "50%",
+    value: "125mg/dl",
   },
   {
     icon: "/assets/blood-pressure-1.png",
     name: "Blood Pressure",
-    value: "50%",
+    value: "120/85mmHg",
   },
 ];
 
@@ -105,13 +105,13 @@ const Landing = () => {
               </div>
               <div className="flex gap-4 text-sm md:text-xl">
                 <a
-                  href="tel:8237006990"
+                  href="tel:7276763563"
                   className="rounded-2xl py-2 px-4 font-semibold bg-[#260b2e] text-[#f8be88]"
                 >
                   <i className="fa-solid fa-phone-volume"></i> 7276763563
                 </a>
                 <a
-                  href="tel:8237006990"
+                  href="tel:9022936795"
                   className="rounded-2xl py-2 px-4 font-semibold bg-[#260b2e] text-[#f8be88]"
                 >
                   <i className="fa-solid fa-phone-volume"></i> 9022936795
@@ -123,21 +123,17 @@ const Landing = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 flex-1">
               {/* Healthy Lifestyle Card */}
 
-              {/* Benefits Card */}
-              <div className="bg-pink-300  rounded-3xl p-4 md:p-4 flex flex-col justify-between text-gray-800 shadow-lg hover:shadow-xl transition-all duration-300  border-white/20 backdrop-blur-sm relative overflow-hidden group h-[550px]">
-                {/* Decorative elements */}
-                <div className="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-xl"></div>
-                <div className="absolute bottom-0 left-0 w-20 h-20 bg-black/5 rounded-full translate-y-1/2 -translate-x-1/2 blur-lg"></div>
-
+              {/* Benefits Card - Keep original height */}
+              <div className="bg-pink-300 rounded-3xl p-4 md:p-4 flex flex-col justify-between text-gray-800 shadow-lg hover:shadow-xl transition-all duration-300 border-white/20 backdrop-blur-sm relative overflow-hidden group h-[550px]">
                 {/* Content container */}
                 <div className="relative z-10 flex flex-col h-full">
-                  {/* Header section - more compact */}
+                  {/* Header section */}
                   <div className="flex items-start justify-between mb-3">
                     <div>
-                      <span className="inline-block px-3 py-1 bg-white/30 rounded-full text-xs font-medium mb-2">
+                      <span className="inline-block px-3 py-1 bg-white/30 rounded-full text-xs sm:text-sm font-medium mb-2">
                         Premium
                       </span>
-                      <h3 className="text-xl md:text-2xl font-bold mb-1 text-gray-900">
+                      <h3 className="text-lg sm:text-xl md:text-2xl font-bold mb-1 text-gray-900">
                         Track Your Health
                       </h3>
                       <div className="w-16 h-1 bg-black/70 rounded-full"></div>
@@ -160,20 +156,18 @@ const Landing = () => {
                     </div>
                   </div>
 
-                  {/* Main content - condensed */}
-                  <p className="text-md text-gray-800 leading-tight">
-                     Create your Health profile and easily track & check your health data and past reports anywhere and anytime.
+                  <p className="text-sm sm:text-md text-gray-800 leading-tight">
+                    Create your Health profile and easily track & check your health data and past reports anywhere and anytime.
                   </p>
 
-                  <div className="w-full px-4 md:px-0 h-full py-4 mx-auto grid grid-cols-2 justify-center">
+                  <div className="w-full h-full py-2 sm:py-4 mx-auto grid grid-cols-2 gap-1 sm:gap-2 justify-center">
                     {healthMetrics.map((health, index) => (
-                      <div key={index} className="h-24 w-36 bg-pink-200 rounded-2xl px-1 py-3 flex flex-col items-center text-center">
-                          <img src={health.icon} alt="icons" className="h-8 w-8 mb-2"/>
-                          <h1 className="text-sm font-semibold">{health.name} - {health.value}</h1>
+                      <div key={index} className="h-20 sm:h-24 w-[90%] sm:w-36 bg-pink-200 rounded-xl sm:rounded-2xl p-1 sm:p-2 flex flex-col items-center text-center justify-center">
+                          <img src={health.icon} alt="icons" className="h-6 w-6 sm:h-8 sm:w-8 mb-1"/>
+                          <h1 className="text-xs sm:text-sm font-semibold">{health.name} - {health.value}</h1>
                       </div>
                     ))}
                   </div>
-                 
                 </div>
               </div>
               <div className="bg-[#fef8ec] text-black rounded-3xl p-6 shadow-lg  transition-all duration-300 flex flex-col gap-4 text-center md:text-left overflow-hidden relative h-[500px] md:min-h-[550px]">

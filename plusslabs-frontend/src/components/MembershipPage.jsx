@@ -24,7 +24,7 @@ const MembershipPage = () => {
   }, []);
 
   const handleCallSupport = () => {
-    window.location.href = 'tel:8237006990';
+    window.location.href = 'tel:7276763563';
   };
 
   if (loading) {

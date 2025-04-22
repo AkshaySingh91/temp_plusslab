@@ -56,7 +56,7 @@ const PastConsultancies = () => {
   };
 
   const handleActivateMembership = () => {
-    window.location.href = 'tel:8237006990';
+    window.location.href = 'tel:7276763563';
   };
 
   // Function to sort and format health metrics from test history
@@ -332,7 +332,7 @@ const PastConsultancies = () => {
               className="bg-yellow-500 text-white px-4 sm:px-6 py-2 rounded-lg hover:bg-yellow-600 transition-all w-full sm:w-auto"
             >
               <i className="fas fa-phone-alt mr-2"></i>
-              Call to Activate (8237006990)
+              Call to Activate (7276763563)
             </button>
           </div>
         )}
@@ -378,7 +378,7 @@ const PastConsultancies = () => {
 
               <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[#0f4726] text-center mt-4">
                 <i className="fa-regular fa-circle-check text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600"></i> 
-                Your Medical History with PLUSSLABS
+                Your Medical History with PLUSS LABS
               </h1>
               <p className="text-[#0f4726] text-center mt-2 md:mt-4 opacity-90 text-base sm:text-lg">
                 <i className="fa-regular fa-chart-bar"></i> Track all your past consultations and medical reports
@@ -420,7 +420,7 @@ const PastConsultancies = () => {
                     Book your first test to start tracking your health journey.
                   </p>
                   <button 
-                    onClick={() => window.location.href = 'tel:8237006990'}
+                    onClick={() => window.location.href = 'tel:7276763563'}
                     className="mt-4 sm:mt-6 bg-red-500 text-white px-4 sm:px-6 py-2 rounded-lg hover:bg-red-600 transition-colors w-full sm:w-auto"
                   >
                     <i className="fas fa-phone-alt mr-2"></i>
