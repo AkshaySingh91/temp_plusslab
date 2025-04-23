@@ -198,7 +198,7 @@ const Signup = () => {
           </div>
         </div>
 
-        <div className="p-12">
+        <div className="px-12">
           <div className="mb-8">
             <h2 className="text-4xl font-bold mb-6">YOUR HEALTH, YOUR PROILE! <br /> Start Now</h2>
             <p className="text-xl opacity-80">Login & Get Started with your wellness profile</p>
