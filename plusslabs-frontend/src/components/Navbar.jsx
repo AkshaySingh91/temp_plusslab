@@ -89,7 +89,7 @@ const Navbar = () => {
      
 
       {/* Navigation Links (Desktop) */}
-      <div className='gap-10 font-semibold justify-between hidden md:flex'>
+      <div className='gap-10 font-semibold justify-between hidden lg:flex'>
         <button 
           onClick={() => handleNavigation('/', 'services')} 
           className='hover:text-gray-300 cursor-pointer'
@@ -118,7 +118,7 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {menuOpen && (
-        <div className='absolute top-16 left-0 w-full bg-[#191c1e] p-4 flex z-[9999] flex-col items-center gap-4 md:hidden'>
+        <div className='absolute top-16 left-0 w-full bg-[#191c1e] p-4 flex z-[9999] flex-col items-center gap-4 lg:hidden'>
           <button onClick={() => handleNavigation('/', 'services')}>Services</button>
           <button onClick={() => handleNavigation('/', 'featured-health-packages')}>Packages</button>
           <button onClick={() => handleNavigation('/', 'concern-health-checkups')}>HealthCare Services</button>
@@ -197,7 +197,7 @@ const Navbar = () => {
         )}
       </div>
       <button 
-        className='md:hidden text-white text-2xl' 
+        className='lg:hidden text-white text-2xl' 
         onClick={() => setMenuOpen(!menuOpen)}
       >
         <i className={menuOpen ? "fa-solid fa-xmark" : "fa-solid fa-bars"}></i>
