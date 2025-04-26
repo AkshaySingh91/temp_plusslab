@@ -66,16 +66,14 @@ const Landing = () => {
           {/* Left Hero Section */}
           <div className="bg-[#f1da6a] rounded-3xl p-6 md:p-8 lg:p-8 flex flex-col justify-between text-black w-full lg:w-1/2 min-h-[300px] lg:min-h-[500px] hover:shadow-2xl transition-shadow duration-300 relative">
             <div className="flex flex-col h-full justify-between text-center">
-              {/* <h1 className="text-5xl sm:text-6xl md:text-6xl lg:text-6xl font-bold bebas-neue-regular leading-tight">
+              <h1 className="text-5xl sm:text-6xl md:text-6xl lg:text-8xl font-bold bebas-neue-regular leading-tight">
                 PLUSSLABS
               </h1>
-              <h6 className="text-sm md:text-xl uppercase font-bold  mb-2">
-                Bringing care to You!
-              </h6> */}
-              <div className="overflow-hidden w-full h-24 ">
+              
+              {/* <div className="overflow-hidden w-full h-24 ">
               <img src="/assets/plusslogo.png" alt="" className="h-40 w-80 -mt-7 mx-auto mix-blend-overlay"/>
 
-              </div>
+              </div> */}
               <CustomCarousel >
                 {images.map((image, index) => {
                   return (
@@ -160,9 +158,9 @@ const Landing = () => {
                     Create your Health profile and easily track & check your health data and past reports anywhere and anytime.
                   </p>
 
-                  <div className="w-full h-full py-2 sm:py-4 mx-auto grid grid-cols-2 gap-1 sm:gap-2 justify-center">
+                  <div className="max-w-full h-full py-2 sm:py-4 mx-auto flex flex-wrap justify-center gap-1 sm:gap-5 overflow-scroll">
                     {healthMetrics.map((health, index) => (
-                      <div key={index} className="h-20 sm:h-24 w-[90%] sm:w-36 bg-pink-200 rounded-xl sm:rounded-2xl p-1 sm:p-2 flex flex-col items-center text-center justify-center">
+                      <div key={index} className="h-20 sm:h-24 w-[90%] sm:w-32 bg-pink-200 rounded-xl sm:rounded-2xl p-1 sm:p-2 flex flex-col items-center text-center justify-center">
                           <img src={health.icon} alt="icons" className="h-6 w-6 sm:h-8 sm:w-8 mb-1"/>
                           <h1 className="text-xs sm:text-sm font-semibold">{health.name} - {health.value}</h1>
                       </div>
@@ -177,7 +175,7 @@ const Landing = () => {
                 <h1 className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 font-bold text-2xl">
                   GOLD MEMBERSHIP
                 </h1>
-                <div className="flex flex-col gap-5 ">
+                <div className="flex flex-col gap-3 ">
                   <h2 className="text-3xl text-left text-[#0f4726] font-semibold">
                     Membership has{" "}
                   </h2>
@@ -187,15 +185,15 @@ const Landing = () => {
                   <div className="flex flex-col gap-3 w-[50%] justify-center itemce\">
                     <h2 className="text-left text-sm md:text-[18px] font-semibold text-[#0f4726]">
                       <i className="fa-solid fa-tag text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600"></i>{" "}
-                      Free Doctor & Diet Consultations
+                      Free Consultations
                     </h2>
                     <h2 className="text-left text-sm md:text-[18px] font-semibold text-[#0f4726]">
                       <i className="fa-solid fa-clipboard text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600"></i>{" "}
-                      Track Reports & Health Online anytime
+                      Track Reports 
                     </h2>
                     <h2 className="text-left text-sm md:text-[18px] font-semibold text-[#0f4726]">
                       <i className="fa-solid fa-clock text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600"></i>{" "}
-                      Get Special discount on every visit{" "}
+                      Get Special discount{" "}
                     </h2>
                   </div>
                 </div>

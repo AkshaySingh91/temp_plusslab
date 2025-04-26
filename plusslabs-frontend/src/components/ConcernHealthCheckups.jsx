@@ -94,11 +94,11 @@ const ConcernHealthCheckups = () => {
             {/* Close Button */}
             <button
               onClick={() => setSelectedImage(null)}
-              className="absolute top-2 right-2 text-xl text-gray-700 hover:text-gray-900"
+              className="absolute top-6 right-4 text-xl text-gray-700 hover:text-gray-900"
             >
               ✖
             </button>
-            <img src={selectedImage} alt="Selected Checkup" className="w-full rounded-md" />
+            <img src={selectedImage} alt="Selected Checkup" className="w-full max-h-[90vh] rounded-md" />
           </div>
         </div>
       )}
