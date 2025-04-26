@@ -5,9 +5,9 @@ const ConcernHealthCheckups = () => {
 
   // Simplified key-based image map
   const imageMap = {
-    firm: "/assets/org.png",
-    gym: "/assets/gyms.png",
-    school: "/assets/schools.png",
+    firm: "https://res.cloudinary.com/dmo8bqzrx/image/upload/v1745684447/org_crwzzr.png",
+    gym: "https://res.cloudinary.com/dmo8bqzrx/image/upload/v1745684513/gyms_lam37l.png",
+    school: "https://res.cloudinary.com/dmo8bqzrx/image/upload/v1745684396/schools_tys3uu.png",
   };
 
   return (
@@ -32,7 +32,7 @@ const ConcernHealthCheckups = () => {
             KNOW MORE
           </button>
           <img
-            src="/assets/firm.png"
+            src="https://res.cloudinary.com/dmo8bqzrx/image/upload/v1745684478/firm_vu9t74.png"
             alt=""
             height={250}
             width={250}
@@ -55,7 +55,7 @@ const ConcernHealthCheckups = () => {
             KNOW MORE
           </button>
           <img
-            src="/assets/male-gym.png"
+            src="https://res.cloudinary.com/dmo8bqzrx/image/upload/v1745684750/male-gym_lmmjnr.png"
             alt=""
             height={50}
             width={50}

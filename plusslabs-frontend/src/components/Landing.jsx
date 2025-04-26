@@ -19,7 +19,7 @@ const images = [
   },
   {
     imgURL:
-      "/assets/5.png",
+      "/assets/1.png",
     imgAlt: "img-4",
   },
 ];

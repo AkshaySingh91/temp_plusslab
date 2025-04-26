@@ -59,14 +59,18 @@ const Login = () => {
     <div className="flex h-screen w-full bg-gradient-to-br from-blue-50 to-teal-50">
       {/* Left side - Brand section */}
       <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-teal-500 to-blue-600 text-white flex-col justify-between">
-        <div className="p-12 flex flex-col items-center">
-          <div className="flex">
-            <img src='/assets/logo.jpeg' alt='logo' className='rounded-full w-20 h-20' />
-            <div>
-            <h1 className="ml-4 text-5xl font-bold"> PlussLabs</h1>
-
-            <h1 className='ml-4 text-xl  font-semibold'>Bringing Care to You</h1>
-
+      <div className="p-12 flex flex-col items-center">
+          <div className="flex items-center">
+            <div className="w-20 h-20 rounded-full overflow-hidden flex items-center justify-center bg-white p-2">
+              <img
+                src="https://res.cloudinary.com/dmo8bqzrx/image/upload/v1745683977/logo_q6sy35.jpg"
+                alt="logo"
+                className="w-full h-full object-contain"
+              />
+            </div>
+            <div className="ml-4">
+              <h1 className="text-5xl font-bold">PlussLabs</h1>
+              <h1 className="text-xl font-semibold">Bringing Care to You</h1>
             </div>
           </div>
         </div>
