@@ -1,25 +1,26 @@
 import React from "react";
 import Navbar from "./Navbar";
-import CustomCarousel from "../utils/customer-slider/custom.slider.jsx"; // Make sure the file name matches
+import CustomCarousel from "../utils/customer-slider/custom.slider.jsx";
+
 const images = [
   {
     imgURL:
-      "/assets/2.png",
+      "https://res.cloudinary.com/dmo8bqzrx/image/upload/v1745773881/2_ybsbz7.png",
     imgAlt: "img-1",
   },
   {
     imgURL:
-      "/assets/3.png",
+      "https://res.cloudinary.com/dmo8bqzrx/image/upload/v1745773881/3_txqy5g.png",
     imgAlt: "img-2",
   },
   {
     imgURL:
-      "/assets/4.png",
+      "https://res.cloudinary.com/dmo8bqzrx/image/upload/v1745773881/4_bek8nw.png",
     imgAlt: "img-3",
   },
   {
     imgURL:
-      "/assets/1.png",
+      "https://res.cloudinary.com/dmo8bqzrx/image/upload/v1745773882/1_rokzgt.png",
     imgAlt: "img-4",
   },
 ];
