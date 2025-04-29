@@ -19,7 +19,14 @@ const Sidebar = () => {
             View Tests
         </h1>
         <div className='flex flex-col justify-center items-center'>
-            <img src="/assets/logo.jpeg" alt="logo-dashboard" className='rounded-full h-20 w-20 border-2 border-black mt-10'/>
+        <div className="w-20 h-20 rounded-full overflow-hidden flex items-center justify-center bg-white p-1">
+          <img
+            src="https://res.cloudinary.com/dmo8bqzrx/image/upload/v1745683977/logo_q6sy35.jpg"
+            
+            alt="Logo"
+            className="w-full h-full object-contain"
+          />
+        </div>
         
             <h1 onClick={()=> navigate('/')} className='text-4xl bebas-neue-regular mt-8 cursor-pointer hover:bg-black hover:text-white p-4 rounded-2xl'><i className="fa-solid fa-house-chimney mr-1 -mt-2"></i> HOMEPAGE</h1>
         </div>

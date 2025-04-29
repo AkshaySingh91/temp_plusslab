@@ -68,7 +68,7 @@ const Landing = () => {
           <div className="bg-[#f1da6a] rounded-3xl p-6 md:p-8 lg:p-8 flex flex-col justify-between text-black w-full lg:w-1/2 min-h-[300px] lg:min-h-[500px] hover:shadow-2xl transition-shadow duration-300 relative">
             <div className="flex flex-col h-full justify-between text-center">
               <h1 className="text-5xl sm:text-6xl md:text-6xl lg:text-8xl font-bold bebas-neue-regular leading-tight">
-                PLUSSLABS
+                PLUSS LABS
               </h1>
               
               {/* <div className="overflow-hidden w-full h-24 ">

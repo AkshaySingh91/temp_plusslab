@@ -13,7 +13,7 @@ router.post("/add", upload.array('reportImages', 5), async (req, res) => {
   try {
     const { selectedTests, ...otherData } = req.body;
     
-    // Only check required fields
+    // Only validate required fields
     if (!otherData.patientId) {
       return res.status(400).json({ message: "Patient ID is required." });
     }
@@ -43,10 +43,9 @@ router.post("/add", upload.array('reportImages', 5), async (req, res) => {
     if (existingPatient) {
       return res.status(400).json({ message: "Patient ID already exists." });
     }
-
-    // Handle image uploads
+    // Handle image uploads if any
     let uploadedImages = [];
-    if (req.files) {
+    if (req.files && req.files.length > 0) {
       const uploadPromises = req.files.map(file => 
         cloudinary.uploader.upload(file.path, {
           folder: 'patient_reports'
@@ -56,43 +55,33 @@ router.post("/add", upload.array('reportImages', 5), async (req, res) => {
       uploadedImages = results.map(result => result.secure_url);
     }
 
-    // Update billing calculation to use finalPrice from front-end
-    let finalAmount = 0;
-
-    if (selectedTests) {
-      const testsArray = JSON.parse(selectedTests);
-      testsArray.forEach(test => {
-        finalAmount += parseFloat(test.finalPrice) || 0; // Use the exact price passed from frontend
-      });
-    }
-
-    // Create new patient with tests including weight
+    // Create new patient
     const newPatient = new Patient({
       ...otherData,
-      pastTests: [{
-        testName: otherData.testName,
-        testDate: new Date(),
-        weight: otherData.weight || undefined, // Add weight to test
-        height: otherData.height || undefined, // Add height to test
-        muscleMass: otherData.muscleMass || undefined, // Add muscle mass to test 
-        fatPercentage: otherData.fatPercentage || undefined, // Add fat percentage to test
-        bloodPressure: otherData.bloodPressure || undefined,
-        sugarLevels: otherData.sugarLevels || undefined,
-        haemoglobin: otherData.haemoglobin || undefined,
-        calcium: otherData.calcium || undefined,
-        cholesterol: otherData.cholesterol || undefined,
-        reportImages: uploadedImages,
-        billing: {
-          finalAmount // Store only the final amount
-        }
-      }]
+      // Only add pastTests if selectedTests exists
+      ...(selectedTests && {
+        pastTests: [{
+          testName: otherData.testName,
+          testDate: new Date(),
+          weight: otherData.weight,
+          height: otherData.height,
+          muscleMass: otherData.muscleMass,
+          fatPercentage: otherData.fatPercentage,
+          bloodPressure: otherData.bloodPressure,
+          sugarLevels: otherData.sugarLevels,
+          haemoglobin: otherData.haemoglobin,
+          calcium: otherData.calcium,
+          cholesterol: otherData.cholesterol,
+          reportImages: uploadedImages,
+          billing: {
+            finalAmount: parseFloat(JSON.parse(selectedTests)[0]?.finalPrice || 0)
+          }
+        }]
+      })
     });
 
     await newPatient.save();
-    res.status(201).json({ 
-      message: "Patient added successfully", 
-      patient: newPatient 
-    });
+    res.status(201).json({ message: "Patient added successfully" });
   } catch (error) {
     console.error("Error adding patient:", error);
     res.status(500).json({ message: "Server error", error: error.message });

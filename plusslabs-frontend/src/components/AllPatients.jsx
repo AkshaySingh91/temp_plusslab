@@ -184,15 +184,14 @@ const AllPatients = () => {
     e.preventDefault();
     setError("");
 
-    // Required fields validation
+    // Required fields only - no test validation
     const requiredFields = {
       patientId: "Patient ID",
       name: "Name", 
       phoneNumber: "Phone Number",
-      gender: "Gender",
-      testName: "Test Selection"
+      gender: "Gender"
     };
-
+    
     for (const [field, label] of Object.entries(requiredFields)) {
       if (!formData[field]) {
         const element = document.getElementById(field);
@@ -206,17 +205,6 @@ const AllPatients = () => {
       }
     }
 
-    if (selectedTests.length === 0) {
-      const element = document.getElementById('testName');
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        element.focus();
-      }
-      setError('Please select at least one test');
-      setShowErrorModal(true);
-      return;
-    }
-
     setLoading(true);
 
     try {
@@ -227,13 +215,15 @@ const AllPatients = () => {
         formDataToSend.append(key, formData[key]);
       });
       
-      // Add selected tests array with correct price
-      const testsWithPrice = selectedTests.map(test => ({
-        ...test,
-        finalPrice: isGoldPrice ? test.price * 0.8 : test.price * (1 - test.discount/100)
-      }));
-      formDataToSend.append('selectedTests', JSON.stringify(testsWithPrice));
-      
+      // Only add selectedTests if there are any
+      if (selectedTests.length > 0) {
+        const testsWithPrice = selectedTests.map(test => ({
+          ...test,
+          finalPrice: isGoldPrice ? test.price * 0.8 : test.price * (1 - test.discount/100)
+        }));
+        formDataToSend.append('selectedTests', JSON.stringify(testsWithPrice));
+      }
+
       // Add report images if any
       images.forEach(image => {
         formDataToSend.append('reportImages', image);
@@ -637,7 +627,7 @@ const AllPatients = () => {
         
         <div className="mb-4">
           <label htmlFor="testName" className="block text-sm font-medium mb-1">
-            Selected Tests <span className="text-red-500">*</span>
+            Selected Tests
           </label>
           <div className="flex gap-2 items-center">
             <input 

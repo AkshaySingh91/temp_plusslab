@@ -75,7 +75,7 @@ const Navbar = () => {
     <div className="h-[70px] flex justify-between items-center px-4 md:px-8 bg-[#191c1e] text-white relative">
       {/* Logo */}
       {/* <div className='text-lg font-bold cursor-pointer' onClick={() => navigate('/')}>
-        <img src="/assets/logo.jpeg" alt="logo" />
+        <img src="/assets/logo.jpg" alt="logo" />
         PLUSSLABS
       </div> */}
       <div
@@ -91,7 +91,7 @@ const Navbar = () => {
           />
         </div>
 
-        <div className="text-lg font-bold font-sans">PlussLabs</div>
+        <div className="text-lg font-bold font-sans">Pluss Labs</div>
       </div>
 
       {/* Hamburger Button (Visible on Small Screens) */}
