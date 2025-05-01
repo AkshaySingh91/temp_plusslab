@@ -85,9 +85,8 @@ const Navbar = () => {
         <div className="w-10 h-10 rounded-full overflow-hidden flex items-center justify-center bg-white p-1">
           <img
             src="https://res.cloudinary.com/dmo8bqzrx/image/upload/v1745683977/logo_q6sy35.jpg"
-            
             alt="Logo"
-            className="w-full h-full object-contain"
+            className="w-full h-full object-contain -translate-y-[2px]"
           />
         </div>
 

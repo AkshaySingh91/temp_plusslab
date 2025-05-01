@@ -24,7 +24,7 @@ const Sidebar = () => {
             src="https://res.cloudinary.com/dmo8bqzrx/image/upload/v1745683977/logo_q6sy35.jpg"
             
             alt="Logo"
-            className="w-full h-full object-contain"
+            className="w-full h-full object-contain -translate-y-[5px]"
           />
         </div>
         

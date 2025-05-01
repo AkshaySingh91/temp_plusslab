@@ -65,7 +65,7 @@ const Login = () => {
               <img
                 src="https://res.cloudinary.com/dmo8bqzrx/image/upload/v1745683977/logo_q6sy35.jpg"
                 alt="logo"
-                className="w-full h-full object-contain"
+                className="w-full h-full object-contain -translate-y-[3px]"
               />
             </div>
             <div className="ml-4">
