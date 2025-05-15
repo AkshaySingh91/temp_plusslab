@@ -31,6 +31,7 @@ const createSuperAdmin = async () => {
     console.log('Email: admin@plusslabs.com');
     console.log('Password: admin123');
     console.log('=================================');
+    //  node scripts/createSuperAdmin.js
 
   } catch (error) {
     console.error('Error:', error);

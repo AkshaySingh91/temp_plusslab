@@ -406,8 +406,8 @@ const AllPatients = () => {
             value={formData.name} 
             onChange={handleChange}
             required 
-            disabled={isExistingPatient}
-            className={`block w-full p-2 border rounded ${isExistingPatient ? 'bg-gray-100' : ''}`}
+            readOnly={isExistingPatient}
+            className={`block w-full p-2 border rounded ${isExistingPatient ? 'bg-gray-100 cursor-not-allowed' : ''}`}
           />
         </div>
 
@@ -422,8 +422,8 @@ const AllPatients = () => {
             value={formData.phoneNumber} 
             onChange={handleChange}
             required 
-            disabled={isExistingPatient}
-            className={`block w-full p-2 border rounded ${isExistingPatient ? 'bg-gray-100' : ''}`}
+            readOnly={isExistingPatient}
+            className={`block w-full p-2 border rounded ${isExistingPatient ? 'bg-gray-100 cursor-not-allowed' : ''}`}
           />
         </div>
 
@@ -437,8 +437,8 @@ const AllPatients = () => {
             name="email" 
             value={formData.email} 
             onChange={handleChange}
-            disabled={isExistingPatient}
-            className={`block w-full p-2 border rounded ${isExistingPatient ? 'bg-gray-100' : ''}`}
+            readOnly={isExistingPatient}
+            className={`block w-full p-2 border rounded ${isExistingPatient ? 'bg-gray-100 cursor-not-allowed' : ''}`}
           />
         </div>
 
@@ -452,8 +452,8 @@ const AllPatients = () => {
             name="dob" 
             value={formData.dob} 
             onChange={handleChange}
-            disabled={isExistingPatient}
-            className={`block w-full p-2 border rounded ${isExistingPatient ? 'bg-gray-100' : ''}`}
+            readOnly={isExistingPatient}
+            className={`block w-full p-2 border rounded ${isExistingPatient ? 'bg-gray-100 cursor-not-allowed' : ''}`}
           />
         </div>
 
@@ -468,7 +468,7 @@ const AllPatients = () => {
             onChange={handleChange} 
             required 
             disabled={isExistingPatient}
-            className={`block w-full p-2 border rounded ${isExistingPatient ? 'bg-gray-100' : ''}`}
+            className={`block w-full p-2 border rounded ${isExistingPatient ? 'bg-gray-100 cursor-not-allowed' : ''}`}
           >
             <option value="">Select Gender</option>
             <option value="Male">Male</option>
@@ -487,8 +487,8 @@ const AllPatients = () => {
             name="bloodType" 
             value={formData.bloodType} 
             onChange={handleChange}
-            disabled={isExistingPatient}
-            className={`block w-full p-2 border rounded ${isExistingPatient ? 'bg-gray-100' : ''}`}
+            readOnly={isExistingPatient}
+            className={`block w-full p-2 border rounded ${isExistingPatient ? 'bg-gray-100 cursor-not-allowed' : ''}`}
           />
         </div>
 
@@ -502,9 +502,8 @@ const AllPatients = () => {
             name="medicalHistory" 
             placeholder="Medical History (comma-separated)" 
             value={formData.medicalHistory} 
-            onChange={handleChange} 
-            disabled={isExistingPatient}
-            className={`block w-full p-2 border rounded ${isExistingPatient ? 'bg-gray-100' : ''}`}
+            onChange={handleChange}
+            className="block w-full p-2 border rounded"
           />
         </div>
         
